@@ -5,6 +5,7 @@ import Navbar from "@/app/components/Navbar";
 import Footer from "./components/Footer";
 import Stepper from "./components/Stepper";
 import Banks from "./components/Banks";
+import FlexibleSavingPartner from "./components/FlexibleSavingsPartner";
 export default function Home() {
   return (
     <div>
@@ -12,6 +13,7 @@ export default function Home() {
       <Hero />
       <Banks/>
       <Stepper/>
+      <FlexibleSavingPartner/>
       <Footer/>    
     </div>
   );

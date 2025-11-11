@@ -40,7 +40,7 @@ const DEFAULT_STEPS: Step[] = [
     title: "Start Saving",
     subtitle: "We convert your savings into pure 24K gold.",
     icon: CreditCard,
-    videoSrc:"https://www.pexels.com/download/video/8369983/",
+    videoSrc: "https://www.pexels.com/download/video/8369983/",
   },
 ];
 
@@ -66,8 +66,6 @@ export default function Stepper({
   const steps = useMemo(() => stepsProp ?? DEFAULT_STEPS, [stepsProp]);
   const reduced = usePrefersReducedMotion();
   const [active, setActive] = useState(0);
-
-  // sequence: highlight first, then let the underline "progress" fill
   const [progressPhase, setProgressPhase] = useState<"highlight" | "fill">("fill");
 
   useEffect(() => {
@@ -78,34 +76,33 @@ export default function Stepper({
     return () => clearInterval(id);
   }, [intervalMs, steps.length, reduced]);
 
-  // re-trigger the underline fill AFTER highlight switches
   useEffect(() => {
     setProgressPhase("highlight");
-    const t = setTimeout(() => setProgressPhase("fill"), 220); // small delay
+    const t = setTimeout(() => setProgressPhase("fill"), 220);
     return () => clearTimeout(t);
   }, [active]);
 
   return (
-    <section className="relative bg-gradient-to-b from-background via-muted/20 to-background py-20">
-      {/* Soft background accents */}
+    <section className="relative bg-gradient-to-b from-background via-muted/20 to-background py-36 md:py-40">
+      {/* Background Accents */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-24 -right-10 h-72 w-72 rounded-full bg-[hsl(43_96%_56%_/_0.12)] blur-3xl" />
-        <div className="absolute -bottom-24 -left-10 h-80 w-80 rounded-full bg-[hsl(267_92%_70%_/_0.12)] blur-3xl" />
+        <div className="absolute -top-24 -right-10 h-80 w-80 rounded-full bg-[hsl(43_96%_56%_/_0.15)] blur-3xl" />
+        <div className="absolute -bottom-24 -left-10 h-96 w-96 rounded-full bg-[hsl(267_92%_70%_/_0.15)] blur-3xl" />
       </div>
 
-      <div className="container mx-auto max-w-6xl px-4">
+      <div className="container mx-auto max-w-7xl px-4">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+          <h2 className="text-6xl md:text-7xl font-extrabold tracking-tight text-gray-900">
             {heading}
           </h2>
-          <p className="mt-3 text-muted-foreground">
+          <p className="mt-5 text-2xl text-muted-foreground">
             Watch your gold savings journey unfold beautifully.
           </p>
         </div>
 
-        {/* iPhone 15 Pro Max row */}
-        <div className="mt-16 flex flex-col md:flex-row justify-center gap-12 md:gap-16">
+        {/* iPhone 15 Pro Max Row */}
+        <div className="mt-24 flex flex-col md:flex-row justify-center gap-14 md:gap-20">
           {steps.map((s, i) => {
             const isActive = i === active;
             return (
@@ -116,7 +113,7 @@ export default function Stepper({
                 }`}
               >
                 <Iphone15Pro
-                  className="h-[400px] w-auto"
+                  className="h-[440px] w-auto"
                   videoSrc={s.videoSrc}
                   autoPlay
                   loop
@@ -127,23 +124,18 @@ export default function Stepper({
           })}
         </div>
 
-        {/* Stepper (icons + titles + per-step underline progress) */}
-        <div className="mt-16 flex justify-between items-start w-full max-w-3xl mx-auto relative">
+        {/* Stepper (Icons + Titles + Progress) */}
+        <div className="mt-24 flex justify-between items-start w-full max-w-3xl mx-auto relative">
           {steps.map((s, i) => {
             const Icon = s.icon;
             const isActive = i === active;
             const isPast = i < active;
 
-            // Underline width logic:
-            // - Past steps: 100%
-            // - Active step: 0% during "highlight" phase, then animates to 100% in "fill" phase
-            // - Future steps: 0%
             const underlineWidth =
               isPast ? "100%" : isActive ? (progressPhase === "fill" ? "100%" : "0%") : "0%";
 
             return (
               <div key={s.id} className="flex flex-col items-center text-center w-full relative">
-                {/* Connector line (only for completed steps; NOT the current one) */}
                 {i < steps.length - 1 && (
                   <div
                     className={`absolute top-4 right-[-50%] h-[2px] transition-colors duration-700 ${
@@ -157,21 +149,21 @@ export default function Stepper({
 
                 {/* Step Indicator */}
                 <div
-                  className={`flex items-center justify-center h-8 w-8 rounded-full border-2 transition-all duration-300 mb-2 ${
+                  className={`flex items-center justify-center h-9 w-9 rounded-full border-2 transition-all duration-300 mb-2 ${
                     isActive
-                      ? "border-[hsl(43_96%_56%)] bg-[hsl(43_96%_56%)] text-white shadow-[0_0_10px_hsl(43_96%_56%_/0.6)]"
+                      ? "border-[hsl(43_96%_56%)] bg-[hsl(43_96%_56%)] text-white shadow-[0_0_12px_hsl(43_96%_56%_/0.7)]"
                       : isPast
                       ? "border-[hsl(43_96%_56%)] text-[hsl(43_96%_56%)]"
                       : "border-muted text-muted-foreground"
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-4.5 h-4.5" />
                 </div>
 
                 {/* Step Titles */}
                 <div className="flex flex-col items-center">
                   <p
-                    className={`text-sm font-semibold transition-colors ${
+                    className={`text-base font-semibold transition-colors ${
                       isActive
                         ? "text-[hsl(43_96%_46%)]"
                         : isPast
@@ -181,10 +173,10 @@ export default function Stepper({
                   >
                     {s.title}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">{s.subtitle}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{s.subtitle}</p>
 
-                  {/* Per-step underline progress (under the text) */}
-                  <div className="relative mt-3 h-[6px] w-28 rounded-full bg-muted overflow-hidden">
+                  {/* Progress Bar */}
+                  <div className="relative mt-3 h-[6px] w-32 rounded-full bg-muted overflow-hidden">
                     <div
                       className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-[hsl(43_96%_56%)] to-[hsl(43_96%_68%)] shadow-[0_0_10px_hsl(43_96%_56%_/0.45)] transition-[width,opacity] duration-700 ease-out"
                       style={{ width: underlineWidth, opacity: isPast || isActive ? 1 : 0.25 }}
