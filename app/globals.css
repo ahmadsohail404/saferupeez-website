@@ -1,2 +1,58 @@
 @import "tailwindcss";
 
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 6s ease infinite;
+}
+
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 1s ease-out both;
+}
+
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: float 4.5s ease-in-out infinite;
+}
+
+.animate-float-medium-delayed {
+  animation: float 5.5s ease-in-out infinite;
+  animation-delay: 1.2s;
+}
+
+.animate-float-fast {
+  animation: float 3.8s ease-in-out infinite;
+}
+
+.underline-gradient {
+  position: relative;
+}
+.underline-gradient::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0.25em;
+  width: 100%;
+  height: 4px;
+  border-radius: 9999px;
+  background: linear-gradient(to right, #8b5cf6, #ec4899, #3b82f6);
+  opacity: 0.5;
+}
