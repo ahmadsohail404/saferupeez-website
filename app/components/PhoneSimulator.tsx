@@ -46,7 +46,7 @@ export function PhoneSimulator() {
       <div className="absolute inset-0 bg-gradient-to-tr from-purple-200/40 to-amber-200/40 blur-2xl sm:blur-3xl rounded-[2rem] sm:rounded-[3rem] -z-10" />
 
       {/* iPhone 15 Frame - Optimized for laptop screens */}
-      <div className="relative mx-auto w-full h-[510px] sm:h-[620px] md:h-[670px] lg:h-[690px] xl:h-[710px] rounded-[2.5rem] sm:rounded-[3rem] md:rounded-[3.5rem] bg-gradient-to-br from-gray-900 to-gray-800 p-[8px] sm:p-[10px] md:p-[12px] shadow-[0_0_20px_rgba(0,0,0,0.3)] sm:shadow-[0_0_30px_rgba(0,0,0,0.4)] md:shadow-[0_0_40px_rgba(0,0,0,0.5)] border border-gray-700/60">
+      <div className="relative mx-auto w-[360px] h-[510px] sm:h-[620px] md:h-[670px] lg:h-[690px] xl:h-[710px] rounded-[2.5rem] sm:rounded-[3rem] md:rounded-[3.5rem] bg-gradient-to-br from-gray-900 to-gray-800 p-[8px] sm:p-[10px] md:p-[12px] shadow-[0_0_20px_rgba(0,0,0,0.3)] sm:shadow-[0_0_30px_rgba(0,0,0,0.4)] md:shadow-[0_0_40px_rgba(0,0,0,0.5)] border border-gray-700/60">
         {/* Inner metallic ring */}
         <div className="absolute inset-[2px] rounded-[2.3rem] sm:rounded-[3.1rem] md:rounded-[3.3rem] bg-gradient-to-br from-gray-700 to-gray-900"></div>
 

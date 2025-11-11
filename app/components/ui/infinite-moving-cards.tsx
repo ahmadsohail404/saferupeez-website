@@ -6,7 +6,7 @@ import React, { useEffect, useState, useRef } from "react";
 export const InfiniteMovingCards = ({
   items,
   direction = "left",
-  speed = "fast",
+  speed = "slow", // keep slower by default
   pauseOnHover = true,
   className,
 }: {
@@ -21,8 +21,12 @@ export const InfiniteMovingCards = ({
 
   useEffect(() => {
     if (!containerRef.current) return;
-    const dur = speed === "fast" ? "30s" : speed === "normal" ? "40s" : "80s";
+
+    // slow timings
+    const dur =
+      speed === "fast" ? "50s" : speed === "normal" ? "90s" : "120s";
     containerRef.current.style.setProperty("--animation-duration", dur);
+
     setStart(true);
   }, [speed]);
 
@@ -33,7 +37,8 @@ export const InfiniteMovingCards = ({
     <div
       ref={containerRef}
       className={cn(
-        "relative z-10 max-w-7xl overflow-hidden bg-white",
+        // slightly reduced width from 100rem -> 92rem
+        "relative z-10 w-full max-w-[92rem] mx-auto overflow-hidden bg-white",
         "[mask-image:linear-gradient(to_right,transparent,white_12%,white_88%,transparent)]",
         className
       )}
@@ -41,7 +46,8 @@ export const InfiniteMovingCards = ({
       <ul
         style={{ animationDirection }}
         className={cn(
-          "flex w-max min-w-[200%] shrink-0 flex-nowrap gap-5 py-5",
+          // slightly reduced loop width & spacing
+          "flex w-max min-w-[300%] shrink-0 flex-nowrap gap-6 py-6",
           "will-change-transform",
           start && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]"
@@ -50,15 +56,16 @@ export const InfiniteMovingCards = ({
         {[...items, ...items].map((item, idx) => (
           <li
             key={idx}
-            className="relative w-36 h-36 max-w-full shrink-0 rounded-xl p-5 flex items-center justify-center bg-white"
+            // slightly smaller cards (from 56 -> 52)
+            className="relative w-52 h-52 max-w-full shrink-0 rounded-2xl p-6 flex items-center justify-center bg-white"
             title={item.name}
           >
             <Image
               src={item.logoUrl}
               alt={item.name}
               className="max-h-full max-w-full object-contain"
-              width={96}
-              height={96}
+              width={144}
+              height={144}
             />
           </li>
         ))}
@@ -71,7 +78,7 @@ export const InfiniteMovingCards = ({
           }
         }
         .animate-scroll {
-          animation: scroll var(--animation-duration, 40s) linear infinite;
+          animation: scroll var(--animation-duration, 120s) linear infinite;
         }
       `}</style>
     </div>

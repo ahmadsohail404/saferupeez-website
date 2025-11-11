@@ -14,7 +14,7 @@ function Row({
   return (
     <div
       className={[
-        "relative h-32 md:h-36 overflow-hidden",
+        "relative h-44 md:h-52 overflow-hidden",
         rounded === "top"
           ? "rounded-t-xl"
           : rounded === "bottom"
@@ -37,18 +37,14 @@ function Row({
 export default function DoubleRowInfiniteMovingCards() {
   return (
     <>
-      <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-8 text-center">
+      <h2 className="text-4xl md:text-5xl font-extrabold text-black mb-10 text-center">
         Our Alumni Work At
       </h2>
 
-      <div className="flex flex-col gap-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Row 1 → right */}
+      <div className="flex flex-col gap-0 w-full max-w-[92rem] mx-auto px-4 sm:px-6 lg:px-8">
         <Row direction="right" rounded="top" />
-        {/* Row 2 → left */}
         <Row direction="left" rounded="none" />
-        {/* Row 3 → right */}
         <Row direction="right" rounded="none" />
-        {/* Row 4 → left */}
         <Row direction="left" rounded="bottom" />
       </div>
     </>
