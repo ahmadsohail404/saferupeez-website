@@ -7,7 +7,6 @@ import {
   Star,
   ShieldCheck,
 } from "lucide-react";
-import { Button } from "@/app/components/ui/button";
 import { PhoneSimulator } from "./PhoneSimulator";
 import UnderlineImg from "../../public/assets/Vector.png";
 
@@ -40,7 +39,7 @@ const Hero = () => {
                 alt="underline"
                 className="absolute left-0 bottom-0 w-full max-w-[180px] sm:max-w-[230px] md:max-w-[300px] lg:max-w-[350px] xl:max-w-[420px] -z-10 translate-y-[6px] sm:translate-y-[8px] md:translate-y-[10px]"
               />
-            </span>
+            </span>{" "}
             <br className="hidden sm:block" />
             from anywhere.
           </h1>
