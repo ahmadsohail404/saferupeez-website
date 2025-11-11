@@ -26,7 +26,7 @@ export default function RootLayout({
       {/* If you add theme class switching later, you can add suppressHydrationWarning here */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* Offset for fixed navbar with h-20 */}
-        <main className="pt-20">{children}</main>
+        <main className="">{children}</main>
       </body>
     </html>
   );

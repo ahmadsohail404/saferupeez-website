@@ -29,7 +29,7 @@ const Hero = () => {
               </h1>
               <p className="text-muted-foreground text-lg max-w-lg">
                 Experience the future of payments: fast, secure, and tailored for the next
-                generation's convenience and trust.
+                generations convenience and trust.
               </p>
             </div>
 
