@@ -23,7 +23,7 @@ export function PhoneSimulator() {
           
           {/* App Header */}
           <div className="px-6 py-4">
-            <h3 className="text-gray-900 mb-1">Today's Insights</h3>
+            <h3 className="text-gray-900 mb-1">Today&apos;s Insights</h3>
             <p className="text-gray-600">Live precious metal rates</p>
           </div>
           
