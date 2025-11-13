@@ -98,16 +98,10 @@ export default function FAQ() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
-              href="/contact"
+              href="/help"
               className="inline-flex items-center justify-center px-6 py-3 bg-black text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-200"
             >
               Contact Support
-            </a>
-            <a
-              href="/help-center"
-              className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all duration-200"
-            >
-              Visit Help Center
             </a>
           </div>
         </div>
