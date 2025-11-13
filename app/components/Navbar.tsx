@@ -50,10 +50,8 @@ export default function Navbar() {
   const toggleMobileMenu = () => setIsMobileMenuOpen((v) => !v);
 
   const services = [
-    { href: "/gold-fd-plus", title: "Gold FD+", desc: "Lock-in, earn on gold" },
-    { href: "/gold-sip", title: "Gold SIP", desc: "Save regularly in gold" },
-    { href: "/digital-gold", title: "Digital Gold", desc: "Buy/sell 24K 999 purity" },
-    { href: "/gold-emi", title: "Gold on EMI", desc: "Split purchases into EMIs" },
+    { href: "/gold&silver", title: "Gold & Silver" },
+    { href: "/fd", title: "FD" },
   ];
 
   return (
@@ -126,6 +124,9 @@ export default function Navbar() {
 
                 <NavLink href="/varsity" active={isActive("/varsity")}>
                   Varsity
+                </NavLink>
+                <NavLink href="/calculators" active={isActive("/calculators")}>
+                  Calculators
                 </NavLink>
               </div>
             </div>
