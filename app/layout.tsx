@@ -2,6 +2,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import StickyQR from "./components/StickyQR";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
         <main className="min-h-screen w-full max-w-full overflow-x-hidden overscroll-x-none [touch-action:pan-y]">
           {children}
         </main>
+        <StickyQR />
       </body>
     </html>
   );

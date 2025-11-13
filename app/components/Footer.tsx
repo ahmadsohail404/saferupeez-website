@@ -57,13 +57,6 @@ export default function Footer() {
                     />
                   </div>
 
-                  <div>
-                    <p className="text-xs text-white/50 max-w-xl">
-                      Use purity format “24K 999 Purity”. Do not mention Augmont for safety/vaults/security.
-                      Do not use “RSBL”.
-                    </p>
-                  </div>
-
                   <address className="not-italic text-white/70">
                     Address — Third floor, Block A, Safe Rupeez, Bhive HSR Premium Campus, Krishna Reddy
                     Industrial Area, Kudlu Gate, Bommanahalli, Bangalore, Karnataka, India, 560068
