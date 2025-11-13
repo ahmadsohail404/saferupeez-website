@@ -76,6 +76,8 @@ export default function Navbar() {
   // --- Services Data ---
 
   const services = [
+    { href: "/gold&silver", title: "Gold & Silver" },
+    { href: "/fd", title: "FD" },
     { href: "/gold-fd-plus", title: "Gold FD+", desc: "Lock-in, earn on gold" },
     { href: "/gold-sip", title: "Gold SIP", desc: "Save regularly in gold" },
     {
@@ -165,6 +167,8 @@ export default function Navbar() {
                 <NavLink href="/varsity" active={isActive("/varsity")}>
                   Varsity
                 </NavLink>
+                <NavLink href="/calculators" active={isActive("/calculators")}>
+                  Calculators
 
                 {/* NEW: Help link */}
                 <NavLink href="/help" active={isActive("/help")}>
