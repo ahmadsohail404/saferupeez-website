@@ -165,6 +165,11 @@ export default function Navbar() {
                 <NavLink href="/varsity" active={isActive("/varsity")}>
                   Varsity
                 </NavLink>
+
+                {/* NEW: Help link */}
+                <NavLink href="/help" active={isActive("/help")}>
+                  Help
+                </NavLink>
               </div>
             </div>
 
@@ -254,6 +259,15 @@ export default function Navbar() {
                   onClick={toggleMobileMenu}
                 >
                   Varsity
+                </MobileNavLink>
+
+                {/* NEW: Help link (mobile) */}
+                <MobileNavLink
+                  href="/help"
+                  active={isActive("/help")}
+                  onClick={toggleMobileMenu}
+                >
+                  Help
                 </MobileNavLink>
               </nav>
             </div>

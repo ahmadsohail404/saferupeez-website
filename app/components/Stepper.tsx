@@ -1,11 +1,9 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { Wallet, CreditCard, Lock, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/app/components/ui/button";
 import { Card } from "@/app/components/ui/card";
-
 /* ---------------------------------------------------------
    STEP DATA
 --------------------------------------------------------- */
@@ -29,38 +27,31 @@ const steps = [
     icon: Lock,
   },
 ];
-
 /* ---------------------------------------------------------
    MAIN COMPONENT
 --------------------------------------------------------- */
 export default function OnboardingStepper() {
   const [activeStep, setActiveStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-
   // Auto rotate steps
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveStep((prev) => {
         const next = (prev + 1) % steps.length;
-
         setCompletedSteps((done) => {
           if (!done.includes(prev + 1) && prev + 1 <= steps.length) {
             return [...done, prev + 1];
           }
           return done;
         });
-
         if (next === 0) {
           setTimeout(() => setCompletedSteps([]), 300);
         }
-
         return next;
       });
     }, 3000);
-
     return () => clearInterval(timer);
   }, []);
-
   return (
     <div className="min-h-auto bg-white flex items-center justify-center p-4 md:p-8 py-16 md:py-24 overflow-hidden">
       <div className="w-full max-w-7xl">
@@ -73,7 +64,6 @@ export default function OnboardingStepper() {
             Start your journey to secure savings and gold investment
           </p>
         </div>
-
         {/* --------------------------- MOBILE VIEW --------------------------- */}
         <div className="flex flex-col md:hidden gap-14">
           {[0, 1, 2].map((i) => (
@@ -94,7 +84,6 @@ export default function OnboardingStepper() {
                 paymentOptions={i === 1}
                 goldFeatures={i === 2}
               />
-
               {/* ---- mobile step block (NOT removed — restored) ---- */}
               <MobileStepBlock
                 index={i}
@@ -104,7 +93,6 @@ export default function OnboardingStepper() {
             </div>
           ))}
         </div>
-
         {/* --------------------------- DESKTOP 3 PHONES --------------------------- */}
         <div className="hidden md:grid grid-cols-3 gap-8 md:gap-6 mb-16 md:mb-20">
           <PhoneCard
@@ -130,7 +118,6 @@ export default function OnboardingStepper() {
             goldFeatures
           />
         </div>
-
         {/* --------------------------- DESKTOP STEPPER --------------------------- */}
         <div className="hidden md:flex justify-center items-start gap-6 mb-12">
           {steps.map((step, index) => (
@@ -155,7 +142,6 @@ export default function OnboardingStepper() {
                     <span className="text-xl text-white">{step.id}</span>
                   )}
                 </motion.div>
-
                 <div className="text-center max-w-[200px]">
                   <h4
                     className={`font-semibold ${
@@ -173,7 +159,6 @@ export default function OnboardingStepper() {
                   </p>
                 </div>
               </div>
-
               {/* CONNECTOR LINE */}
               {index < steps.length - 1 && (
                 <div className="w-28 h-[2px] mx-6 mt-6 bg-slate-200 rounded-full relative overflow-hidden">
@@ -194,7 +179,6 @@ export default function OnboardingStepper() {
             </div>
           ))}
         </div>
-
         {/* --------------------------- MOBILE DOTS --------------------------- */}
         <div className="flex md:hidden justify-center gap-2">
           {steps.map((_, index) => (
@@ -214,7 +198,6 @@ export default function OnboardingStepper() {
     </div>
   );
 }
-
 /* ---------------------------------------------------------
    MOBILE STEP BLOCK (NOT REMOVED)
 --------------------------------------------------------- */
@@ -230,7 +213,6 @@ function MobileStepBlock({
   const s = steps[index];
   const isActive = activeStep === index;
   const isDone = completedSteps.includes(s.id);
-
   return (
     <motion.div
       animate={{ opacity: isActive ? 1 : 0.6, scale: isActive ? 1.05 : 1 }}
@@ -253,7 +235,6 @@ function MobileStepBlock({
           <span className="text-white text-xl">{s.id}</span>
         )}
       </motion.div>
-
       <h4
         className={`text-lg font-semibold ${
           isActive ? "text-amber-700" : "text-slate-800"
@@ -261,7 +242,6 @@ function MobileStepBlock({
       >
         {s.title}
       </h4>
-
       <p
         className={`text-sm ${isActive ? "text-amber-600" : "text-slate-600"}`}
       >
@@ -270,7 +250,6 @@ function MobileStepBlock({
     </motion.div>
   );
 }
-
 /* ---------------------------------------------------------
    PHONE CARD (FULL, FINAL, WITH SAME WIDTH)
 --------------------------------------------------------- */
@@ -285,14 +264,11 @@ function PhoneCard({
   goldFeatures,
 }: any) {
   const isActive = activeStep === stepIndex;
-
   const mask =
     "linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0.85) 75%, rgba(0,0,0,0.55) 86%, rgba(0,0,0,0.25) 92%, rgba(0,0,0,0) 100%)";
-
   const screenBg = isActive
     ? "bg-gradient-to-b from-amber-200 via-amber-100 to-transparent"
     : "bg-gradient-to-b from-slate-700 via-slate-600 to-transparent";
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -315,7 +291,6 @@ function PhoneCard({
         >
           {/* Dynamic Island */}
           <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-7 bg-black rounded-full z-20" />
-
           {/* SCREEN */}
           <div
             className={`relative w-full h-full rounded-t-[40px] overflow-hidden p-6 ${screenBg}`}
@@ -332,13 +307,11 @@ function PhoneCard({
                 />
               </div>
             )}
-
             {/* ICON + TITLE */}
             <div className="flex items-center gap-2 mb-4 mt-6">
               <Icon className="w-4 h-4 text-black/85" />
               <p className="text-black/85 text-xs">{title}</p>
             </div>
-
             {/* HIGHLIGHT BUTTONS */}
             {highlight && btns && (
               <>
@@ -347,7 +320,6 @@ function PhoneCard({
                     {highlight}
                   </p>
                 </Card>
-
                 <div className="grid grid-cols-3 gap-2 mb-2">
                   {btns.map((b: any, i: number) => (
                     <Button
@@ -359,13 +331,11 @@ function PhoneCard({
                     </Button>
                   ))}
                 </div>
-
                 <p className="text-center text-amber-700 text-[10px]">
                   POPULAR
                 </p>
               </>
             )}
-
             {/* PAYMENT OPTIONS */}
             {paymentOptions && (
               <>
@@ -388,7 +358,6 @@ function PhoneCard({
                     </Card>
                   ))}
                 </div>
-
                 <Button className="bg-black text-white w-full text-xs h-9">
                   Proceed for Payment
                 </Button>
@@ -397,7 +366,6 @@ function PhoneCard({
                 </p>
               </>
             )}
-
             {/* GOLD FEATURES */}
             {goldFeatures && (
               <div className="grid grid-cols-3 gap-2">
@@ -418,11 +386,9 @@ function PhoneCard({
             )}
           </div>
         </motion.div>
-
         {/* CLOUD FADE */}
         <div className="absolute left-1/2 -translate-x-1/2 bottom-[-6px] w-[130%] h-16 bg-gradient-radial from-white/70 to-white blur-xl" />
       </div>
-
       {/* SHIMMER KEYFRAMES */}
       <style jsx>{`
         @keyframes shimmer {
