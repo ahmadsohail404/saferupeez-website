@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // Added useRef
 import { ChevronDown, Menu, X } from "lucide-react";
 import {
   DropdownMenu,
@@ -13,13 +13,20 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
+// Set a short delay (e.g., 200 milliseconds)
+const CLOSE_DELAY = 200;
+
+// --- Main Navbar Component ---
 export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // NEW: control Services hover menu explicitly
+  // State for services menu open/close
   const [servicesOpen, setServicesOpen] = useState(false);
+
+  // Ref to store the timer ID
+  const closeTimer = useRef<NodeJS.Timeout | null>(null);
 
   const isActive = (href: string) => pathname === href;
 
@@ -49,9 +56,40 @@ export default function Navbar() {
 
   const toggleMobileMenu = () => setIsMobileMenuOpen((v) => !v);
 
+  // --- Hover Delay Logic ---
+
+  const handleMouseEnter = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current); // Clear any pending close timer
+      closeTimer.current = null;
+    }
+    setServicesOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    // Start a timer to close the menu after a delay
+    closeTimer.current = setTimeout(() => {
+      setServicesOpen(false);
+    }, CLOSE_DELAY);
+  };
+
+  // --- Services Data ---
+
   const services = [
     { href: "/gold&silver", title: "Gold & Silver" },
     { href: "/fd", title: "FD" },
+    { href: "/gold-fd-plus", title: "Gold FD+", desc: "Lock-in, earn on gold" },
+    { href: "/gold-sip", title: "Gold SIP", desc: "Save regularly in gold" },
+    {
+      href: "/digital-gold",
+      title: "Digital Gold",
+      desc: "Buy/sell 24K 999 purity",
+    },
+    {
+      href: "/gold-emi",
+      title: "Gold on EMI",
+      desc: "Split purchases into EMIs",
+    },
   ];
 
   return (
@@ -90,16 +128,20 @@ export default function Navbar() {
                   About us
                 </NavLink>
 
-                {/* HOVER-CONTROLLED SERVICES MENU (no scroll lock) */}
+                {/* MODIFIED SERVICES MENU: Hover open with delay close */}
                 <div
                   className="relative"
-                  onMouseEnter={() => setServicesOpen(true)}
-                  onMouseLeave={() => setServicesOpen(false)}
+                  onMouseEnter={handleMouseEnter} // Use delayed open handler
+                  onMouseLeave={handleMouseLeave} // Use delayed close handler
                 >
-                  <DropdownMenu open={servicesOpen} onOpenChange={setServicesOpen} modal={false}>
+                  <DropdownMenu
+                    open={servicesOpen}
+                    onOpenChange={setServicesOpen}
+                    modal={false}
+                  >
                     <DropdownMenuTrigger
                       className="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--ring))] data-[state=open]:bg-[hsl(var(--muted))]"
-                      onClick={(e) => e.preventDefault()} // prevent click-toggling
+                      onClick={(e) => e.preventDefault()}
                     >
                       Services
                       <ChevronDown className="h-4 w-4 transition-transform duration-200" />
@@ -127,6 +169,10 @@ export default function Navbar() {
                 </NavLink>
                 <NavLink href="/calculators" active={isActive("/calculators")}>
                   Calculators
+
+                {/* NEW: Help link */}
+                <NavLink href="/help" active={isActive("/help")}>
+                  Help
                 </NavLink>
               </div>
             </div>
@@ -149,21 +195,30 @@ export default function Navbar() {
                 aria-label="Toggle menu"
                 aria-expanded={isMobileMenuOpen}
               >
-                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {isMobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
               </button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay (Scroll is blocked here, which is typical for mobile) */}
       <div
         className={`fixed inset-0 top-16 z-40 lg:hidden ${
-          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          isMobileMenuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         } transition-opacity duration-300`}
       >
         {/* White Backdrop */}
-        <div className="absolute inset-0 bg-white transition-opacity" onClick={toggleMobileMenu} />
+        <div
+          className="absolute inset-0 bg-white transition-opacity"
+          onClick={toggleMobileMenu}
+        />
 
         {/* Menu Content */}
         <div
@@ -175,7 +230,11 @@ export default function Navbar() {
             {/* Navigation Links */}
             <div className="flex-1 p-6">
               <nav className="space-y-4">
-                <MobileNavLink href="/about" active={isActive("/about")} onClick={toggleMobileMenu}>
+                <MobileNavLink
+                  href="/about"
+                  active={isActive("/about")}
+                  onClick={toggleMobileMenu}
+                >
                   About us
                 </MobileNavLink>
 
@@ -205,6 +264,15 @@ export default function Navbar() {
                 >
                   Varsity
                 </MobileNavLink>
+
+                {/* NEW: Help link (mobile) */}
+                <MobileNavLink
+                  href="/help"
+                  active={isActive("/help")}
+                  onClick={toggleMobileMenu}
+                >
+                  Help
+                </MobileNavLink>
               </nav>
             </div>
 
@@ -219,7 +287,9 @@ export default function Navbar() {
                   Login to Account
                 </Link>
                 <div className="text-center">
-                  <span className="text-sm text-[hsl(var(--muted-foreground))]">New to SafeRupee? </span>
+                  <span className="text-sm text-[hsl(var(--muted-foreground))]">
+                    New to SafeRupee?{" "}
+                  </span>
                   <Link
                     href="/register"
                     onClick={toggleMobileMenu}
@@ -233,12 +303,12 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      {/* No spacer needed for sticky header */}
     </>
   );
 }
 
-// Desktop NavLink Component
+// --- Helper Components (No changes needed here) ---
+
 function NavLink({
   href,
   active,
@@ -265,7 +335,6 @@ function NavLink({
   );
 }
 
-// Mobile NavLink Component
 function MobileNavLink({
   href,
   active,
@@ -292,7 +361,6 @@ function MobileNavLink({
   );
 }
 
-// Mobile Service Link with Description
 function MobileServiceLink({
   href,
   active,
@@ -319,21 +387,28 @@ function MobileServiceLink({
       <div className="flex items-start gap-3">
         <div
           className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${
-            active ? "bg-[hsl(var(--gold))]" : "bg-[hsl(var(--muted-foreground))]"
+            active
+              ? "bg-[hsl(var(--gold))]"
+              : "bg-[hsl(var(--muted-foreground))]"
           }`}
         />
         <div className="flex flex-col">
-          <span className={`text-sm font-medium ${active ? "text-black" : "text-[hsl(var(--foreground))]"}`}>
+          <span
+            className={`text-sm font-medium ${
+              active ? "text-black" : "text-[hsl(var(--foreground))]"
+            }`}
+          >
             {title}
           </span>
-          <span className="text-xs text-[hsl(var(--muted-foreground))] mt-1">{desc}</span>
+          <span className="text-xs text-[hsl(var(--muted-foreground))] mt-1">
+            {desc}
+          </span>
         </div>
       </div>
     </Link>
   );
 }
 
-// Desktop Dropdown Menu Item
 function MenuItem({
   href,
   title,
@@ -351,8 +426,12 @@ function MenuItem({
       >
         <div className="mt-0.5 h-2 w-2 rounded-full bg-[hsl(var(--gold))] flex-shrink-0" />
         <div className="flex flex-col gap-1">
-          <span className="text-sm font-medium text-[hsl(var(--foreground))]">{title}</span>
-          <span className="text-xs text-[hsl(var(--muted-foreground))]">{desc}</span>
+          <span className="text-sm font-medium text-[hsl(var(--foreground))]">
+            {title}
+          </span>
+          <span className="text-xs text-[hsl(var(--muted-foreground))]">
+            {desc}
+          </span>
         </div>
       </Link>
     </DropdownMenuItem>
