@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useRef } from "react"; // Added useRef
+import { useState, useEffect, useRef } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 import {
   DropdownMenu,
@@ -13,36 +13,33 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-// Set a short delay (e.g., 200 milliseconds)
 const CLOSE_DELAY = 200;
 
-// --- Main Navbar Component ---
 export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // State for services menu open/close
+  // Services dropdown state
   const [servicesOpen, setServicesOpen] = useState(false);
 
-  // Ref to store the timer ID
-  const closeTimer = useRef<NodeJS.Timeout | null>(null);
+  // Timer for delayed close
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isActive = (href: string) => pathname === href;
 
-  // Handle scroll effect for navbar
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu when route changes
+  // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Prevent body scroll ONLY when mobile menu is open
+  // Lock body scroll only when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -56,40 +53,21 @@ export default function Navbar() {
 
   const toggleMobileMenu = () => setIsMobileMenuOpen((v) => !v);
 
-  // --- Hover Delay Logic ---
-
+  // Hover delay logic for services
   const handleMouseEnter = () => {
     if (closeTimer.current) {
-      clearTimeout(closeTimer.current); // Clear any pending close timer
+      clearTimeout(closeTimer.current);
       closeTimer.current = null;
     }
     setServicesOpen(true);
   };
-
   const handleMouseLeave = () => {
-    // Start a timer to close the menu after a delay
-    closeTimer.current = setTimeout(() => {
-      setServicesOpen(false);
-    }, CLOSE_DELAY);
+    closeTimer.current = setTimeout(() => setServicesOpen(false), CLOSE_DELAY);
   };
-
-  // --- Services Data ---
 
   const services = [
     { href: "/gold&silver", title: "Gold & Silver" },
     { href: "/fd", title: "FD" },
-    { href: "/gold-fd-plus", title: "Gold FD+", desc: "Lock-in, earn on gold" },
-    { href: "/gold-sip", title: "Gold SIP", desc: "Save regularly in gold" },
-    {
-      href: "/digital-gold",
-      title: "Digital Gold",
-      desc: "Buy/sell 24K 999 purity",
-    },
-    {
-      href: "/gold-emi",
-      title: "Gold on EMI",
-      desc: "Split purchases into EMIs",
-    },
   ];
 
   return (
@@ -128,23 +106,23 @@ export default function Navbar() {
                   About us
                 </NavLink>
 
-                {/* MODIFIED SERVICES MENU: Hover open with delay close */}
+                {/* Services menu with hover open + delayed close */}
                 <div
                   className="relative"
-                  onMouseEnter={handleMouseEnter} // Use delayed open handler
-                  onMouseLeave={handleMouseLeave} // Use delayed close handler
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 >
-                  <DropdownMenu
-                    open={servicesOpen}
-                    onOpenChange={setServicesOpen}
-                    modal={false}
-                  >
+                  <DropdownMenu open={servicesOpen} onOpenChange={setServicesOpen} modal={false}>
                     <DropdownMenuTrigger
                       className="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--ring))] data-[state=open]:bg-[hsl(var(--muted))]"
                       onClick={(e) => e.preventDefault()}
                     >
                       Services
-                      <ChevronDown className="h-4 w-4 transition-transform duration-200" />
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform duration-200 ${
+                          servicesOpen ? "rotate-180" : ""
+                        }`}
+                      />
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent
@@ -167,8 +145,11 @@ export default function Navbar() {
                 <NavLink href="/varsity" active={isActive("/varsity")}>
                   Varsity
                 </NavLink>
+
+                {/* ⬇️ This was missing its closing tag */}
                 <NavLink href="/calculators" active={isActive("/calculators")}>
                   Calculators
+                </NavLink>
 
                 {/* NEW: Help link */}
                 <NavLink href="/help" active={isActive("/help")}>
@@ -180,7 +161,7 @@ export default function Navbar() {
             {/* Desktop Auth Buttons */}
             <div className="hidden lg:flex lg:items-center lg:gap-3">
               <Link
-                href="/login"
+                href="/auth"
                 className="rounded-lg bg-gradient-to-r from-black to-gray-800 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 active:scale-95"
               >
                 Login / Register
@@ -195,39 +176,30 @@ export default function Navbar() {
                 aria-label="Toggle menu"
                 aria-expanded={isMobileMenuOpen}
               >
-                {isMobileMenuOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
+                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay (Scroll is blocked here, which is typical for mobile) */}
+      {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 top-16 z-40 lg:hidden ${
-          isMobileMenuOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        } transition-opacity duration-300`}
+        className={`fixed inset-0 top-16 z-40 lg:hidden transition-opacity duration-300 ${
+          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
       >
-        {/* White Backdrop */}
-        <div
-          className="absolute inset-0 bg-white transition-opacity"
-          onClick={toggleMobileMenu}
-        />
+        {/* Backdrop */}
+        <div className="absolute inset-0 bg-white" onClick={toggleMobileMenu} />
 
-        {/* Menu Content */}
+        {/* Drawer */}
         <div
           className={`absolute right-0 top-0 h-full w-80 max-w-full bg-[hsl(var(--card))] shadow-2xl transform transition-transform duration-300 ${
             isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
           <div className="flex h-full flex-col overflow-y-auto">
-            {/* Navigation Links */}
+            {/* Links */}
             <div className="flex-1 p-6">
               <nav className="space-y-4">
                 <MobileNavLink
@@ -238,7 +210,7 @@ export default function Navbar() {
                   About us
                 </MobileNavLink>
 
-                {/* Services Section */}
+                {/* Services */}
                 <div className="space-y-3">
                   <div className="px-3 py-2 text-sm font-semibold uppercase tracking-wide text-[hsl(var(--muted-foreground))]">
                     Services
@@ -251,7 +223,7 @@ export default function Navbar() {
                         active={isActive(service.href)}
                         onClick={toggleMobileMenu}
                         title={service.title}
-                        desc={service.desc}
+                        desc={service.desc ?? ""}
                       />
                     ))}
                   </div>
@@ -265,18 +237,21 @@ export default function Navbar() {
                   Varsity
                 </MobileNavLink>
 
-                {/* NEW: Help link (mobile) */}
-                <MobileNavLink
-                  href="/help"
-                  active={isActive("/help")}
+                 <MobileNavLink
+                  href="/calculators"
+                  active={isActive("/calculators")}
                   onClick={toggleMobileMenu}
                 >
+                  Calculators
+                </MobileNavLink>
+
+                <MobileNavLink href="/help" active={isActive("/help")} onClick={toggleMobileMenu}>
                   Help
                 </MobileNavLink>
               </nav>
             </div>
 
-            {/* Auth Section */}
+            {/* Auth */}
             <div className="border-t border-[hsl(var(--border))] p-6">
               <div className="space-y-3">
                 <Link
@@ -307,7 +282,7 @@ export default function Navbar() {
   );
 }
 
-// --- Helper Components (No changes needed here) ---
+/* ----------------------------- Helper Components ---------------------------- */
 
 function NavLink({
   href,
@@ -372,7 +347,7 @@ function MobileServiceLink({
   active?: boolean;
   onClick: () => void;
   title: string;
-  desc: string;
+  desc?: string;
 }) {
   return (
     <Link
@@ -387,37 +362,23 @@ function MobileServiceLink({
       <div className="flex items-start gap-3">
         <div
           className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${
-            active
-              ? "bg-[hsl(var(--gold))]"
-              : "bg-[hsl(var(--muted-foreground))]"
+            active ? "bg-[hsl(var(--gold))]" : "bg-[hsl(var(--muted-foreground))]"
           }`}
         />
         <div className="flex flex-col">
-          <span
-            className={`text-sm font-medium ${
-              active ? "text-black" : "text-[hsl(var(--foreground))]"
-            }`}
-          >
+          <span className={`text-sm font-medium ${active ? "text-black" : "text-[hsl(var(--foreground))]"}`}>
             {title}
           </span>
-          <span className="text-xs text-[hsl(var(--muted-foreground))] mt-1">
-            {desc}
-          </span>
+          {desc ? (
+            <span className="text-xs text-[hsl(var(--muted-foreground))] mt-1">{desc}</span>
+          ) : null}
         </div>
       </div>
     </Link>
   );
 }
 
-function MenuItem({
-  href,
-  title,
-  desc,
-}: {
-  href: string;
-  title: string;
-  desc: string;
-}) {
+function MenuItem({ href, title, desc }: { href: string; title: string; desc?: string }) {
   return (
     <DropdownMenuItem asChild>
       <Link
@@ -426,12 +387,10 @@ function MenuItem({
       >
         <div className="mt-0.5 h-2 w-2 rounded-full bg-[hsl(var(--gold))] flex-shrink-0" />
         <div className="flex flex-col gap-1">
-          <span className="text-sm font-medium text-[hsl(var(--foreground))]">
-            {title}
-          </span>
-          <span className="text-xs text-[hsl(var(--muted-foreground))]">
-            {desc}
-          </span>
+          <span className="text-sm font-medium text-[hsl(var(--foreground))]">{title}</span>
+          {desc ? (
+            <span className="text-xs text-[hsl(var(--muted-foreground))]">{desc}</span>
+          ) : null}
         </div>
       </Link>
     </DropdownMenuItem>

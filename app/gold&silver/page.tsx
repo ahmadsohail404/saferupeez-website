@@ -3,15 +3,12 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Gold } from "../components/Gold";
 import { Silver } from "../components/Silver";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 export default function GoldSilver() {
   const [activeTab, setActiveTab] = useState<"gold" | "silver">("gold");
 
   return (
     <section id="gold-silver" className="min-h-screen">
-      <Navbar/>
       {/* Fixed Tab Switcher - Does not scroll with content */}
       <div className=" top-10 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 py-1">
         <div className="container mx-auto px-4">
@@ -77,7 +74,6 @@ export default function GoldSilver() {
           {activeTab === "gold" ? <Gold /> : <Silver />}
         </motion.div>
       </div>
-      <Footer/>
     </section>
   );
 }
