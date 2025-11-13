@@ -12,7 +12,7 @@ import UnderlineImg from "../../public/assets/Vector.png";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-amber-50 via-white to-purple-50/40 py-8 sm:py-12 md:py-20 lg:py-28 flex items-center">
+    <section className="relative min-h-auto overflow-hidden bg-gradient-to-br from-amber-50 via-white to-purple-50/40 py-8 sm:py-12 md:py-20 lg:py-28 flex items-center">
       {/* Background gradients */}
       <div className="absolute top-10 right-4 sm:right-8 md:right-16 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-purple-300/40 blur-[100px] sm:blur-[120px] md:blur-[140px] rounded-full" />
       <div className="absolute bottom-10 left-4 sm:left-8 md:left-16 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-amber-300/40 blur-[100px] sm:blur-[120px] md:blur-[140px] rounded-full" />

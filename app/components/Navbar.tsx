@@ -1,3 +1,4 @@
+// app/components/Navbar.tsx
 "use client";
 
 import Link from "next/link";
@@ -17,6 +18,9 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // NEW: control Services hover menu explicitly
+  const [servicesOpen, setServicesOpen] = useState(false);
+
   const isActive = (href: string) => pathname === href;
 
   // Handle scroll effect for navbar
@@ -31,7 +35,7 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Prevent body scroll when mobile menu is open
+  // Prevent body scroll ONLY when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -88,26 +92,37 @@ export default function Navbar() {
                   About us
                 </NavLink>
 
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--ring))] data-[state=open]:bg-[hsl(var(--muted))]">
-                    Services
-                    <ChevronDown className="h-4 w-4 transition-transform duration-200" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="center"
-                    sideOffset={8}
-                    className="min-w-[280px] rounded-xl border-[hsl(var(--border))] bg-[hsl(var(--card))] p-2 shadow-xl backdrop-blur-lg"
-                  >
-                    {services.map((service) => (
-                      <MenuItem
-                        key={service.href}
-                        href={service.href}
-                        title={service.title}
-                        desc={service.desc}
-                      />
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                {/* HOVER-CONTROLLED SERVICES MENU (no scroll lock) */}
+                <div
+                  className="relative"
+                  onMouseEnter={() => setServicesOpen(true)}
+                  onMouseLeave={() => setServicesOpen(false)}
+                >
+                  <DropdownMenu open={servicesOpen} onOpenChange={setServicesOpen} modal={false}>
+                    <DropdownMenuTrigger
+                      className="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--ring))] data-[state=open]:bg-[hsl(var(--muted))]"
+                      onClick={(e) => e.preventDefault()} // prevent click-toggling
+                    >
+                      Services
+                      <ChevronDown className="h-4 w-4 transition-transform duration-200" />
+                    </DropdownMenuTrigger>
+
+                    <DropdownMenuContent
+                      align="center"
+                      sideOffset={8}
+                      className="min-w-[280px] rounded-xl border-[hsl(var(--border))] bg-[hsl(var(--card))] p-2 shadow-xl backdrop-blur-lg"
+                    >
+                      {services.map((service) => (
+                        <MenuItem
+                          key={service.href}
+                          href={service.href}
+                          title={service.title}
+                          desc={service.desc}
+                        />
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
 
                 <NavLink href="/varsity" active={isActive("/varsity")}>
                   Varsity

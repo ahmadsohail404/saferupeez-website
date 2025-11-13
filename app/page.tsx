@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import Stepper from "./components/Stepper";
 import Banks from "./components/Banks";
 import FAQ from "./components/Faq";
+import FlexibleSavingPartner from "./components/FlexibleSavingsPartner";
 export default function Home() {
   return (
     <div>
@@ -13,6 +14,7 @@ export default function Home() {
       <Hero />
       <Banks />
       <Stepper />
+      <FlexibleSavingPartner/>
       <FAQ />
       <Footer />
     </div>
