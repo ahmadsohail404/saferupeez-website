@@ -194,24 +194,20 @@ export default function FlexibleSavingPartner({
               <img
                 src={active.image}
                 alt={active.title}
-                className="absolute inset-0 w-full h-full object-cover opacity-30"
+                className="absolute inset-0 w-full h-full object-cover opacity-50"
               />
-              <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]" />
+              <div className="absolute inset-0 bg-white/20" />
 
               {/* Content */}
               <div className="flex flex-col items-center text-center relative z-10">
-                {/* Card Stack */}
+                {/* Card Stack (pure image) */}
                 <motion.div
                   initial={{ scale: 0.8, rotateY: -20 }}
                   animate={{ scale: 1, rotateY: 0 }}
                   transition={{ duration: 0.6, type: "spring" }}
                   className="mb-8"
                 >
-                  <CardStack
-                    label={active.title.split(" ")[0]}
-                    icon={active.icon}
-                    image={active.image}
-                  />
+                  <CardStack image={active.image} />
                 </motion.div>
 
                 {/* Tagline */}
@@ -292,80 +288,46 @@ export default function FlexibleSavingPartner({
   );
 }
 
-/* ---------------- Card Stack Component ---------------- */
-function CardStack({
-  label,
-  icon,
-  image,
-}: {
-  label: string;
-  icon: string;
-  image: string;
-}) {
+/* ---------------- Simplified CardStack (Pure Image) ---------------- */
+function CardStack({ image }: { image: string }) {
   return (
     <div
       className="relative w-[240px] h-[320px] sm:w-[280px] sm:h-[360px]"
       style={{ perspective: "1000px" }}
     >
-      {/* Back cards */}
+      {/* Back layers */}
       <motion.div
-        initial={{ rotateZ: 0, x: 0, y: 0 }}
         animate={{ rotateZ: -8, x: -12, y: 8 }}
-        transition={{ duration: 0.3 }}
-        className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-400 to-purple-600 shadow-xl border-2 border-purple-300"
+        className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-400 to-purple-600 shadow-lg border border-purple-300"
         aria-hidden
       />
       <motion.div
-        initial={{ rotateZ: 0, x: 0, y: 0 }}
         animate={{ rotateZ: 6, x: 12, y: 12 }}
-        transition={{ duration: 0.3, delay: 0.05 }}
-        className="absolute inset-0 rounded-3xl bg-gradient-to-br from-pink-400 to-pink-600 shadow-xl border-2 border-pink-300"
+        className="absolute inset-0 rounded-3xl bg-gradient-to-br from-pink-400 to-pink-600 shadow-lg border border-pink-300"
         aria-hidden
       />
 
-      {/* Front card with image */}
+      {/* Front card — pure image */}
       <motion.div
-        initial={{ rotateY: -20 }}
         animate={{ rotateY: 0 }}
         transition={{ duration: 0.5, type: "spring" }}
-        className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl ring-2 ring-white/50"
+        className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl ring-2 ring-white/40"
         style={{ animation: "float 3s ease-in-out infinite" }}
       >
         <img
           src={image}
-          alt={label}
+          alt="Savings visual"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]" />
-
-        {/* Shine effect */}
-        <div className="absolute top-0 left-0 h-full w-1/2 -skew-x-12 opacity-40">
+        <div className="absolute top-0 left-0 h-full w-1/2 -skew-x-12 opacity-20">
           <div
             style={{
               background:
-                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%)",
+                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%)",
               animation: "shine 3s ease-in-out infinite",
             }}
             className="h-full w-full"
           />
-        </div>
-
-        {/* Content */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-white">
-          <div className="text-6xl mb-4 drop-shadow-lg">{icon}</div>
-          <div className="bg-white/90 text-gray-800 rounded-2xl px-6 py-4 shadow-lg">
-            <span className="text-3xl sm:text-4xl font-black tracking-wider block">
-              {label.toUpperCase()}
-            </span>
-          </div>
-        </div>
-
-        {/* Corner badges */}
-        <div className="absolute right-4 top-4 rounded-full bg-white/30 backdrop-blur-sm px-3 py-1.5 text-[10px] font-bold text-white shadow-lg ring-1 ring-white/40">
-          Flexible
-        </div>
-        <div className="absolute left-4 bottom-4 rounded-full bg-white/30 backdrop-blur-sm px-3 py-1.5 text-[10px] font-bold text-white shadow-lg ring-1 ring-white/40">
-          Auto-Debit
         </div>
       </motion.div>
     </div>

@@ -1,193 +1,390 @@
-"use client";
+"use client"; // Required for interactivity in Next.js App Router
 
-import React, { useEffect, useMemo, useState } from "react";
-import { BookUser, Truck, CreditCard } from "lucide-react";
-import Iphone15Pro from "@/app/components/ui/Iphone15Pro";
+import { useState, useEffect } from "react";
+import { Wallet, CreditCard, Lock, Check } from "lucide-react";
+import { motion } from "framer-motion";
+import { Button } from "@/app/components/ui/button";
+import { Card } from "@/app/components/ui/card";
 
-/* ---------- Types ---------- */
-type Step = {
-  id: number;
-  title: string;
-  subtitle: string;
-  icon: React.ElementType;
-  videoSrc: string;
-};
-
-type StepperProps = {
-  heading?: string;
-  steps?: Step[];
-  intervalMs?: number;
-};
-
-/* ---------- Default 3 Steps ---------- */
-const DEFAULT_STEPS: Step[] = [
+const steps = [
   {
     id: 1,
-    title: "Select Amount",
-    subtitle: "Choose how much you want to save.",
-    icon: BookUser,
-    videoSrc: "https://www.pexels.com/download/video/8369983/",
+    title: "Select Your Amount.",
+    description: "Choose an amount you want to save.",
+    icon: Wallet,
   },
   {
     id: 2,
-    title: "Savings Option",
-    subtitle: "Pick Daily, Weekly, or Monthly savings.",
-    icon: Truck,
-    videoSrc: "https://www.pexels.com/download/video/8369983/",
+    title: "Choose Savings Option.",
+    description: "Select Daily, Weekly, or Monthly Savings.",
+    icon: CreditCard,
   },
   {
     id: 3,
-    title: "Start Saving",
-    subtitle: "We convert your savings into pure 24K gold.",
-    icon: CreditCard,
-    videoSrc: "https://www.pexels.com/download/video/8369983/",
+    title: "Enjoy Savings in 24K Gold!",
+    description: "Share permission & watch your savings grow.",
+    icon: Lock,
   },
 ];
 
-/* ---------- Motion Preference ---------- */
-function usePrefersReducedMotion() {
-  const [prefers, setPrefers] = useState(false);
+export default function OnboardingStepper() {
+  const [activeStep, setActiveStep] = useState(0);
+  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+
+  // Auto-progress through steps
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const onChange = () => setPrefers(mq.matches);
-    onChange();
-    mq.addEventListener?.("change", onChange);
-    return () => mq.removeEventListener?.("change", onChange);
+    const timer = setInterval(() => {
+      setActiveStep((prev) => {
+        const nextStep = (prev + 1) % steps.length;
+
+        // Mark current step as completed before moving to next
+        setCompletedSteps((completed) => {
+          if (!completed.includes(prev + 1) && prev + 1 <= steps.length) {
+            return [...completed, prev + 1];
+          }
+          return completed;
+        });
+
+        // Reset completed steps when starting over
+        if (nextStep === 0) {
+          setTimeout(() => setCompletedSteps([]), 500);
+        }
+
+        return nextStep;
+      });
+    }, 3000);
+
+    return () => clearInterval(timer);
   }, []);
-  return prefers;
-}
-
-/* ---------- Main Stepper Component ---------- */
-export default function Stepper({
-  heading = "Savings Made Simple in 3 Steps!",
-  steps: stepsProp,
-  intervalMs = 2500,
-}: StepperProps) {
-  const steps = useMemo(() => stepsProp ?? DEFAULT_STEPS, [stepsProp]);
-  const reduced = usePrefersReducedMotion();
-  const [active, setActive] = useState(0);
-  const [progressPhase, setProgressPhase] = useState<"highlight" | "fill">("fill");
-
-  useEffect(() => {
-    const ms = reduced ? Math.max(3000, intervalMs) : intervalMs;
-    const id = window.setInterval(() => {
-      setActive((i) => (i + 1) % steps.length);
-    }, ms);
-    return () => clearInterval(id);
-  }, [intervalMs, steps.length, reduced]);
-
-  useEffect(() => {
-    setProgressPhase("highlight");
-    const t = setTimeout(() => setProgressPhase("fill"), 220);
-    return () => clearTimeout(t);
-  }, [active]);
 
   return (
-    <section className="relative bg-gradient-to-b from-background via-muted/20 to-background py-36 md:py-40">
-      {/* Background Accents */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-24 -right-10 h-80 w-80 rounded-full bg-[hsl(43_96%_56%_/_0.15)] blur-3xl" />
-        <div className="absolute -bottom-24 -left-10 h-96 w-96 rounded-full bg-[hsl(267_92%_70%_/_0.15)] blur-3xl" />
-      </div>
-
-      <div className="container mx-auto max-w-7xl px-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4 md:p-8 py-16 md:py-24 overflow-hidden">
+      <div className="w-full max-w-7xl">
         {/* Header */}
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-6xl md:text-7xl font-extrabold tracking-tight text-gray-900">
-            {heading}
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-3 text-slate-900">
+            Get Started in 3 Simple Steps
           </h2>
-          <p className="mt-5 text-2xl text-muted-foreground">
-            Watch your gold savings journey unfold beautifully.
+          <p className="text-slate-600">
+            Start your journey to secure savings and gold investment
           </p>
         </div>
 
-        {/* iPhone 15 Pro Max Row */}
-        <div className="mt-24 flex flex-col md:flex-row justify-center gap-14 md:gap-20">
-          {steps.map((s, i) => {
-            const isActive = i === active;
-            return (
-              <div
-                key={s.id}
-                className={`flex flex-col items-center md:w-1/3 text-center transition-transform duration-1000 ${
-                  isActive ? "scale-[1.08]" : "scale-100 opacity-80"
-                }`}
-              >
-                <Iphone15Pro
-                  className="h-[440px] w-auto"
-                  videoSrc={s.videoSrc}
-                  autoPlay
-                  loop
-                  muted
-                />
-              </div>
-            );
-          })}
+        {/* Three Phones in a Row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 mb-16 md:mb-20 relative">
+          {/* --- Phone 1 --- */}
+          <PhoneCard
+            stepIndex={0}
+            activeStep={activeStep}
+            icon={Wallet}
+            title="Daily Savings Setup"
+            highlight="₹ 30 per day"
+            btns={["₹20", "₹30", "₹40"]}
+          />
+
+          {/* --- Phone 2 --- */}
+          <PhoneCard
+            stepIndex={1}
+            activeStep={activeStep}
+            icon={CreditCard}
+            title="Select UPI Payment Method"
+            paymentOptions
+          />
+
+          {/* --- Phone 3 --- */}
+          <PhoneCard
+            stepIndex={2}
+            activeStep={activeStep}
+            icon={Lock}
+            title="Gold Is Saved In Jar Locker"
+            goldFeatures
+          />
         </div>
 
-        {/* Stepper (Icons + Titles + Progress) */}
-        <div className="mt-24 flex justify-between items-start w-full max-w-3xl mx-auto relative">
-          {steps.map((s, i) => {
-            const Icon = s.icon;
-            const isActive = i === active;
-            const isPast = i < active;
-
-            const underlineWidth =
-              isPast ? "100%" : isActive ? (progressPhase === "fill" ? "100%" : "0%") : "0%";
-
-            return (
-              <div key={s.id} className="flex flex-col items-center text-center w-full relative">
-                {i < steps.length - 1 && (
-                  <div
-                    className={`absolute top-4 right-[-50%] h-[2px] transition-colors duration-700 ${
-                      isPast
-                        ? "bg-gradient-to-r from-[hsl(43_96%_56%)] to-[hsl(43_96%_70%)]"
-                        : "bg-muted"
-                    }`}
-                    style={{ width: "100%" }}
-                  />
-                )}
-
-                {/* Step Indicator */}
-                <div
-                  className={`flex items-center justify-center h-9 w-9 rounded-full border-2 transition-all duration-300 mb-2 ${
-                    isActive
-                      ? "border-[hsl(43_96%_56%)] bg-[hsl(43_96%_56%)] text-white shadow-[0_0_12px_hsl(43_96%_56%_/0.7)]"
-                      : isPast
-                      ? "border-[hsl(43_96%_56%)] text-[hsl(43_96%_56%)]"
-                      : "border-muted text-muted-foreground"
-                  }`}
+        {/* Step Indicators */}
+        <div className="flex justify-center items-start gap-4 md:gap-8 mb-12">
+          {steps.map((step, index) => (
+            <div key={step.id} className="flex items-start">
+              <div className="flex flex-col items-center gap-4">
+                {/* Step Circle */}
+                <motion.div
+                  animate={{
+                    scale: activeStep === index ? 1.1 : 1,
+                    backgroundColor: completedSteps.includes(step.id)
+                      ? "rgb(34,197,94)" // green for completed
+                      : activeStep === index
+                      ? "rgb(245,158,11)" // amber-500 for active
+                      : "rgb(203,213,225)", // slate-300 for inactive
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center shadow-lg relative"
                 >
-                  <Icon className="w-4.5 h-4.5" />
-                </div>
+                  {activeStep === index && (
+                    <motion.div
+                      initial={{ scale: 1, opacity: 0.5 }}
+                      animate={{ scale: 1.5, opacity: 0 }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeOut",
+                      }}
+                      className="absolute inset-0 rounded-full"
+                      style={{ backgroundColor: "rgb(251,191,36)" }} // amber-400 pulse
+                    />
+                  )}
+                  {completedSteps.includes(step.id) ? (
+                    <Check className="w-6 h-6 md:w-8 md:h-8 text-white relative z-10" />
+                  ) : (
+                    <span className="text-white text-lg md:text-xl relative z-10">
+                      {step.id}
+                    </span>
+                  )}
+                </motion.div>
 
-                {/* Step Titles */}
-                <div className="flex flex-col items-center">
-                  <p
-                    className={`text-base font-semibold transition-colors ${
-                      isActive
-                        ? "text-[hsl(43_96%_46%)]"
-                        : isPast
-                        ? "text-foreground/80"
-                        : "text-muted-foreground"
+                {/* Step Text */}
+                <motion.div
+                  animate={{
+                    opacity: activeStep === index ? 1 : 0.6,
+                    scale: activeStep === index ? 1.05 : 1,
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className="text-center max-w-[200px]"
+                >
+                  <h4
+                    className={`mb-1 ${
+                      activeStep === index ? "text-amber-700" : "text-slate-800"
                     }`}
                   >
-                    {s.title}
+                    {step.title}
+                  </h4>
+                  <p
+                    className={`text-sm ${
+                      activeStep === index ? "text-amber-600" : "text-slate-600"
+                    }`}
+                  >
+                    {step.description}
                   </p>
-                  <p className="text-sm text-muted-foreground mt-1">{s.subtitle}</p>
-
-                  {/* Progress Bar */}
-                  <div className="relative mt-3 h-[6px] w-32 rounded-full bg-muted overflow-hidden">
-                    <div
-                      className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-[hsl(43_96%_56%)] to-[hsl(43_96%_68%)] shadow-[0_0_10px_hsl(43_96%_56%_/0.45)] transition-[width,opacity] duration-700 ease-out"
-                      style={{ width: underlineWidth, opacity: isPast || isActive ? 1 : 0.25 }}
-                    />
-                  </div>
-                </div>
+                </motion.div>
               </div>
-            );
-          })}
+
+              {/* Connector Line */}
+              {index < steps.length - 1 && (
+                <div className="hidden md:block w-24 lg:w-32 h-[2px] mx-6 mt-6 bg-slate-200 rounded-full relative overflow-hidden">
+                  <motion.div
+                    initial={{ width: "0%" }}
+                    animate={{
+                      width: activeStep > index ? "100%" : "0%",
+                    }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, rgb(245,158,11), rgb(252,211,77))", // amber-500 -> amber-300
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile Progress Dots */}
+        <div className="flex md:hidden justify-center gap-2">
+          {steps.map((_, index) => (
+            <motion.div
+              key={index}
+              animate={{
+                width: activeStep === index ? "24px" : "8px",
+                backgroundColor:
+                  activeStep === index
+                    ? "rgb(245,158,11)" // amber-500
+                    : "rgb(203,213,225)", // slate-300
+              }}
+              transition={{ duration: 0.3 }}
+              className="h-2 rounded-full"
+            />
+          ))}
         </div>
       </div>
-    </section>
+    </div>
+  );
+}
+
+/* ---------------- Subcomponent for Phones ---------------- */
+function PhoneCard({
+  stepIndex,
+  activeStep,
+  icon: Icon,
+  title,
+  highlight,
+  btns,
+  paymentOptions,
+  goldFeatures,
+}: {
+  stepIndex: number;
+  activeStep: number;
+  icon: any;
+  title: string;
+  highlight?: string;
+  btns?: string[];
+  paymentOptions?: boolean;
+  goldFeatures?: boolean;
+}) {
+  // Smooth bottom fade mask (Jar-like half phone)
+  const mask =
+    "linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0.85) 75%, rgba(0,0,0,0.55) 86%, rgba(0,0,0,0.25) 92%, rgba(0,0,0,0) 100%)";
+
+  const isActive = activeStep === stepIndex;
+
+  // Screen background — only this changes to gold when active
+  const screenBg = isActive
+    ? "bg-gradient-to-b from-amber-200 via-amber-100 to-transparent"
+    : "bg-gradient-to-b from-slate-700 via-slate-600 to-transparent";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: stepIndex * 0.2 }}
+      viewport={{ once: true }}
+      className="flex flex-col items-center"
+    >
+      <div className="relative w-full max-w-[280px] md:max-w-[300px] overflow-visible">
+        {/* PHONE SHELL: border stays black always */}
+        <motion.div
+          animate={{
+            scale: isActive ? 1.05 : 1, // subtle focus
+          }}
+          transition={{ duration: 0.5 }}
+          className="relative w-full h-[320px] md:h-[360px] rounded-t-[50px] pt-3 px-3 shadow-2xl border-t-4 border-l-4 border-r-4 border-black/90 bg-gradient-to-b from-slate-900 to-slate-900 overflow-hidden"
+          style={{
+            WebkitMaskImage: mask,
+            maskImage: mask,
+            WebkitMaskSize: "100% 100%",
+            maskSize: "100% 100%",
+            WebkitMaskRepeat: "no-repeat",
+            maskRepeat: "no-repeat",
+          }}
+        >
+          {/* Dynamic Island */}
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-7 bg-black rounded-full z-20" />
+
+          {/* Screen Content (only this background changes) */}
+          <div
+            className={`relative w-full h-full rounded-t-[40px] overflow-hidden p-6 ${screenBg}`}
+          >
+            {/* Gold shimmer overlay when active */}
+            {isActive && (
+              <div className="pointer-events-none absolute inset-0">
+                <div
+                  className="absolute top-0 left-[-30%] h-full w-[60%] -skew-x-12 opacity-30"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%)",
+                    animation: "shimmer 2.8s ease-in-out infinite",
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Title row */}
+            <div className="flex items-center gap-2 mb-4 mt-6">
+              <Icon className="w-4 h-4 text-black/85" />
+              <p className="text-black/85 text-xs">{title}</p>
+            </div>
+
+            {/* --- Unique Inner Content --- */}
+            {highlight && btns && (
+              <>
+                <Card className="bg-white/80 backdrop-blur-sm border-black/10 p-3 mb-3">
+                  <p className="text-slate-900 text-center text-sm">
+                    {highlight}
+                  </p>
+                </Card>
+                <div className="grid grid-cols-3 gap-2 mb-2">
+                  {btns.map((btn, idx) => (
+                    <Button
+                      key={idx}
+                      variant="outline"
+                      className="bg-white/70 border-black/10 text-slate-900 hover:bg-white/90 text-xs h-8 px-2"
+                    >
+                      {btn}
+                    </Button>
+                  ))}
+                </div>
+                <p className="text-center text-amber-700 text-[10px]">
+                  POPULAR
+                </p>
+              </>
+            )}
+
+            {paymentOptions && (
+              <>
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  {["PhonePe", "Paytm", "GPay", "Other UPI"].map((p, i) => (
+                    <Card
+                      key={p}
+                      className="bg-white p-2 flex flex-col items-center justify-center gap-1 cursor-pointer hover:shadow-lg transition-shadow h-16 border-black/10"
+                    >
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+                           style={{
+                             background:
+                               "linear-gradient(135deg, rgb(245,158,11), rgb(252,211,77))" // amber-500 -> amber-300
+                           }}>
+                        <CreditCard className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-slate-800 text-[10px]">{p}</p>
+                    </Card>
+                  ))}
+                </div>
+                <Button className="bg-black hover:bg-black/90 text-white w-full text-xs h-9">
+                  Proceed for Payment
+                </Button>
+                <p className="text-center text-slate-700 text-[10px] mt-2">
+                  🔒 100% SECURE
+                </p>
+              </>
+            )}
+
+            {goldFeatures && (
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { label: "100% SECURE", value: "LOCKER" },
+                  { label: "24 KARAT", value: "GOLD" },
+                  { label: "100% PURE", value: "PURITY" },
+                ].map((f) => (
+                  <Card
+                    key={f.label}
+                    className="bg-white/80 backdrop-blur-sm border-black/10 p-2 text-center"
+                  >
+                    <p className="text-amber-700 text-[9px] mb-0.5">
+                      {f.label}
+                    </p>
+                    <p className="text-slate-900 text-[10px]">{f.value}</p>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        </motion.div>
+
+        {/* CLOUD / MIST LAYERS BELOW THE MASK (so the fade merges into white) */}
+        <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[-6px] w-[125%] h-16 bg-gradient-radial from-white/70 via-white/90 to-white blur-xl" />
+        <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-[-20px] w-[140%] h-24 bg-white/90 blur-2xl" />
+      </div>
+
+      {/* Shimmer keyframes */}
+      <style jsx>{`
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          60%,
+          100% {
+            transform: translateX(220%);
+          }
+        }
+      `}</style>
+    </motion.div>
   );
 }
