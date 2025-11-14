@@ -3,6 +3,10 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import RouteAwareLayout from "./components/RouteAwareLayout";
+import StickyQR from "./components/StickyQR";
+import Navbar from "@/app/components/Navbar";      
+import Footer from "@/app/components/Footer";      
+
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
