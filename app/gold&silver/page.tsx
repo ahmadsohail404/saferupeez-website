@@ -12,11 +12,9 @@ export default function GoldSilver() {
       id="gold-silver"
       className="w-full bg-gradient-to-b from-[#f5edff] to-[#fff7e6] pb-20"
     >
-
       {/* ---------- PREMIUM FLOATING TABS (NO WHITE BOX) ---------- */}
       <div className="flex justify-center pt-10">
         <div className="relative flex items-center gap-4">
-
           {/* Sliding gradient pill */}
           <motion.div
             layoutId="tab-highlight"
@@ -26,7 +24,7 @@ export default function GoldSilver() {
               background:
                 activeTab === "gold"
                   ? "linear-gradient(135deg, #fbbf24, #d97706)"
-                  : "linear-gradient(135deg, #cbd5e1, #64748b)"
+                  : "linear-gradient(135deg, #cbd5e1, #64748b)",
             }}
             transition={{ type: "spring", duration: 0.6 }}
           />

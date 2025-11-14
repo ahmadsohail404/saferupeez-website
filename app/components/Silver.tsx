@@ -37,7 +37,6 @@ import {
   Legend,
 } from "recharts";
 
-
 /* ----------------------------------
    SILVER DATA — MULTI PURITY
 ---------------------------------- */
@@ -53,7 +52,7 @@ const silver999 = [
   { date: "13 Nov 25", price: 945 },
 ];
 
-  // 92.5% STERLING SILVER → 7.5% LESS PURE
+// 92.5% STERLING SILVER → 7.5% LESS PURE
 const silver925 = silver999.map((d) => ({
   ...d,
   price: Math.round(d.price * 0.925),
@@ -62,8 +61,6 @@ const silver925 = silver999.map((d) => ({
 /* ----------------------------------
    SILVER PRICE DATA
 ---------------------------------- */
-
-
 
 const weightPriceData = [
   { weight: "1 gm", today: "94.50", yesterday: "92.50" },
@@ -88,34 +85,37 @@ const priceHistoryData = [
 
 export function Silver() {
   const [timePeriod, setTimePeriod] = useState("1W");
-   const [purity, setPurity] = useState("999"); // DEFAULT PURITY
+  const [purity, setPurity] = useState("999"); // DEFAULT PURITY
+
+  // expected annual return (user-selectable, %)
+  const [expectedReturn, setExpectedReturn] = useState(10); // start with ~long-term avg
 
   // CHART DATA BASED ON SELECTED PURITY
   const chartData = purity === "999" ? silver999 : silver925;
 
   // LATEST 10gm prices
-const latest999 = silver999[silver999.length - 1].price;     // e.g. 945
-const latest925 = silver925[silver925.length - 1].price;     // e.g. 874
+  const latest999 = silver999[silver999.length - 1].price;
+  const latest925 = silver925[silver925.length - 1].price;
 
-// SELECTED LATEST price based on dropdown
-const latestPrice = purity === "999" ? latest999 : latest925;
- 
+  // SELECTED LATEST price based on dropdown
+  const latestPrice = purity === "999" ? latest999 : latest925;
+
   // TOP 2 CARDS VALUES (auto-updates by purity switch)
-const pureLatest = silver999[silver999.length - 1].price;
-const sterLatest = silver925[silver925.length - 1].price;
+  const pureLatest = silver999[silver999.length - 1].price;
+  const sterLatest = silver925[silver925.length - 1].price;
 
-const cards = [
-  {
-    label: "999 Silver",
-    gm1: `₹${(pureLatest / 10).toFixed(2)}`,
-    gm10: `₹${pureLatest.toFixed(2)}`,
-  },
-  {
-    label: "92.5 Silver",
-    gm1: `₹${(sterLatest / 10).toFixed(2)}`,
-    gm10: `₹${sterLatest.toFixed(2)}`,
-  },
-];
+  const cards = [
+    {
+      label: "999 Silver",
+      gm1: `₹${(pureLatest / 10).toFixed(2)}`,
+      gm10: `₹${pureLatest.toFixed(2)}`,
+    },
+    {
+      label: "92.5 Silver",
+      gm1: `₹${(sterLatest / 10).toFixed(2)}`,
+      gm10: `₹${sterLatest.toFixed(2)}`,
+    },
+  ];
 
   const [savingPeriod, setSavingPeriod] = useState("Daily");
   const [dailyAmount, setDailyAmount] = useState([50]);
@@ -128,7 +128,10 @@ const cards = [
       ? dailyAmount[0] * 52 * years[0]
       : dailyAmount[0] * 12 * years[0];
 
-  const estimatedReturns = Math.round(savedAmount * 0.09 * years[0]);
+  // 🔁 use user-selected expectedReturn (%) instead of fixed 9%
+  const estimatedReturns = Math.round(
+    savedAmount * (expectedReturn / 100) * years[0]
+  );
   const totalSavings = savedAmount + estimatedReturns;
 
   const savingsChartData = Array.from({ length: years[0] }, (_, i) => ({
@@ -136,8 +139,6 @@ const cards = [
     saved: Math.round((savedAmount / years[0]) * (i + 1)),
     returns: Math.round((estimatedReturns / years[0]) * (i + 1)),
   }));
-
-
 
   return (
     <div className="w-full flex justify-center bg-gradient-to-b from-[#f5edff] to-[#fff7e6] pb-20">
@@ -151,10 +152,7 @@ const cards = [
         >
           <div className="flex items-center justify-center gap-2 mb-3">
             <div className="w-3 h-3 bg-red-700 rounded-full" />
-            <Badge
-              variant="outline"
-              className="font-bold border-slate-500 text-green-600 text-sm px-4 py-1 bg-slate-100"
-            >
+            <Badge className="font-bold text-green-600 text-sm px-4 py-1 bg-slate-100">
               LIVE SILVER PRICES IN INDIA
             </Badge>
           </div>
@@ -166,34 +164,32 @@ const cards = [
           <p className="text-slate-600 text-sm">13 Nov 25, 04:35 pm</p>
         </motion.div>
 
-               {/* SILVER CARDS — ONLY 2 CARDS */}
+        {/* SILVER CARDS — ONLY 2 CARDS */}
         <Card className="bg-white text-center shadow-lg p-6 rounded-2xl mb-10 border border-slate-200">
-          <p className="text-left text-3xl md:text-1xl font-bold text-black font-semibold text-black-600 mb-4">
+          <p className="text-left text-3xl md:text-1xl font-bold text-black mb-4">
             Showing Silver Prices For India
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-  {cards.map((item) => (
-    <Card
-      key={item.label}
-      className="bg-gradient-to-br from-[#f3f4f6] to-[#e5e7eb] border border-slate-300 p-4 py-6 rounded-xl shadow flex flex-col items-center justify-center gap-2"
-
-    >
-      <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-slate-300 to-slate-500 flex items-center justify-center shadow">
-        <span className="text-white font-bold">{item.label}</span>
-      </div>
-      <p className="text-slate-600 text-xs mt-2">10gm Price</p>
-      <p className="text-[#1d2630] font-bold text-2xl">{item.gm10}</p>
-    </Card>
-  ))}
-</div>
-
+            {cards.map((item) => (
+              <Card
+                key={item.label}
+                className="bg-gradient-to-br from-[#f3f4f6] to-[#e5e7eb] border border-slate-300 p-4 py-6 rounded-xl shadow flex flex-col items-center justify-center gap-2"
+              >
+                <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-slate-300 to-slate-500 flex items-center justify-center shadow">
+                  <span className="text-white font-bold">{item.label}</span>
+                </div>
+                <p className="text-slate-600 text-xs mt-2">10gm Price</p>
+                <p className="text-[#1d2630] font-bold text-2xl">{item.gm10}</p>
+              </Card>
+            ))}
+          </div>
         </Card>
 
-        {/* CHART */}
+        {/* CHART + SIDEBAR */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+          {/* CHART */}
           <Card className="lg:col-span-2 p-6 rounded-2xl bg-white shadow border border-slate-200">
-
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-3xl font-bold text-[#1d2630]">
                 Today's Silver Price
@@ -214,35 +210,35 @@ const cards = [
               </div>
             </div>
 
-      <p className="text-slate-600 mb-4 font-semibold">
+            <p className="text-slate-600 mb-4 font-semibold">
               Stay updated with daily price movements & purity differences.
             </p>
 
             {/* LIVE PRICE BOX */}
             <div className="mb-6 p-4 bg-slate-100 rounded-xl flex items-center justify-between">
-  <div>
-    <p className="text-xs text-slate-600">
-      Live Silver Buy Price ({purity === "999" ? "999" : "92.5"} purity)
-    </p>
+              <div>
+                <p className="text-xs text-slate-600">
+                  Live Silver Buy Price ({purity === "999" ? "999" : "92.5"}{" "}
+                  purity)
+                </p>
 
-    {/* 10gm price */}
-    <p className="text-[#1d2630] font-bold text-3xl">
-      ₹{latestPrice.toLocaleString("en-IN")}/10gm
-    </p>
+                {/* 10gm price */}
+                <p className="text-[#1d2630] font-bold text-3xl">
+                  ₹{latestPrice.toLocaleString("en-IN")}/10gm
+                </p>
 
-    {/* 1gm price */}
-    <p className="text-slate-500 text-xs mt-1">
-      ₹{(latestPrice / 10).toFixed(2)}/1gm
-    </p>
-  </div>
+                {/* 1gm price */}
+                <p className="text-slate-500 text-xs mt-1">
+                  ₹{(latestPrice / 10).toFixed(2)}/1gm
+                </p>
+              </div>
 
-  <div className="flex items-center gap-2 text-green-600 text-xs">
-    <ArrowUp className="w-4 h-4" />
-    <span>+2.1%</span>
-    <span className="text-slate-500">1 Week</span>
-  </div>
-</div>
-
+              <div className="flex items-center gap-2 text-green-600 text-xs">
+                <ArrowUp className="w-4 h-4" />
+                <span>+2.1%</span>
+                <span className="text-slate-500">1 Week</span>
+              </div>
+            </div>
 
             {/* CHART */}
             <div className="h-72">
@@ -275,14 +271,15 @@ const cards = [
             </Tabs>
           </Card>
 
-
           {/* SIDEBAR */}
           <div className="space-y-6">
             <Card className="bg-gradient-to-br from-slate-150 to-slate-200 text-black p-6 rounded-2xl min-h-[200px] shadow-lg">
               <div className="w-16 h-16 mx-auto rounded-xl bg-black/20 flex items-center justify-center mb-3">
                 <TrendingUp className="w-7 h-7 text-white border-b " />
               </div>
-              <h4 className="text-center text-lg font-semibold">Get alerts when Silver prices drop</h4>
+              <h4 className="text-center text-lg font-semibold">
+                Get alerts when Silver prices drop
+              </h4>
               <p className="text-center text-black-200 text-xs mb-4">
                 Never miss a price update.
               </p>
@@ -292,49 +289,48 @@ const cards = [
             </Card>
 
             <Card className="p-5 rounded-2xl bg-white shadow-md border border-slate-200">
-  <h4 className="mb-3 text-base font-semibold text-[#1d2630]">
-    Savings Options For You
-  </h4>
+              <h4 className="mb-3 text-base font-semibold text-[#1d2630]">
+                Savings Options For You
+              </h4>
 
-  <div className="space-y-3">  
-    {/* Daily */}
-    <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
-      <div className="w-10 h-10 bg-slate-200 text-black rounded-lg flex items-center justify-center">
-        💰
-      </div>
-      <span className="flex-1 text-sm">Save Daily</span>
-      <span className="text-slate-400">›</span>
-    </div>
+              <div className="space-y-3">
+                {/* Daily */}
+                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
+                  <div className="w-10 h-10 bg-slate-200 text-black rounded-lg flex items-center justify-center">
+                    💰
+                  </div>
+                  <span className="flex-1 text-sm">Save Daily</span>
+                  <span className="text-slate-400">›</span>
+                </div>
 
-    {/* Weekly */}
-    <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
-      <div className="w-10 h-10 bg-slate-200 text-black rounded-lg flex items-center justify-center">
-        💰
-      </div>
-      <span className="flex-1 text-sm">Save Weekly</span>
-      <span className="text-slate-400">›</span>
-    </div>
+                {/* Weekly */}
+                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
+                  <div className="w-10 h-10 bg-slate-200 text-black rounded-lg flex items-center justify-center">
+                    💰
+                  </div>
+                  <span className="flex-1 text-sm">Save Weekly</span>
+                  <span className="text-slate-400">›</span>
+                </div>
 
-    {/* Monthly */}
-    <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
-      <div className="w-10 h-10 bg-slate-200 text-black rounded-lg flex items-center justify-center">
-        💰
-      </div>
-      <span className="flex-1 text-sm">Save Monthly</span>
-      <span className="text-slate-400">›</span>
-    </div>
+                {/* Monthly */}
+                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
+                  <div className="w-10 h-10 bg-slate-200 text-black rounded-lg flex items-center justify-center">
+                    💰
+                  </div>
+                  <span className="flex-1 text-sm">Save Monthly</span>
+                  <span className="text-slate-400">›</span>
+                </div>
 
-    {/* Yearly */}
-    <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
-      <div className="w-10 h-10 bg-slate-200 text-black rounded-lg flex items-center justify-center">
-        💰
-      </div>
-      <span className="flex-1 text-sm">Save Yearly</span>
-      <span className="text-slate-400">›</span>
-    </div>
-  </div>
-</Card>
-
+                {/* Yearly */}
+                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
+                  <div className="w-10 h-10 bg-slate-200 text-black rounded-lg flex items-center justify-center">
+                    💰
+                  </div>
+                  <span className="flex-1 text-sm">Save Yearly</span>
+                  <span className="text-slate-400">›</span>
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
 
@@ -360,7 +356,9 @@ const cards = [
               <TableBody>
                 {weightPriceData.map((row, i) => (
                   <TableRow key={i}>
-                    <TableCell className="text-1xl  md:text-1xl font-bold text-black">{row.weight}</TableCell>
+                    <TableCell className="text-1xl  md:text-1xl font-bold text-black">
+                      {row.weight}
+                    </TableCell>
                     <TableCell className="text-1xl  md:text-1xl font-bold text-black-700">
                       ₹ {row.today}
                     </TableCell>
@@ -388,14 +386,20 @@ const cards = [
             <Table>
               <TableHeader>
                 <TableRow className="bg-slate-100">
-                  <TableHead className="text-1xl md:text-1xl font-bold text-black">Date</TableHead>
-                  <TableHead className="text-1xl md:text-1xl font-bold text-black">Pure Silver</TableHead>
+                  <TableHead className="text-1xl md:text-1xl font-bold text-black">
+                    Date
+                  </TableHead>
+                  <TableHead className="text-1xl md:text-1xl font-bold text-black">
+                    Pure Silver
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {priceHistoryData.map((row, i) => (
                   <TableRow key={i}>
-                    <TableCell className="text-1xl md:text-1xl font-bold text-black">{row.date}</TableCell>
+                    <TableCell className="text-1xl md:text-1xl font-bold text-black">
+                      {row.date}
+                    </TableCell>
                     <TableCell className="text-1xl md:text-1xl font-bold text-black">
                       ₹ {row.silver}
                     </TableCell>
@@ -427,8 +431,16 @@ const cards = [
                     <YAxis stroke="#080808ff" fontSize={10} />
                     <Tooltip />
                     <Legend wrapperStyle={{ fontSize: 12 }} />
-                    <Bar dataKey="saved" fill="#1d2e47ff" radius={[8, 8, 0, 0]} />
-                    <Bar dataKey="returns" fill="#445469ff" radius={[8, 8, 0, 0]} />
+                    <Bar
+                      dataKey="saved"
+                      fill="#1d2e47ff"
+                      radius={[8, 8, 0, 0]}
+                    />
+                    <Bar
+                      dataKey="returns"
+                      fill="#445469ff"
+                      radius={[8, 8, 0, 0]}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -497,6 +509,37 @@ const cards = [
                 />
               </Card>
 
+              {/* Expected Return Selector */}
+
+              <div className="flex items-center justify-between text-sm">
+                <label className="text-black font-bold">
+                  Expected annual return
+                </label>
+                <span className="text-slate-900 font-bold text-sm">
+                  ~{expectedReturn}% p.a.
+                </span>
+              </div>
+              <div>
+                <Select
+                  value={String(expectedReturn)}
+                  onValueChange={(v) => setExpectedReturn(Number(v))}
+                >
+                  <SelectTrigger className="h-9 w-full text-xs">
+                    <SelectValue placeholder="Choose return %" />
+                  </SelectTrigger>
+                  <SelectContent align="end" className="text-xs">
+                    <SelectItem value="10">Long-term style (~10%)</SelectItem>
+                    <SelectItem value="20">Since 2020 avg (~20%)</SelectItem>
+                    <SelectItem value="33">Recent year (~33%)</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <p className=" text-[12px] text-black">
+                  Based on historical digital silver data. Past performance
+                  doesn’t guarantee future returns.
+                </p>
+              </div>
+
               {/* Calculated Values */}
               <div className="space-y-3 pt-3 border-t">
                 <div className="flex justify-between text-sm">
@@ -507,7 +550,9 @@ const cards = [
                 </div>
 
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">Estimated Returns (~9% p.a.)</span>
+                  <span className="text-slate-600">
+                    Estimated Returns (~{expectedReturn}% p.a.)
+                  </span>
                   <span className="text-green-700 font-bold text-lg">
                     ₹{estimatedReturns.toLocaleString("en-IN")}
                   </span>
@@ -515,9 +560,7 @@ const cards = [
 
                 <div className="flex justify-between text-xl font-bold text-slate-700 border-t pt-3">
                   <span>Total Savings</span>
-                  <span>
-                    ₹{totalSavings.toLocaleString("en-IN")}
-                  </span>
+                  <span>₹{totalSavings.toLocaleString("en-IN")}</span>
                 </div>
               </div>
             </div>

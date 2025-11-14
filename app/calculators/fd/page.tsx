@@ -16,10 +16,10 @@ import {
 import { PiggyBank } from "lucide-react";
 
 export function FDCalculator() {
-  const [deposit, setDeposit] = useState([100000]);
-  const [interestRate, setInterestRate] = useState([7.5]);
-  const [tenure, setTenure] = useState([3]);
-  const [compounding, setCompounding] = useState("quarterly");
+  const [deposit, setDeposit] = useState<number[]>([100000]);
+  const [interestRate, setInterestRate] = useState<number[]>([7.5]);
+  const [tenure, setTenure] = useState<number[]>([3]);
+  const [compounding, setCompounding] = useState<string>("quarterly");
 
   const calculateMaturity = () => {
     const p = deposit[0];
@@ -36,6 +36,10 @@ export function FDCalculator() {
 
   const maturityValue = calculateMaturity();
   const interestEarned = maturityValue - deposit[0];
+
+  // small helper for clamping values
+  const clamp = (val: number, min: number, max: number) =>
+    isNaN(val) ? min : Math.min(Math.max(val, min), max);
 
   return (
     <div className="relative">
@@ -62,104 +66,138 @@ export function FDCalculator() {
 
       {/* Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        {/* LEFT SIDE – Inputs */}
+        {/* LEFT SIDE – Inputs (shadcn form) */}
         <motion.div
           initial={{ opacity: 0, x: -35 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <Card className="p-8 bg-white/80 backdrop-blur-xl rounded-3xl border border-amber-100 shadow-xl">
-            <div className="space-y-10">
+          <Card className="p-6 sm:p-8 bg-white/80 backdrop-blur-xl rounded-3xl border border-amber-100 shadow-xl">
+            <div className="space-y-8 sm:space-y-10">
               {/* Deposit */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Deposit Amount
                 </Label>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-slate-600">Enter Amount:</span>
+
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Enter Amount:
+                  </span>
                   <Input
                     type="number"
                     value={deposit[0]}
-                    onChange={(e) => setDeposit([Number(e.target.value)])}
-                    className="w-40 text-right"
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 10000, 10000000);
+                      setDeposit([safe]);
+                    }}
+                    className="w-25 text-right"
                   />
                 </div>
+
                 <Slider
                   value={deposit}
-                  onValueChange={setDeposit}
+                  onValueChange={(val) => setDeposit(val)}
                   min={10000}
                   max={10000000}
                   step={10000}
+                  className="mt-2"
                 />
-                <div className="flex justify-between text-xs mt-1 text-slate-500">
+
+                <div className="flex justify-between text-[11px] sm:text-xs mt-1 text-slate-500">
                   <span>₹10K</span>
                   <span>₹1 Cr</span>
                 </div>
               </div>
 
               {/* Interest Rate */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Interest Rate
                 </Label>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-slate-600">Rate (p.a):</span>
+
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Rate (p.a):
+                  </span>
                   <Input
                     type="number"
                     step="0.1"
                     value={interestRate[0]}
-                    onChange={(e) => setInterestRate([Number(e.target.value)])}
-                    className="w-28 text-right"
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 3, 15);
+                      setInterestRate([safe]);
+                    }}
+                    className="w-20 text-right"
                   />
                 </div>
+
                 <Slider
                   value={interestRate}
-                  onValueChange={setInterestRate}
+                  onValueChange={(val) => setInterestRate(val)}
                   min={3}
                   max={15}
                   step={0.1}
+                  className="mt-2"
                 />
-                <div className="flex justify-between text-xs mt-1 text-slate-500">
+
+                <div className="flex justify-between text-[11px] sm:text-xs mt-1 text-slate-500">
                   <span>3%</span>
                   <span>15%</span>
                 </div>
               </div>
 
               {/* Tenure */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Tenure (years)
                 </Label>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-slate-600">Years:</span>
+
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Years:
+                  </span>
                   <Input
                     type="number"
                     value={tenure[0]}
-                    onChange={(e) => setTenure([Number(e.target.value)])}
-                    className="w-28 text-right"
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 1, 10);
+                      setTenure([safe]);
+                    }}
+                    className="w-20 text-right"
                   />
                 </div>
+
                 <Slider
                   value={tenure}
-                  onValueChange={setTenure}
+                  onValueChange={(val) => setTenure(val)}
                   min={1}
                   max={10}
                   step={1}
+                  className="mt-2"
                 />
-                <div className="flex justify-between text-xs mt-1 text-slate-500">
+
+                <div className="flex justify-between text-[11px] sm:text-xs mt-1 text-slate-500">
                   <span>1Y</span>
                   <span>10Y</span>
                 </div>
               </div>
 
               {/* Compounding */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Compounding Frequency
                 </Label>
 
-                <Select value={compounding} onValueChange={setCompounding}>
-                  <SelectTrigger className="w-full bg-white border rounded-xl px-4 py-3 shadow-sm">
+                <Select
+                  value={compounding}
+                  onValueChange={(value) => setCompounding(value)}
+                  defaultValue="quarterly"
+                >
+                  <SelectTrigger className="w-full bg-white border rounded-xl px-4 py-3 shadow-sm text-sm sm:text-base">
                     <SelectValue placeholder="Select Frequency" />
                   </SelectTrigger>
                   <SelectContent className="bg-white shadow-xl rounded-xl">
@@ -174,7 +212,7 @@ export function FDCalculator() {
           </Card>
         </motion.div>
 
-        {/* RIGHT SIDE – Results */}
+        {/* RIGHT SIDE – Results (unchanged) */}
         <motion.div
           initial={{ opacity: 0, x: 35 }}
           animate={{ opacity: 1, x: 0 }}
@@ -183,15 +221,15 @@ export function FDCalculator() {
         >
           {/* Invested */}
           <Card className="p-8 bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-3xl shadow-lg">
-            <p className="text-amber-700 text-sm mb-2">Invested Amount</p>
+            <p className="text-red-700 text-md mb-2">Invested Amount</p>
             <p className="text-4xl font-semibold text-slate-900">
               ₹{deposit[0].toLocaleString("en-IN")}
             </p>
           </Card>
 
           {/* Maturity */}
-          <Card className="p-8 bg-gradient-to-br from-purple-600 to-purple-500 text-white rounded-3xl shadow-xl transform hover:scale-[1.02] transition">
-            <p className="text-purple-200 text-sm mb-2">Maturity Value</p>
+          <Card className="p-8 bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 text-black rounded-3xl shadow-xl transform hover:scale-[1.02] transition">
+            <p className="text-red-700 text-md mb-2">Maturity Value</p>
             <p className="text-4xl font-semibold">
               ₹
               {maturityValue.toLocaleString("en-IN", {
@@ -201,8 +239,8 @@ export function FDCalculator() {
           </Card>
 
           {/* Interest */}
-          <Card className="p-8 bg-gradient-to-br from-green-50 to-emerald-50 border border-emerald-200 rounded-3xl shadow-lg">
-            <p className="text-emerald-700 text-sm mb-2">Interest Earned</p>
+          <Card className="p-8 bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-3xl shadow-lg">
+            <p className="text-red-700 text-md mb-2">Interest Earned</p>
             <p className="text-4xl font-semibold text-slate-900">
               ₹
               {interestEarned.toLocaleString("en-IN", {

@@ -8,9 +8,9 @@ import { Slider } from "@/app/components/ui/slider";
 import { TrendingUp } from "lucide-react";
 
 export function LumpsumCalculator() {
-  const [investment, setInvestment] = useState([100000]);
-  const [returnRate, setReturnRate] = useState([10]);
-  const [timePeriod, setTimePeriod] = useState([5]);
+  const [investment, setInvestment] = useState<number[]>([100000]);
+  const [returnRate, setReturnRate] = useState<number[]>([10]);
+  const [timePeriod, setTimePeriod] = useState<number[]>([5]);
 
   const calculateMaturity = () => {
     const p = investment[0];
@@ -21,6 +21,10 @@ export function LumpsumCalculator() {
 
   const maturityValue = calculateMaturity();
   const gain = maturityValue - investment[0];
+
+  // helper to keep values in range
+  const clamp = (val: number, min: number, max: number) =>
+    isNaN(val) ? min : Math.min(Math.max(val, min), max);
 
   return (
     <div className="relative">
@@ -47,90 +51,121 @@ export function LumpsumCalculator() {
 
       {/* Main Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        {/* Left Side - Inputs */}
+        {/* Left Side - Inputs (shadcn style) */}
         <motion.div
           initial={{ opacity: 0, x: -35 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <Card className="p-8 bg-white/80 backdrop-blur-xl rounded-3xl border border-amber-100 shadow-xl">
-            <div className="space-y-10">
+          <Card className="p-6 sm:p-8 bg-white/80 backdrop-blur-xl rounded-3xl border border-amber-100 shadow-xl">
+            <div className="space-y-8 sm:space-y-10">
               {/* Investment */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Investment Amount
                 </Label>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-slate-600">₹</span>
+
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Amount (₹)
+                  </span>
                   <Input
                     type="number"
                     value={investment[0]}
-                    onChange={(e) => setInvestment([Number(e.target.value)])}
-                    className="w-40 text-right"
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 10000, 10000000);
+                      setInvestment([safe]);
+                    }}
+                    className="w-25 text-right"
                   />
                 </div>
+
                 <Slider
                   value={investment}
-                  onValueChange={setInvestment}
+                  onValueChange={(val) => setInvestment(val)}
                   min={10000}
                   max={10000000}
                   step={10000}
+                  className="mt-2"
                 />
-                <div className="flex justify-between text-xs text-slate-500 mt-1">
+
+                <div className="flex justify-between text-[11px] sm:text-xs text-slate-500 mt-1">
                   <span>₹10K</span>
                   <span>₹1 Cr</span>
                 </div>
               </div>
 
               {/* Expected Returns */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Expected Return (p.a.)
                 </Label>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-slate-600">%</span>
+
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Rate (%)
+                  </span>
                   <Input
                     type="number"
                     step="0.5"
                     value={returnRate[0]}
-                    onChange={(e) => setReturnRate([Number(e.target.value)])}
-                    className="w-28 text-right"
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 5, 30);
+                      setReturnRate([safe]);
+                    }}
+                    className="w-20 text-right"
                   />
                 </div>
+
                 <Slider
                   value={returnRate}
-                  onValueChange={setReturnRate}
+                  onValueChange={(val) => setReturnRate(val)}
                   min={5}
                   max={30}
                   step={0.5}
+                  className="mt-2"
                 />
-                <div className="flex justify-between text-xs text-slate-500 mt-1">
+
+                <div className="flex justify-between text-[11px] sm:text-xs text-slate-500 mt-1">
                   <span>5%</span>
                   <span>30%</span>
                 </div>
               </div>
 
               {/* Time Period */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Time Period (years)
                 </Label>
-                <div className="flex items-center justify-between mb-4">
+
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Duration
+                  </span>
                   <Input
                     type="number"
                     value={timePeriod[0]}
-                    onChange={(e) => setTimePeriod([Number(e.target.value)])}
-                    className="w-28 text-right"
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 1, 30);
+                      setTimePeriod([safe]);
+                    }}
+                    className="w-20 text-right"
                   />
                 </div>
+
                 <Slider
                   value={timePeriod}
-                  onValueChange={setTimePeriod}
+                  onValueChange={(val) => setTimePeriod(val)}
                   min={1}
                   max={30}
                   step={1}
+                  className="mt-2"
                 />
-                <div className="flex justify-between text-xs text-slate-500 mt-1">
+
+                <div className="flex justify-between text-[11px] sm:text-xs text-slate-500 mt-1">
                   <span>1Y</span>
                   <span>30Y</span>
                 </div>
@@ -139,7 +174,7 @@ export function LumpsumCalculator() {
           </Card>
         </motion.div>
 
-        {/* Right Side - Results */}
+        {/* Right Side - Results (unchanged) */}
         <motion.div
           initial={{ opacity: 0, x: 35 }}
           animate={{ opacity: 1, x: 0 }}
@@ -149,8 +184,8 @@ export function LumpsumCalculator() {
           {/* Result Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Invested */}
-            <Card className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-3xl shadow-lg">
-              <p className="text-purple-700 text-sm mb-2">Invested</p>
+            <Card className="p-6 bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 rounded-3xl shadow-lg">
+              <p className="text-red-700 text-md mb-2">Invested</p>
               <p className="text-3xl font-semibold text-slate-900">
                 ₹{investment[0].toLocaleString("en-IN")}
               </p>
@@ -158,7 +193,7 @@ export function LumpsumCalculator() {
 
             {/* Maturity */}
             <Card className="p-6 bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 rounded-3xl shadow-lg">
-              <p className="text-amber-700 text-sm mb-2">Maturity Value</p>
+              <p className="text-red-700 text-md mb-2">Maturity Value</p>
               <p className="text-3xl font-semibold text-slate-900">
                 ₹
                 {maturityValue.toLocaleString("en-IN", {
@@ -168,8 +203,8 @@ export function LumpsumCalculator() {
             </Card>
 
             {/* Gain */}
-            <Card className="p-6 bg-gradient-to-br from-green-50 to-emerald-100 border border-emerald-200 rounded-3xl shadow-lg">
-              <p className="text-green-700 text-sm mb-2">Gain</p>
+            <Card className="p-6 bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 rounded-3xl shadow-lg">
+              <p className="text-red-700 text-md mb-2">Gain</p>
               <p className="text-3xl font-semibold text-slate-900">
                 ₹
                 {gain.toLocaleString("en-IN", {
@@ -180,11 +215,9 @@ export function LumpsumCalculator() {
           </div>
 
           {/* Main Highlighted Card */}
-          <Card className="p-10 bg-gradient-to-br from-purple-600 to-purple-500 text-white rounded-3xl shadow-2xl transform hover:scale-[1.02] transition-all">
+          <Card className="p-10 bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 text-black rounded-3xl shadow-2xl transform hover:scale-[1.02] transition-all">
             <div className="text-center">
-              <p className="text-purple-200 text-sm mb-3">
-                Total Maturity Value
-              </p>
+              <p className="text-red-700 text-md mb-3">Total Maturity Value</p>
 
               <p className="text-5xl font-bold mb-6">
                 ₹
@@ -195,16 +228,16 @@ export function LumpsumCalculator() {
 
               <div className="flex items-center justify-center gap-6 text-sm">
                 <div>
-                  <p className="text-purple-200">Invested</p>
+                  <p className="text-black">Invested</p>
                   <p className="text-lg font-semibold">
                     ₹{investment[0].toLocaleString("en-IN")}
                   </p>
                 </div>
 
-                <div className="w-px h-12 bg-purple-400"></div>
+                <div className="w-px h-12 bg-black" />
 
                 <div>
-                  <p className="text-purple-200">Returns</p>
+                  <p className="text-black">Returns</p>
                   <p className="text-lg font-semibold">
                     ₹
                     {gain.toLocaleString("en-IN", {
