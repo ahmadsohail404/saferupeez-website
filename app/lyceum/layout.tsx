@@ -14,10 +14,10 @@ export default function LyceumLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen w-full bg-slate-950 text-slate-50">
+    <div className="min-h-screen w-full">
       <Navbar />
 
-      <main className="mx-auto w-full max-w-6xl px-4 py-8 md:px-6 lg:px-8">
+      <main className="mx-auto py-8">
         {children}
       </main>
 
