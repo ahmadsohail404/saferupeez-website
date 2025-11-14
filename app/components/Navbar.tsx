@@ -165,8 +165,8 @@ export default function Navbar() {
                   </DropdownMenu>
                 </div>
 
-                <NavLink href="/varsity" active={isActive("/varsity")}>
-                  Varsity
+                <NavLink href="/lyceum" active={isActive("/lyceum")}>
+                  Lyceum
                 </NavLink>
 
                 <NavLink href="/calculators" active={isActive("/calculators")}>
@@ -256,11 +256,11 @@ export default function Navbar() {
                 </div>
 
                 <MobileNavLink
-                  href="/varsity"
-                  active={isActive("/varsity")}
+                  href="/lyceum"
+                  active={isActive("/lyceum")}
                   onClick={toggleMobileMenu}
                 >
-                  Varsity
+                  Lyceum
                 </MobileNavLink>
 
                 <MobileNavLink
