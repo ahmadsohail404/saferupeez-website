@@ -3,8 +3,8 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import StickyQR from "./components/StickyQR";
-import Navbar from "@/app/components/Navbar";      // ✅ add
-import Footer from "@/app/components/Footer";      // ✅ add
+import Navbar from "@/app/components/Navbar";      
+import Footer from "@/app/components/Footer";      
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
