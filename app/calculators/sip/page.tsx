@@ -18,10 +18,14 @@ import {
 import { Calculator } from "lucide-react";
 
 export function SIPCalculator() {
-  const [monthlyInvestment, setMonthlyInvestment] = useState([17500]);
-  const [returnRate, setReturnRate] = useState([12]);
-  const [timePeriod, setTimePeriod] = useState([10]);
-  const [annualStepUp, setAnnualStepUp] = useState([0]);
+  const [monthlyInvestment, setMonthlyInvestment] = useState<number[]>([17500]);
+  const [returnRate, setReturnRate] = useState<number[]>([12]);
+  const [timePeriod, setTimePeriod] = useState<number[]>([10]);
+  const [annualStepUp, setAnnualStepUp] = useState<number[]>([0]);
+
+  // helper to keep values within safe range
+  const clamp = (val: number, min: number, max: number) =>
+    isNaN(val) ? min : Math.min(Math.max(val, min), max);
 
   /* -------------------- CALCULATIONS -------------------- */
   const calculateSIP = () => {
@@ -52,7 +56,7 @@ export function SIPCalculator() {
 
   /* -------------------- CHART DATA -------------------- */
   const generateChartData = () => {
-    const data = [];
+    const data: { year: string; invested: number; value: number }[] = [];
     const monthly = monthlyInvestment[0];
     const annual = returnRate[0] / 100;
     const monthlyReturn = annual / 12;
@@ -120,102 +124,152 @@ export function SIPCalculator() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <Card className="p-8 bg-white/80 backdrop-blur-xl rounded-3xl border border-amber-100 shadow-xl">
-            <div className="space-y-10">
+          <Card className="p-6 sm:p-8 bg-white/80 backdrop-blur-xl rounded-3xl border border-amber-100 shadow-xl">
+            <div className="space-y-8 sm:space-y-10">
               {/* Monthly Investment */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Monthly Investment
                 </Label>
-                <div className="flex items-center justify-between mb-3">
+
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Amount (₹)
+                  </span>
                   <Input
                     type="number"
                     value={monthlyInvestment[0]}
-                    onChange={(e) =>
-                      setMonthlyInvestment([Number(e.target.value)])
-                    }
-                    className="w-40 text-right"
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 500, 100000);
+                      setMonthlyInvestment([safe]);
+                    }}
+                    className="w-25 text-right"
                   />
                 </div>
+
                 <Slider
                   value={monthlyInvestment}
-                  onValueChange={setMonthlyInvestment}
+                  onValueChange={(val) => setMonthlyInvestment(val)}
                   min={500}
                   max={100000}
                   step={500}
+                  className="mt-2"
                 />
-                <div className="flex justify-between text-xs text-slate-500 mt-1">
+                <div className="flex justify-between text-[11px] sm:text-xs text-slate-500 mt-1">
                   <span>₹500</span>
                   <span>₹1L</span>
                 </div>
               </div>
 
               {/* Expected Return */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Expected Return (p.a.)
                 </Label>
-                <div className="flex items-center justify-between mb-3">
+
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Rate (%)
+                  </span>
                   <Input
                     type="number"
                     value={returnRate[0]}
-                    onChange={(e) => setReturnRate([Number(e.target.value)])}
-                    className="w-28 text-right"
-                    step="0.5"
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 5, 30);
+                      setReturnRate([safe]);
+                    }}
+                    className="w-20 text-right"
+                    step={0.5}
                   />
                 </div>
+
                 <Slider
                   value={returnRate}
-                  onValueChange={setReturnRate}
+                  onValueChange={(val) => setReturnRate(val)}
                   min={5}
                   max={30}
                   step={0.5}
+                  className="mt-2"
                 />
+                <div className="flex justify-between text-[11px] sm:text-xs text-slate-500 mt-1">
+                  <span>5%</span>
+                  <span>30%</span>
+                </div>
               </div>
 
               {/* Time Period */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Time Period (Years)
                 </Label>
-                <div className="flex items-center justify-between mb-3">
+
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Duration
+                  </span>
                   <Input
                     type="number"
                     value={timePeriod[0]}
-                    onChange={(e) => setTimePeriod([Number(e.target.value)])}
-                    className="w-28 text-right"
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 1, 30);
+                      setTimePeriod([safe]);
+                    }}
+                    className="w-20 text-right"
                   />
                 </div>
+
                 <Slider
                   value={timePeriod}
-                  onValueChange={setTimePeriod}
+                  onValueChange={(val) => setTimePeriod(val)}
                   min={1}
                   max={30}
                   step={1}
+                  className="mt-2"
                 />
+                <div className="flex justify-between text-[11px] sm:text-xs text-slate-500 mt-1">
+                  <span>1Y</span>
+                  <span>30Y</span>
+                </div>
               </div>
 
               {/* Annual Step Up */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Annual Step-up %
                 </Label>
-                <div className="flex items-center justify-between mb-3">
+
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Increase per year
+                  </span>
                   <Input
                     type="number"
                     value={annualStepUp[0]}
-                    onChange={(e) => setAnnualStepUp([Number(e.target.value)])}
-                    className="w-28 text-right"
-                    step="1"
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 0, 20);
+                      setAnnualStepUp([safe]);
+                    }}
+                    className="w-20 text-right"
+                    step={1}
                   />
                 </div>
+
                 <Slider
                   value={annualStepUp}
-                  onValueChange={setAnnualStepUp}
+                  onValueChange={(val) => setAnnualStepUp(val)}
                   min={0}
                   max={20}
                   step={1}
+                  className="mt-2"
                 />
+                <div className="flex justify-between text-[11px] sm:text-xs text-slate-500 mt-1">
+                  <span>0%</span>
+                  <span>20%</span>
+                </div>
               </div>
             </div>
           </Card>
@@ -230,25 +284,25 @@ export function SIPCalculator() {
         >
           {/* Result Cards (Fixed Responsiveness) */}
           <div className="flex flex-wrap gap-6 w-full">
-            {/* Invested */}
-            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 shadow-lg">
-              <p className="text-purple-700 text-sm mb-2">Total Invested</p>
+            {/* Total Invested */}
+            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-lg">
+              <p className="text-red-700 text-md mb-2">Total Invested</p>
               <p className="text-3xl md:text-4xl font-semibold text-slate-900 leading-tight break-words">
                 ₹{totalInvested.toLocaleString("en-IN")}
               </p>
             </Card>
 
-            {/* Maturity */}
+            {/* Maturity Value */}
             <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-lg">
-              <p className="text-amber-700 text-sm mb-2">Maturity Value</p>
+              <p className="text-red-700 text-md mb-2">Maturity Value</p>
               <p className="text-3xl md:text-4xl font-semibold text-slate-900 leading-tight break-words">
                 ₹{futureValue.toLocaleString("en-IN")}
               </p>
             </Card>
 
-            {/* Gain */}
-            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-green-50 to-emerald-100 border border-emerald-200 shadow-lg">
-              <p className="text-green-700 text-sm mb-2">Estimated Gain</p>
+            {/* Estimated Gain */}
+            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-lg">
+              <p className="text-red-700 text-md mb-2">Estimated Gain</p>
               <p className="text-3xl md:text-4xl font-semibold text-slate-900 leading-tight break-words">
                 ₹{estimatedGain.toLocaleString("en-IN")}
               </p>
@@ -286,37 +340,37 @@ export function SIPCalculator() {
           </Card>
 
           {/* Summary */}
-          <Card className="p-8 bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-3xl shadow-xl">
-            <h4 className="mb-4 text-purple-100 font-semibold">
+          <Card className="p-8 bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 text-black rounded-3xl shadow-xl">
+            <h4 className="mb-4 text-red-700 font-semibold">
               Investment Summary
             </h4>
 
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between text-purple-200">
+              <div className="flex justify-between text-black">
                 <span>Monthly Investment</span>
                 <span>₹{monthlyInvestment[0].toLocaleString("en-IN")}</span>
               </div>
 
-              <div className="flex justify-between text-purple-200">
+              <div className="flex justify-between text-black">
                 <span>Expected Returns</span>
                 <span>{returnRate[0]}% p.a.</span>
               </div>
 
-              <div className="flex justify-between text-purple-200">
+              <div className="flex justify-between text-black">
                 <span>Time Period</span>
                 <span>{timePeriod[0]} years</span>
               </div>
 
               {annualStepUp[0] > 0 && (
-                <div className="flex justify-between text-purple-200">
+                <div className="flex justify-between text-black">
                   <span>Annual Step-up</span>
                   <span>{annualStepUp[0]}%</span>
                 </div>
               )}
 
-              <div className="flex justify-between pt-3 border-t border-purple-400 text-lg">
+              <div className="flex justify-between pt-3 border-t border-black text-lg">
                 <span className="font-semibold">Wealth Gain</span>
-                <span className="font-bold text-white">
+                <span className="font-bold text-black">
                   {((estimatedGain / totalInvested) * 100).toFixed(2)}%
                 </span>
               </div>

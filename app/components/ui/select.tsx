@@ -258,13 +258,13 @@ export const SelectItem = React.forwardRef<HTMLDivElement, ItemProps>(
           "hover:bg-purple-50 focus:bg-purple-50",
           "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
           "transition-colors duration-150",
-          isActive && "bg-purple-50 text-purple-700 font-medium",
+          isActive && "bg-purple-50 text-black font-medium",
           className
         )}
         {...props}
       >
         <span className="mr-6 truncate">{children}</span>
-        {isActive && <Check className="absolute right-3 h-4 w-4 text-purple-600" />}
+        {isActive && <Check className="absolute right-3 h-4 w-4 text-black" />}
       </DM.Item>
     );
   }

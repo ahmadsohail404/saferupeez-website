@@ -8,9 +8,13 @@ import { Slider } from "@/app/components/ui/slider";
 import { CreditCard } from "lucide-react";
 
 export function EMICalculator() {
-  const [loanAmount, setLoanAmount] = useState([1500000]);
-  const [interestRate, setInterestRate] = useState([9]);
-  const [tenure, setTenure] = useState([15]);
+  const [loanAmount, setLoanAmount] = useState<number[]>([1500000]);
+  const [interestRate, setInterestRate] = useState<number[]>([9]);
+  const [tenure, setTenure] = useState<number[]>([15]);
+
+  // helper to keep values in range (same style as other calculators)
+  const clamp = (val: number, min: number, max: number) =>
+    isNaN(val) ? min : Math.min(Math.max(val, min), max);
 
   /* ---------- EMI Calculation ---------- */
   const calculateEMI = () => {
@@ -26,7 +30,8 @@ export function EMICalculator() {
       };
     }
 
-    const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    const factor = Math.pow(1 + r, n);
+    const emi = (P * r * factor) / (factor - 1);
     const totalPayment = emi * n;
     const totalInterest = totalPayment - P;
 
@@ -38,8 +43,8 @@ export function EMICalculator() {
   return (
     <div className="relative">
       {/* Background Blurs */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-amber-300/30 blur-[150px] rounded-full -z-10"></div>
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-300/25 blur-[150px] rounded-full -z-10"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-amber-300/30 blur-[150px] rounded-full -z-10" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-300/25 blur-[150px] rounded-full -z-10" />
 
       {/* Header */}
       <div className="mb-12 text-center">
@@ -65,78 +70,116 @@ export function EMICalculator() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <Card className="p-8 bg-white/80 backdrop-blur-xl border border-amber-100 rounded-3xl shadow-xl">
-            <div className="space-y-10">
+          <Card className="p-6 sm:p-8 bg-white/80 backdrop-blur-xl border border-amber-100 rounded-3xl shadow-xl">
+            <div className="space-y-8 sm:space-y-10">
               {/* Loan Amount */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Loan Amount
                 </Label>
 
-                <Input
-                  type="number"
-                  value={loanAmount[0]}
-                  onChange={(e) => setLoanAmount([+e.target.value])}
-                  className="w-40 text-right mb-4"
-                />
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Amount (₹)
+                  </span>
+                  <Input
+                    type="number"
+                    value={loanAmount[0]}
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 100000, 50000000);
+                      setLoanAmount([safe]);
+                    }}
+                    className="w-25 text-right"
+                  />
+                </div>
 
                 <Slider
                   value={loanAmount}
-                  onValueChange={setLoanAmount}
+                  onValueChange={(val) => setLoanAmount(val)}
                   min={100000}
                   max={50000000}
                   step={50000}
+                  className="mt-2"
                 />
 
-                <div className="flex justify-between text-xs text-slate-500 mt-1">
+                <div className="flex justify-between text-[11px] sm:text-xs text-slate-500 mt-1">
                   <span>₹1L</span>
                   <span>₹5Cr</span>
                 </div>
               </div>
 
               {/* Interest Rate */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Interest Rate (p.a.)
                 </Label>
 
-                <Input
-                  type="number"
-                  value={interestRate[0]}
-                  step="0.1"
-                  onChange={(e) => setInterestRate([+e.target.value])}
-                  className="w-28 text-right mb-4"
-                />
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Rate (%)
+                  </span>
+                  <Input
+                    type="number"
+                    value={interestRate[0]}
+                    step={0.1}
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 5, 20);
+                      setInterestRate([safe]);
+                    }}
+                    className="w-20 text-right"
+                  />
+                </div>
 
                 <Slider
                   value={interestRate}
-                  onValueChange={setInterestRate}
+                  onValueChange={(val) => setInterestRate(val)}
                   min={5}
                   max={20}
                   step={0.1}
+                  className="mt-2"
                 />
+                <div className="flex justify-between text-[11px] sm:text-xs text-slate-500 mt-1">
+                  <span>5%</span>
+                  <span>20%</span>
+                </div>
               </div>
 
               {/* Tenure */}
-              <div>
-                <Label className="text-base font-semibold mb-3 block">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold block">
                   Loan Tenure (Years)
                 </Label>
 
-                <Input
-                  type="number"
-                  value={tenure[0]}
-                  onChange={(e) => setTenure([+e.target.value])}
-                  className="w-28 text-right mb-4"
-                />
+                <div className="flex items-center justify-between gap-4 mb-1">
+                  <span className="text-sm sm:text-base text-slate-600">
+                    Duration
+                  </span>
+                  <Input
+                    type="number"
+                    value={tenure[0]}
+                    onChange={(e) => {
+                      const raw = Number(e.target.value);
+                      const safe = clamp(raw, 1, 30);
+                      setTenure([safe]);
+                    }}
+                    className="w-20 text-right"
+                  />
+                </div>
 
                 <Slider
                   value={tenure}
-                  onValueChange={setTenure}
+                  onValueChange={(val) => setTenure(val)}
                   min={1}
                   max={30}
                   step={1}
+                  className="mt-2"
                 />
+                <div className="flex justify-between text-[11px] sm:text-xs text-slate-500 mt-1">
+                  <span>1Y</span>
+                  <span>30Y</span>
+                </div>
               </div>
             </div>
           </Card>
@@ -152,8 +195,8 @@ export function EMICalculator() {
           {/* Output Cards (Fully Responsive) */}
           <div className="flex flex-wrap gap-6 w-full">
             {/* EMI */}
-            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 shadow-lg">
-              <p className="text-purple-700 text-sm mb-2">Monthly EMI</p>
+            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-lg">
+              <p className="text-red-700 text-md mb-2">Monthly EMI</p>
               <p className="text-3xl md:text-4xl font-semibold text-slate-900 break-words leading-tight">
                 ₹
                 {emi.toLocaleString("en-IN", {
@@ -164,7 +207,7 @@ export function EMICalculator() {
 
             {/* Total Interest */}
             <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-lg">
-              <p className="text-amber-700 text-sm mb-2">Total Interest</p>
+              <p className="text-red-700 text-md mb-2">Total Interest</p>
               <p className="text-3xl md:text-4xl font-semibold text-slate-900 break-words leading-tight">
                 ₹
                 {totalInterest.toLocaleString("en-IN", {
@@ -174,8 +217,8 @@ export function EMICalculator() {
             </Card>
 
             {/* Total Payment */}
-            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-red-50 to-rose-100 border border-rose-200 shadow-lg">
-              <p className="text-red-700 text-sm mb-2">Total Payment</p>
+            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-lg">
+              <p className="text-red-700 text-md mb-2">Total Payment</p>
               <p className="text-3xl md:text-4xl font-semibold text-slate-900 break-words leading-tight">
                 ₹
                 {totalPayment.toLocaleString("en-IN", {
@@ -186,9 +229,9 @@ export function EMICalculator() {
           </div>
 
           {/* Large EMI Card */}
-          <Card className="p-10 bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-3xl shadow-xl transform hover:scale-[1.02] transition-all">
+          <Card className="p-10 bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 text-slate-900 rounded-3xl shadow-xl transform hover:scale-[1.02] transition-all">
             <div className="text-center">
-              <p className="text-purple-200 text-sm mb-2">Your Monthly EMI</p>
+              <p className="text-red-700 text-md mb-2">Your Monthly EMI</p>
               <p className="text-5xl font-bold mb-6">
                 ₹
                 {emi.toLocaleString("en-IN", {
@@ -198,16 +241,16 @@ export function EMICalculator() {
 
               <div className="flex items-center justify-center gap-6 text-sm">
                 <div>
-                  <p className="text-purple-200">Principal</p>
+                  <p className="text-black">Principal</p>
                   <p className="text-lg font-semibold">
                     ₹{loanAmount[0].toLocaleString("en-IN")}
                   </p>
                 </div>
 
-                <div className="w-px h-12 bg-purple-400" />
+                <div className="w-px h-12 bg-amber-400" />
 
                 <div>
-                  <p className="text-purple-200">Interest</p>
+                  <p className="text-black">Interest</p>
                   <p className="text-lg font-semibold">
                     ₹{totalInterest.toLocaleString("en-IN")}
                   </p>
@@ -247,7 +290,7 @@ export function EMICalculator() {
                 </span>
               </div>
 
-              <div className="pt-3 border-t border-slate-300 flex justify-between">
+              <div className="pt-3 border-top border-t border-slate-300 flex justify-between">
                 <span>Total Interest Paid</span>
                 <span className="font-semibold text-red-600">
                   ₹{totalInterest.toLocaleString("en-IN")}
@@ -259,49 +302,6 @@ export function EMICalculator() {
                 <span className="font-semibold">
                   ₹{totalPayment.toLocaleString("en-IN")}
                 </span>
-              </div>
-            </div>
-          </Card>
-
-          {/* Breakdown */}
-          <Card className="p-6 bg-gradient-to-br from-amber-50 to-yellow-50 border-amber-200 rounded-3xl shadow-md">
-            <h4 className="mb-4 text-amber-900 font-semibold">
-              Payment Breakdown
-            </h4>
-
-            {/* Principal */}
-            <div className="mb-4">
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-amber-700">Principal Amount</span>
-                <span className="font-semibold text-amber-900">
-                  {((loanAmount[0] / totalPayment) * 100).toFixed(1)}%
-                </span>
-              </div>
-              <div className="w-full h-3 bg-amber-200 rounded-full">
-                <div
-                  className="h-3 rounded-full bg-gradient-to-r from-purple-600 to-purple-700"
-                  style={{
-                    width: `${(loanAmount[0] / totalPayment) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Interest */}
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-amber-700">Interest Amount</span>
-                <span className="font-semibold text-amber-900">
-                  {((totalInterest / totalPayment) * 100).toFixed(1)}%
-                </span>
-              </div>
-              <div className="w-full h-3 bg-amber-200 rounded-full">
-                <div
-                  className="h-3 rounded-full bg-gradient-to-r from-amber-500 to-yellow-600"
-                  style={{
-                    width: `${(totalInterest / totalPayment) * 100}%`,
-                  }}
-                />
               </div>
             </div>
           </Card>
