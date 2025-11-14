@@ -1,12 +1,19 @@
 "use client";
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/app/components/ui/card";
 import { Label } from "@/app/components/ui/label";
 import { Input } from "@/app/components/ui/input";
 import { Slider } from "@/app/components/ui/slider";
-import { Select,SelectContent, SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select";
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/app/components/ui/select";
+import { PiggyBank } from "lucide-react";
 
 export function FDCalculator() {
   const [deposit, setDeposit] = useState([100000]);
@@ -14,64 +21,68 @@ export function FDCalculator() {
   const [tenure, setTenure] = useState([3]);
   const [compounding, setCompounding] = useState("quarterly");
 
-  // Calculate maturity value
   const calculateMaturity = () => {
-    const principal = deposit[0];
-    const rate = interestRate[0] / 100;
-    const time = tenure[0];
-    
-    let n = 4; // quarterly
+    const p = deposit[0];
+    const r = interestRate[0] / 100;
+    const t = tenure[0];
+
+    let n = 4;
     if (compounding === "monthly") n = 12;
     if (compounding === "half-yearly") n = 2;
     if (compounding === "yearly") n = 1;
-    
-    const maturityValue = principal * Math.pow(1 + rate / n, n * time);
-    return maturityValue;
+
+    return p * Math.pow(1 + r / n, n * t);
   };
 
   const maturityValue = calculateMaturity();
   const interestEarned = maturityValue - deposit[0];
 
   return (
-    <div>
-      {/* Breadcrumb */}
-      <div className="mb-6">
-        <p className="text-slate-600 text-sm">
-          All calculators · <span className="text-purple-600">FD Calculator</span>
-        </p>
-      </div>
+    <div className="relative">
+      {/* Decorative BG blur */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-amber-300/30 blur-[150px] rounded-full -z-10" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-yellow-300/25 blur-[150px] rounded-full -z-10" />
 
       {/* Title */}
-      <div className="mb-8">
-        <h2 className="text-4xl md:text-5xl mb-3">FD Calculator</h2>
-        <p className="text-slate-600 text-lg">
-          Estimate maturity value with different compounding frequencies.
+      <div className="mb-10 text-center">
+        <div className="flex justify-center mb-4">
+          <div className="w-20 h-20 bg-white shadow-xl rounded-3xl ring-4 ring-white flex items-center justify-center transform rotate-6">
+            <PiggyBank className="w-10 h-10 text-amber-600 -rotate-6" />
+          </div>
+        </div>
+
+        <h2 className="text-5xl font-bold text-gray-900 tracking-tight mb-3">
+          FD Calculator
+        </h2>
+
+        <p className="text-slate-600 text-lg max-w-xl mx-auto">
+          Estimate your fixed deposit maturity value with premium accuracy.
         </p>
       </div>
 
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Left Side - Inputs */}
+      {/* Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        {/* LEFT SIDE – Inputs */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
+          initial={{ opacity: 0, x: -35 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <Card className="p-8 bg-white border-slate-200 hover:shadow-xl transition-shadow">
-            <div className="space-y-8">
-              {/* Deposit Amount */}
+          <Card className="p-8 bg-white/80 backdrop-blur-xl rounded-3xl border border-amber-100 shadow-xl">
+            <div className="space-y-10">
+              {/* Deposit */}
               <div>
+                <Label className="text-base font-semibold mb-3 block">
+                  Deposit Amount
+                </Label>
                 <div className="flex items-center justify-between mb-4">
-                  <Label className="text-base">Deposit</Label>
-                  <div className="flex items-center gap-2">
-                    <span className="text-slate-600">₹</span>
-                    <Input
-                      type="number"
-                      value={deposit[0]}
-                      onChange={(e) => setDeposit([Number(e.target.value)])}
-                      className="w-32 text-right"
-                    />
-                  </div>
+                  <span className="text-slate-600">Enter Amount:</span>
+                  <Input
+                    type="number"
+                    value={deposit[0]}
+                    onChange={(e) => setDeposit([Number(e.target.value)])}
+                    className="w-40 text-right"
+                  />
                 </div>
                 <Slider
                   value={deposit}
@@ -79,28 +90,27 @@ export function FDCalculator() {
                   min={10000}
                   max={10000000}
                   step={10000}
-                  className="mb-2"
                 />
-                <div className="flex justify-between text-xs text-slate-500">
+                <div className="flex justify-between text-xs mt-1 text-slate-500">
                   <span>₹10K</span>
-                  <span>₹1Cr</span>
+                  <span>₹1 Cr</span>
                 </div>
               </div>
 
               {/* Interest Rate */}
               <div>
+                <Label className="text-base font-semibold mb-3 block">
+                  Interest Rate
+                </Label>
                 <div className="flex items-center justify-between mb-4">
-                  <Label className="text-base">Interest rate (p.a.)</Label>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="number"
-                      value={interestRate[0]}
-                      onChange={(e) => setInterestRate([Number(e.target.value)])}
-                      className="w-24 text-right"
-                      step="0.1"
-                    />
-                    <span className="text-slate-600">%</span>
-                  </div>
+                  <span className="text-slate-600">Rate (p.a):</span>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    value={interestRate[0]}
+                    onChange={(e) => setInterestRate([Number(e.target.value)])}
+                    className="w-28 text-right"
+                  />
                 </div>
                 <Slider
                   value={interestRate}
@@ -108,9 +118,8 @@ export function FDCalculator() {
                   min={3}
                   max={15}
                   step={0.1}
-                  className="mb-2"
                 />
-                <div className="flex justify-between text-xs text-slate-500">
+                <div className="flex justify-between text-xs mt-1 text-slate-500">
                   <span>3%</span>
                   <span>15%</span>
                 </div>
@@ -118,13 +127,16 @@ export function FDCalculator() {
 
               {/* Tenure */}
               <div>
+                <Label className="text-base font-semibold mb-3 block">
+                  Tenure (years)
+                </Label>
                 <div className="flex items-center justify-between mb-4">
-                  <Label className="text-base">Tenure (years)</Label>
+                  <span className="text-slate-600">Years:</span>
                   <Input
                     type="number"
                     value={tenure[0]}
                     onChange={(e) => setTenure([Number(e.target.value)])}
-                    className="w-24 text-right"
+                    className="w-28 text-right"
                   />
                 </div>
                 <Slider
@@ -133,22 +145,24 @@ export function FDCalculator() {
                   min={1}
                   max={10}
                   step={1}
-                  className="mb-2"
                 />
-                <div className="flex justify-between text-xs text-slate-500">
+                <div className="flex justify-between text-xs mt-1 text-slate-500">
                   <span>1Y</span>
                   <span>10Y</span>
                 </div>
               </div>
 
-              {/* Compounding Frequency */}
+              {/* Compounding */}
               <div>
-                <Label className="text-base mb-3 block">Compounding</Label>
+                <Label className="text-base font-semibold mb-3 block">
+                  Compounding Frequency
+                </Label>
+
                 <Select value={compounding} onValueChange={setCompounding}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
+                  <SelectTrigger className="w-full bg-white border rounded-xl px-4 py-3 shadow-sm">
+                    <SelectValue placeholder="Select Frequency" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white shadow-xl rounded-xl">
                     <SelectItem value="monthly">Monthly</SelectItem>
                     <SelectItem value="quarterly">Quarterly</SelectItem>
                     <SelectItem value="half-yearly">Half-Yearly</SelectItem>
@@ -160,54 +174,73 @@ export function FDCalculator() {
           </Card>
         </motion.div>
 
-        {/* Right Side - Results */}
+        {/* RIGHT SIDE – Results */}
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
+          initial={{ opacity: 0, x: 35 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="space-y-6"
+          className="space-y-8"
         >
-          {/* Result Cards */}
-          <div className="grid grid-cols-1 gap-6">
-            <Card className="p-6 bg-gradient-to-br from-amber-50 to-yellow-50 border-amber-200 hover:shadow-xl transition-all">
-              <p className="text-amber-700 text-sm mb-2">Invested</p>
-              <p className="text-3xl text-slate-900">₹{deposit[0].toLocaleString('en-IN')}</p>
-            </Card>
+          {/* Invested */}
+          <Card className="p-8 bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-3xl shadow-lg">
+            <p className="text-amber-700 text-sm mb-2">Invested Amount</p>
+            <p className="text-4xl font-semibold text-slate-900">
+              ₹{deposit[0].toLocaleString("en-IN")}
+            </p>
+          </Card>
 
-            <Card className="p-6 bg-gradient-to-br from-purple-600 to-purple-700 text-white hover:shadow-xl hover:scale-105 transition-all">
-              <p className="text-purple-200 text-sm mb-2">Maturity value</p>
-              <p className="text-4xl">₹{maturityValue.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</p>
-            </Card>
+          {/* Maturity */}
+          <Card className="p-8 bg-gradient-to-br from-purple-600 to-purple-500 text-white rounded-3xl shadow-xl transform hover:scale-[1.02] transition">
+            <p className="text-purple-200 text-sm mb-2">Maturity Value</p>
+            <p className="text-4xl font-semibold">
+              ₹
+              {maturityValue.toLocaleString("en-IN", {
+                maximumFractionDigits: 2,
+              })}
+            </p>
+          </Card>
 
-            <Card className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-xl transition-all">
-              <p className="text-green-700 text-sm mb-2">Interest earned</p>
-              <p className="text-3xl text-slate-900">₹{interestEarned.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</p>
-            </Card>
-          </div>
+          {/* Interest */}
+          <Card className="p-8 bg-gradient-to-br from-green-50 to-emerald-50 border border-emerald-200 rounded-3xl shadow-lg">
+            <p className="text-emerald-700 text-sm mb-2">Interest Earned</p>
+            <p className="text-4xl font-semibold text-slate-900">
+              ₹
+              {interestEarned.toLocaleString("en-IN", {
+                maximumFractionDigits: 2,
+              })}
+            </p>
+          </Card>
 
           {/* Summary */}
-          <Card className="p-6 bg-slate-50">
-            <h4 className="mb-4">Investment Summary</h4>
-            <div className="space-y-3">
+          <Card className="p-8 bg-white/70 backdrop-blur-xl shadow-xl border rounded-3xl">
+            <h4 className="text-xl font-semibold mb-4">Investment Summary</h4>
+
+            <div className="space-y-4 text-slate-700">
               <div className="flex justify-between">
-                <span className="text-slate-600">Principal Amount</span>
-                <span className="text-slate-900">₹{deposit[0].toLocaleString('en-IN')}</span>
+                <span>Principal</span>
+                <span className="font-semibold">
+                  ₹{deposit[0].toLocaleString("en-IN")}
+                </span>
               </div>
+
               <div className="flex justify-between">
-                <span className="text-slate-600">Interest Rate</span>
-                <span className="text-slate-900">{interestRate[0]}% p.a.</span>
+                <span>Interest Rate</span>
+                <span className="font-semibold">{interestRate[0]}%</span>
               </div>
+
               <div className="flex justify-between">
-                <span className="text-slate-600">Tenure</span>
-                <span className="text-slate-900">{tenure[0]} years</span>
+                <span>Tenure</span>
+                <span className="font-semibold">{tenure[0]} years</span>
               </div>
+
               <div className="flex justify-between">
-                <span className="text-slate-600">Compounding</span>
-                <span className="text-slate-900 capitalize">{compounding}</span>
+                <span>Compounding</span>
+                <span className="font-semibold capitalize">{compounding}</span>
               </div>
-              <div className="flex justify-between pt-3 border-t">
-                <span className="font-medium">Total Returns</span>
-                <span className="text-green-600 font-medium">
+
+              <div className="pt-3 border-t flex justify-between">
+                <span className="font-bold">Total Returns</span>
+                <span className="font-bold text-green-600">
                   {((interestEarned / deposit[0]) * 100).toFixed(2)}%
                 </span>
               </div>
