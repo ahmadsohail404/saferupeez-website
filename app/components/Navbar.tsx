@@ -19,11 +19,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-
-  // Services dropdown state
   const [servicesOpen, setServicesOpen] = useState(false);
-
-  // Timer for delayed close
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isActive = (href: string) => pathname === href;
@@ -34,18 +30,12 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Lock body scroll only when mobile menu is open
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "unset";
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -53,12 +43,10 @@ export default function Navbar() {
 
   const toggleMobileMenu = () => setIsMobileMenuOpen((v) => !v);
 
-  // Hover delay logic for services
+  // Services hover logic
   const handleMouseEnter = () => {
-    if (closeTimer.current) {
-      clearTimeout(closeTimer.current);
-      closeTimer.current = null;
-    }
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = null;
     setServicesOpen(true);
   };
   const handleMouseLeave = () => {
@@ -67,22 +55,20 @@ export default function Navbar() {
 
   const services = [
     { href: "/gold&silver", title: "Gold & Silver" },
-    { href: "/fd", title: "FD" },
+    { href: "/fd", title: "Fixed Deposit", disabled: true, chip: "Coming soon" },
   ];
 
   return (
     <>
       <nav
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-          isScrolled
-            ? "bg-[hsl(var(--card))]/95 backdrop-blur-lg shadow-sm"
-            : "bg-[hsl(var(--card))]/85 backdrop-blur supports-[backdrop-filter]:bg-[hsl(var(--card))]/70"
-        }`}
+        className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled
+          ? "bg-[hsl(var(--card))]/95 backdrop-blur-lg shadow-sm"
+          : "bg-[hsl(var(--card))]/85 backdrop-blur supports-[backdrop-filter]:bg-[hsl(var(--card))]/70"
+          }`}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+          <div className="flex h-20 items-center justify-between">
+            <div className="flex items-center -ml-6 sm:-ml-10 lg:-ml-30">
               <Link
                 href="/"
                 className="flex items-center transition-transform hover:scale-105"
@@ -90,23 +76,23 @@ export default function Navbar() {
               >
                 <Image
                   src="/assets/saferupeez.svg"
-                  alt="SafeRupee - Augmont Gold For All"
-                  width={120}
-                  height={44}
-                  className="h-9 w-auto sm:h-11"
+                  alt="SafeRupee"
+                  width={140}
+                  height={50}
+                  className="h-12 w-auto sm:h-14"
                   priority
                 />
               </Link>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-1 lg:px-8">
-              <div className="flex items-center gap-1">
+            <div className="hidden lg:flex lg:items-center lg:justify-center lg:flex-1">
+              <div className="flex items-center gap-4">
                 <NavLink href="/about" active={isActive("/about")}>
                   About us
                 </NavLink>
 
-                {/* Services menu with hover open + delayed close */}
+                {/* Services */}
                 <div
                   className="relative"
                   onMouseEnter={handleMouseEnter}
@@ -114,29 +100,23 @@ export default function Navbar() {
                 >
                   <DropdownMenu open={servicesOpen} onOpenChange={setServicesOpen} modal={false}>
                     <DropdownMenuTrigger
-                      className="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--ring))] data-[state=open]:bg-[hsl(var(--muted))]"
+                      className="flex items-center gap-2 rounded-xl px-5 py-2.5 text-base font-medium text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))] hover:text-black"
                       onClick={(e) => e.preventDefault()}
                     >
                       Services
                       <ChevronDown
-                        className={`h-4 w-4 transition-transform duration-200 ${
-                          servicesOpen ? "rotate-180" : ""
-                        }`}
+                        className={`h-5 w-5 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""
+                          }`}
                       />
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent
                       align="center"
-                      sideOffset={8}
-                      className="min-w-[280px] rounded-xl border-[hsl(var(--border))] bg-[hsl(var(--card))] p-2 shadow-xl backdrop-blur-lg"
+                      sideOffset={10}
+                      className="min-w-[320px] rounded-2xl border border-black/10 bg-white p-3 shadow-2xl backdrop-blur-xl"
                     >
                       {services.map((service) => (
-                        <MenuItem
-                          key={service.href}
-                          href={service.href}
-                          title={service.title}
-                          desc={service.desc}
-                        />
+                        <MenuItem key={service.href} {...service} />
                       ))}
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -146,87 +126,83 @@ export default function Navbar() {
                   Varsity
                 </NavLink>
 
-                {/* ⬇️ This was missing its closing tag */}
                 <NavLink href="/calculators" active={isActive("/calculators")}>
                   Calculators
                 </NavLink>
 
-                {/* NEW: Help link */}
                 <NavLink href="/help" active={isActive("/help")}>
                   Help
                 </NavLink>
               </div>
             </div>
 
-            {/* Desktop Auth Buttons */}
-            <div className="hidden lg:flex lg:items-center lg:gap-3">
+            {/* Desktop Auth Button */}
+            {/* <div className="hidden lg:flex lg:items-center lg:gap-3 ml-auto">
               <Link
                 href="/auth"
-                className="rounded-lg bg-gradient-to-r from-black to-gray-800 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 active:scale-95"
+                className="rounded-xl bg-gradient-to-r from-black to-gray-900 px-7 py-3 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 active:scale-95"
+              >
+                Login / Register
+              </Link>
+            </div> */}
+            <div className="hidden lg:flex lg:items-center lg:gap-3 ml-auto mr-[-55]">
+              <Link
+                href="/auth"
+                className="rounded-xl bg-gradient-to-r from-black to-gray-900 px-7 py-3 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 active:scale-95"
               >
                 Login / Register
               </Link>
             </div>
 
+
             {/* Mobile Menu Button */}
-            <div className="flex items-center gap-2 lg:hidden">
-              <button
-                onClick={toggleMobileMenu}
-                className="inline-flex items-center justify-center rounded-lg p-2 text-[hsl(var(--foreground))] transition-all hover:bg-[hsl(var(--muted))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--ring))] active:scale-95"
-                aria-label="Toggle menu"
-                aria-expanded={isMobileMenuOpen}
-              >
-                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
-            </div>
+            <button
+              onClick={toggleMobileMenu}
+              className="lg:hidden inline-flex items-center justify-center rounded-lg p-3 text-[hsl(var(--foreground))] hover:bg-[hsl(var(--muted))] active:scale-95"
+            >
+              {isMobileMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
+            </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 top-16 z-40 lg:hidden transition-opacity duration-300 ${
-          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-      >
-        {/* Backdrop */}
-        <div className="absolute inset-0 bg-white" onClick={toggleMobileMenu} />
-
-        {/* Drawer */}
-        <div
-          className={`absolute right-0 top-0 h-full w-80 max-w-full bg-[hsl(var(--card))] shadow-2xl transform transition-transform duration-300 ${
-            isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed inset-0 top-20 z-40 lg:hidden transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
+      >
+        <div className="absolute inset-0 bg-white" onClick={toggleMobileMenu} />
+        <div
+          className={`absolute right-0 top-0 h-full w-80 bg-white shadow-2xl transform transition-transform duration-300 ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
-          <div className="flex h-full flex-col overflow-y-auto">
-            {/* Links */}
+          <div className="flex flex-col h-full overflow-y-auto">
             <div className="flex-1 p-6">
-              <nav className="space-y-4">
-                <MobileNavLink
-                  href="/about"
-                  active={isActive("/about")}
-                  onClick={toggleMobileMenu}
-                >
+              {/* Bigger font for mobile */}
+              <nav className="space-y-5 text-lg font-medium">
+                <MobileNavLink href="/about" active={isActive("/about")} onClick={toggleMobileMenu}>
                   About us
                 </MobileNavLink>
 
-                {/* Services */}
-                <div className="space-y-3">
-                  <div className="px-3 py-2 text-sm font-semibold uppercase tracking-wide text-[hsl(var(--muted-foreground))]">
+                <div className="space-y-2">
+                  <p className="px-3 py-1 text-sm font-semibold text-gray-500 uppercase tracking-wide">
                     Services
-                  </div>
-                  <div className="space-y-2">
-                    {services.map((service) => (
+                  </p>
+
+                  {services.map((s) =>
+                    s.disabled ? (
+                      <MobileServiceDisabled key={s.href} title={s.title} chip={s.chip} />
+                    ) : (
                       <MobileServiceLink
-                        key={service.href}
-                        href={service.href}
-                        active={isActive(service.href)}
+                        key={s.href}
+                        href={s.href}
+                        title={s.title}
+                        desc={s.desc || ""}
+                        active={isActive(s.href)}
                         onClick={toggleMobileMenu}
-                        title={service.title}
-                        desc={service.desc ?? ""}
                       />
-                    ))}
-                  </div>
+                    )
+                  )}
                 </div>
 
                 <MobileNavLink
@@ -237,7 +213,7 @@ export default function Navbar() {
                   Varsity
                 </MobileNavLink>
 
-                 <MobileNavLink
+                <MobileNavLink
                   href="/calculators"
                   active={isActive("/calculators")}
                   onClick={toggleMobileMenu}
@@ -252,28 +228,14 @@ export default function Navbar() {
             </div>
 
             {/* Auth */}
-            <div className="border-t border-[hsl(var(--border))] p-6">
-              <div className="space-y-3">
-                <Link
-                  href="/login"
-                  onClick={toggleMobileMenu}
-                  className="flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-black to-gray-800 px-4 py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl active:scale-95"
-                >
-                  Login to Account
-                </Link>
-                <div className="text-center">
-                  <span className="text-sm text-[hsl(var(--muted-foreground))]">
-                    New to SafeRupee?{" "}
-                  </span>
-                  <Link
-                    href="/register"
-                    onClick={toggleMobileMenu}
-                    className="text-sm font-semibold text-black hover:underline"
-                  >
-                    Create Account
-                  </Link>
-                </div>
-              </div>
+            <div className="border-t p-6">
+              <Link
+                href="/auth"
+                onClick={toggleMobileMenu}
+                className="block w-full text-center rounded-xl bg-black px-5 py-3.5 text-base font-semibold text-white shadow-lg hover:shadow-xl"
+              >
+                Login to Account
+              </Link>
             </div>
           </div>
         </div>
@@ -284,113 +246,97 @@ export default function Navbar() {
 
 /* ----------------------------- Helper Components ---------------------------- */
 
-function NavLink({
-  href,
-  active,
-  children,
-}: {
-  href: string;
-  active?: boolean;
-  children: React.ReactNode;
-}) {
+function NavLink({ href, active, children }: any) {
   return (
     <Link
       href={href}
-      className={`relative rounded-lg px-4 py-2 text-sm font-medium transition-all ${
-        active
-          ? "text-black bg-[hsl(var(--gold))]/20 font-semibold"
-          : "text-[hsl(var(--foreground))] hover:bg-[hsl(var(--muted))] hover:text-[hsl(var(--foreground))]"
-      }`}
+      className={`relative rounded-xl px-5 py-2.5 text-base font-medium transition-all ${active
+        ? "text-black bg-[hsl(var(--gold))]/20 font-semibold"
+        : "text-gray-800 hover:bg-gray-100 hover:text-black"
+        }`}
     >
       {children}
       {active && (
-        <div className="absolute bottom-0 left-1/2 h-0.5 w-6 -translate-x-1/2 bg-[hsl(var(--gold))] rounded-full" />
+        <div className="absolute bottom-0 left-1/2 h-0.5 w-8 -translate-x-1/2 bg-[hsl(var(--gold))] rounded-full" />
       )}
     </Link>
   );
 }
 
-function MobileNavLink({
-  href,
-  active,
-  children,
-  onClick,
-}: {
-  href: string;
-  active?: boolean;
-  children: React.ReactNode;
-  onClick: () => void;
-}) {
+function MobileNavLink({ href, active, children, onClick }: any) {
   return (
     <Link
       href={href}
       onClick={onClick}
-      className={`block rounded-xl px-4 py-3 text-base font-medium transition-all ${
-        active
-          ? "bg-[hsl(var(--gold))]/20 text-black font-semibold border border-[hsl(var(--gold))]/30"
-          : "text-[hsl(var(--foreground))] hover:bg-[hsl(var(--muted))]"
-      }`}
+      className={`block rounded-xl px-4 py-3 text-lg transition-all ${active ? "bg-yellow-100 text-black font-semibold" : "text-gray-800 hover:bg-gray-100"
+        }`}
     >
       {children}
     </Link>
   );
 }
 
-function MobileServiceLink({
-  href,
-  active,
-  onClick,
-  title,
-  desc,
-}: {
-  href: string;
-  active?: boolean;
-  onClick: () => void;
-  title: string;
-  desc?: string;
-}) {
+function MobileServiceLink({ href, active, onClick, title, desc }: any) {
   return (
     <Link
       href={href}
       onClick={onClick}
-      className={`block rounded-xl px-4 py-3 transition-all ${
-        active
-          ? "bg-[hsl(var(--gold))]/20 border border-[hsl(var(--gold))]/30"
-          : "hover:bg-[hsl(var(--muted))]"
-      }`}
+      className={`block rounded-xl px-4 py-3 text-lg transition-all ${active ? "bg-yellow-100" : "hover:bg-gray-100"
+        }`}
     >
-      <div className="flex items-start gap-3">
-        <div
-          className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${
-            active ? "bg-[hsl(var(--gold))]" : "bg-[hsl(var(--muted-foreground))]"
-          }`}
-        />
-        <div className="flex flex-col">
-          <span className={`text-sm font-medium ${active ? "text-black" : "text-[hsl(var(--foreground))]"}`}>
-            {title}
-          </span>
-          {desc ? (
-            <span className="text-xs text-[hsl(var(--muted-foreground))] mt-1">{desc}</span>
-          ) : null}
-        </div>
+      <div className="flex flex-col">
+        <span className="font-semibold">{title}</span>
+        {desc && <span className="text-sm text-gray-500">{desc}</span>}
       </div>
     </Link>
   );
 }
 
-function MenuItem({ href, title, desc }: { href: string; title: string; desc?: string }) {
+function MobileServiceDisabled({ title, chip }: any) {
+  return (
+    <div className="block rounded-xl px-4 py-3 bg-gray-100 opacity-70 pointer-events-none">
+      <div className="flex items-center gap-2">
+        <span className="font-semibold">{title}</span>
+        <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">
+          {chip}
+        </span>
+      </div>
+      <span className="text-sm text-gray-400">Unavailable</span>
+    </div>
+  );
+}
+
+function MenuItem({ href, title, desc, disabled, chip }: any) {
+  if (disabled) {
+    return (
+      <DropdownMenuItem
+        disabled
+        className="flex w-full items-start gap-3 rounded-xl p-3 cursor-not-allowed opacity-70"
+      >
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2">
+            <span className="text-base font-semibold">{title}</span>
+            {chip && (
+              <span className="text-[10px] bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-semibold">
+                {chip}
+              </span>
+            )}
+          </div>
+          <span className="text-xs text-gray-400">Unavailable</span>
+        </div>
+      </DropdownMenuItem>
+    );
+  }
+
   return (
     <DropdownMenuItem asChild>
       <Link
         href={href}
-        className="flex w-full items-start gap-3 rounded-lg p-3 transition-all hover:bg-[hsl(var(--muted))] focus:bg-[hsl(var(--muted))] outline-none cursor-pointer"
+        className="flex w-full items-start gap-3 rounded-xl p-3 hover:bg-gray-100 transition-all cursor-pointer"
       >
-        <div className="mt-0.5 h-2 w-2 rounded-full bg-[hsl(var(--gold))] flex-shrink-0" />
-        <div className="flex flex-col gap-1">
-          <span className="text-sm font-medium text-[hsl(var(--foreground))]">{title}</span>
-          {desc ? (
-            <span className="text-xs text-[hsl(var(--muted-foreground))]">{desc}</span>
-          ) : null}
+        <div className="flex flex-col">
+          <span className="text-base font-semibold">{title}</span>
+          {desc && <span className="text-xs text-gray-500">{desc}</span>}
         </div>
       </Link>
     </DropdownMenuItem>
