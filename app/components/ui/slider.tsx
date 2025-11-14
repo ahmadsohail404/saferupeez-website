@@ -42,12 +42,12 @@ export function Slider({
       {/* TRACK (the background line) */}
       <SliderPrimitive.Track
         className={cn(
-          "relative w-full h-2 bg-purple-200 rounded-full overflow-hidden"
+          "relative w-full h-2 bg-slate-300 rounded-full overflow-hidden"
         )}
       >
         {/* RANGE (filled colored section) */}
         <SliderPrimitive.Range
-          className={cn("absolute h-full bg-purple-600 rounded-full")}
+          className={cn("absolute h-full bg-black rounded-full")}
         />
       </SliderPrimitive.Track>
 
@@ -56,8 +56,8 @@ export function Slider({
         <SliderPrimitive.Thumb
           key={i}
           className={cn(
-            "block h-5 w-5 rounded-full bg-purple-600 border-2 border-white shadow-lg",
-            "cursor-pointer focus:outline-none focus:ring-4 focus:ring-purple-400/40"
+            "block h-5 w-5 rounded-full bg-black border-2 border-white shadow-lg",
+            "cursor-pointer focus:outline-none focus:ring-4 focus:ring-black"
           )}
         />
       ))}
