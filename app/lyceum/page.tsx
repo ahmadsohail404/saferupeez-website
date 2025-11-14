@@ -1,12 +1,12 @@
 // app/lyceum/page.tsx
 "use client";
-import React from "react";
-
-
+import LyceumVideos from "./components/Lyceum-Videos";
+import Hero from "../lyceum/components/Lyceum-Hero";
 const page = () => {
   return (
     <div>
-      hi
+      <Hero/>
+      <LyceumVideos />
     </div>
   );
 };

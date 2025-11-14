@@ -16,9 +16,8 @@ export default function LyceumLayout({
   return (
     <div className="min-h-screen w-full bg-slate-100 text-slate-50">
       <Navbar />
-
-              <main className="min-h-screen w-full max-w-full">
-
+      
+      <main className="min-h-screen w-full max-w-full">
         {children}
       </main>
 
