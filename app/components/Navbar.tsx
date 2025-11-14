@@ -326,7 +326,7 @@ function NavLink({ href, active, children }: any) {
       className={`relative rounded-xl px-5 py-2.5 text-base font-medium transition-all ${
         active
           ? "text-black bg-[hsl(var(--gold))]/20 font-semibold"
-          : "text-gray-800 hover:bg-gray-100 hover:text-black"
+          : "text-black-800 hover:bg-black-100 hover:text-black"
       }`}
     >
       {children}
@@ -345,7 +345,7 @@ function MobileNavLink({ href, active, children, onClick }: any) {
       className={`block rounded-xl px-4 py-3 text-lg transition-all ${
         active
           ? "bg-yellow-100 text-black font-semibold"
-          : "text-gray-800 hover:bg-gray-100"
+          : "text-black-800 hover:bg-black-100"
       }`}
     >
       {children}
