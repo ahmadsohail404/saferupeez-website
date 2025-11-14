@@ -1,7 +1,7 @@
 // app/lyceum/page.tsx
 "use client";
 import React from "react";
-import Hero from "./components/Hero";
+import Hero from "./components/Lyceum-Hero";
 
 const page = () => {
   return (

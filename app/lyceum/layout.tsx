@@ -1,7 +1,7 @@
 // app/lyceum/layout.tsx
 import type { Metadata } from "next";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Navbar from "./components/Lyceum-Navbar";
+import Footer from "./components/Lyceum-Footer";
 
 export const metadata: Metadata = {
   title: "Jyesta Lyceum",
