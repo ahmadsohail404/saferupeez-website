@@ -9,7 +9,7 @@ export default function LyceumNavbar() {
     <header className="w-full border-b border-slate-200 bg-white/90 backdrop-blur-md">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         {/* Left: Logo + Brand */}
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/lyceum" className="flex items-center gap-3">
           {/* Shield logo */}
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-sky-400 to-blue-600 shadow-md">
             <Shield className="h-5 w-5 text-white" />
