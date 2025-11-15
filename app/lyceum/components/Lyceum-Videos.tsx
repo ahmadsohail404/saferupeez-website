@@ -1,43 +1,43 @@
 // app/lyceum/components/Videos.tsx
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { PlayCircle } from "lucide-react";
 import { Card } from "@/app/components/ui/card"; // adjust path if needed
 
 const videos = [
   {
     id: 1,
+    moduleId: 4, // Futures Trading
     title: "Impact cost and how it can ruin a trade",
     thumbnail: "/assets/le.jpg",
-    href: "/lyceum/videos/impact-cost-futures-trading",
     duration: "14 min",
     level: "Beginner",
     description: "Understand how impact cost affects your trade execution.",
   },
   {
     id: 2,
+    moduleId: 1, // Intro to Stock Markets
     title: "5 types of share capital",
     thumbnail: "/assets/le.jpg",
-    href: "/lyceum/videos/5-types-of-share-capital",
     duration: "11 min",
     level: "Beginner",
     description: "Learn the different types of share capital used by companies.",
   },
   {
     id: 3,
+    moduleId: 4, // Futures Trading
     title: "How OFS allotment is done",
     thumbnail: "/assets/le.jpg",
-    href: "/lyceum/videos/how-ofs-allotment-is-done",
     duration: "9 min",
     level: "Intermediate",
     description: "Step-by-step breakdown of the OFS allotment process.",
   },
   {
     id: 4,
+    moduleId: 3, // Fundamental Analysis (example)
     title: "Building a mutual fund portfolio",
     thumbnail: "/assets/le.jpg",
-    href: "/lyceum/videos/building-a-mutual-fund-portfolio",
     duration: "18 min",
     level: "Intermediate",
     description: "Framework to design a balanced mutual fund portfolio.",
@@ -45,11 +45,18 @@ const videos = [
 ];
 
 export default function VideoPlaylist() {
+  const router = useRouter();
+
+  const handlePlay = (moduleId: number) => {
+    // Go directly to Videos view of that module
+    router.push(`/lyceum/modules?mode=videos&moduleId=${moduleId}`);
+  };
+
   return (
-    <section className="relative w-full overflow-hidden bg-white py-10 sm:py-14 md:py-16">
+    <section className="relative w-full overflow-hidden py-10 sm:py-14 md:py-16">
       {/* Background gradients (same style as Hero) */}
       <div className="pointer-events-none absolute top-10 right-4 sm:right-8 md:right-16 h-48 w-48 rounded-full bg-white blur-[100px] sm:h-64 sm:w-64 sm:blur-[120px] md:h-96 md:w-96 md:blur-[140px]" />
-      <div className="pointer-events-none absolute bottom-10 left-4 sm:left-8 md:left-16 h-48 w-48 rounded-full bg-white-300/40 blur-[100px] sm:h-64 sm:w-64 sm:blur-[120px] md:h-96 md:w-96 md:blur-[140px]" />
+      <div className="pointer-events-none absolute bottom-10 left-4 sm:left-8 md:left-16 h-48 w-48 rounded-full bg-white/60 blur-[100px] sm:h-64 sm:w-64 sm:blur-[120px] md:h-96 md:w-96 md:blur-[140px]" />
 
       {/* MATCHING HERO MARGINS */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
@@ -70,7 +77,7 @@ export default function VideoPlaylist() {
         </div>
 
         {/* Cards */}
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {videos.map((video) => (
             <Card
               key={video.id}
@@ -93,7 +100,7 @@ export default function VideoPlaylist() {
                 </div>
               </div>
 
-              {/* Text + Play link */}
+              {/* Text + Play button */}
               <div className="flex flex-1 flex-col px-4 pb-4 pt-3 sm:px-5 sm:pb-5 sm:pt-4">
                 <div>
                   {/* Level pill */}
@@ -113,13 +120,14 @@ export default function VideoPlaylist() {
                 </div>
 
                 <div className="mt-4 flex items-center justify-between">
-                  <Link
-                    href={video.href}
-                    className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700"
+                  <button
+                    type="button"
+                    onClick={() => handlePlay(video.moduleId)}
+                    className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-white cursor-pointer"
                   >
                     <PlayCircle className="mr-1.5 h-4 w-4" />
                     Play
-                  </Link>
+                  </button>
                   <span className="text-[11px] font-medium text-slate-400">
                     {video.duration}
                   </span>

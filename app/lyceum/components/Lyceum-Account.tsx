@@ -8,9 +8,9 @@ import { Button } from "@/app/components/ui/button";
 export default function SafeRupeezAccountCTA() {
   return (
     // Removed `border-t border-slate-200` so no line appears between sections
-    <section className="w-full bg-white">
+    <section className="w-full ">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-8">
-        <div className="flex flex-col gap-4 sm:gap-3 md:flex-row md:items-center md:justify-between rounded-2xl border border-slate-100 bg-slate/80 shadow-sm px-4 py-4 sm:px-6 sm:py-5">
+        <div className="flex flex-col gap-4 sm:gap-3 md:flex-row md:items-center md:justify-between rounded-2xl border border-slate-100 bg-slate/80 shadow-sm px-4 py-4 sm:px-6 sm:py-5 bg-white/90 backdrop-blur-md">
           {/* Text block */}
           <div className="space-y-1">
             <p className="text-xs sm:text-sm font-semibold text-slate-900">

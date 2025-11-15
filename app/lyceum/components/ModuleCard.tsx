@@ -1,3 +1,4 @@
+// app/lyceum/components/ModuleCard.tsx
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { BookOpen, PlayCircle, FileText } from "lucide-react";
@@ -48,24 +49,6 @@ export function ModuleCard({ module, onViewModule, onWatchVideos, onRead }: Modu
           <BookOpen className="mr-2 h-4 w-4" />
           View module
         </Button>
-        <div className="grid grid-cols-2 gap-2 w-full">
-          <Button 
-            onClick={onWatchVideos}
-            variant="outline"
-            className="flex-1 text-black"
-          >
-            <PlayCircle className="mr-2 h-4 w-4" />
-            Watch videos
-          </Button>
-          <Button 
-            onClick={onRead}
-            variant="outline"
-            className="flex-1 text-black"
-          >
-            <FileText className="mr-2 h-4 w-4" />
-            Blog
-          </Button>
-        </div>
       </CardFooter>
     </Card>
   );

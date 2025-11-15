@@ -1,6 +1,7 @@
+// app/lyceum/components/ModuleGrid.tsx
 import { ModuleCard } from "./ModuleCard";
 import { modules } from "./data/modules";
-import { CreateModuleDialog } from "./CreateModuleDialog";
+// import { CreateModuleDialog } from "./CreateModuleDialog";
 
 
 interface ModuleGridProps {
@@ -14,7 +15,7 @@ export function ModuleGrid({ onViewModule, onWatchVideos, onRead,onCreateModule 
   return (
     <div>
       <div className="flex justify-end mb-5">
-        <CreateModuleDialog onCreateModule={onCreateModule} />
+        {/* <CreateModuleDialog onCreateModule={onCreateModule} /> */}
       </div>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {modules.map((module) => (

@@ -30,9 +30,9 @@ const Hero = () => {
           {/* Main Heading with gradient burst + underline image */}
           <h1 className="relative text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight sm:leading-tight md:leading-tight text-gray-900">
             <span className="absolute -z-10 inset-0 blur-3xl bg-gradient-to-r from-purple-300/30 via-pink-200/30 to-blue-200/30 animate-pulse"></span>
-            Pay{" "}
+            Because{" "}
             <span className="relative inline-block">
-              fast and smarter
+              Your Rupeez 
               {/* Underline image */}
               <img
                 src={UnderlineImg.src}
@@ -41,7 +41,7 @@ const Hero = () => {
               />
             </span>{" "}
             <br className="hidden sm:block" />
-            from anywhere.
+            Deserve Better.
           </h1>
 
           {/* Subtext */}

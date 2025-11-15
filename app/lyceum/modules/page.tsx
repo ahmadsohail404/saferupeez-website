@@ -1,45 +1,67 @@
 // app/lyceum/modules/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { ModuleGrid } from "../components/ModuleGrid";
 import { ModuleDetail } from "../components/ModuleDetail";
 import { VideoPlayer } from "../components/VideoPlayer";
 import { ReadContent } from "../components/ReadContent";
 
-export default function App() {
-  const [currentPage, setCurrentPage] = useState<
-    "modules" | "detail" | "videos" | "read"
-  >("modules");
+type PageMode = "modules" | "detail" | "videos" | "read";
+
+export default function ModulesPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [currentPage, setCurrentPage] = useState<PageMode>("modules");
   const [selectedModuleId, setSelectedModuleId] = useState<number | null>(null);
+
+  // Read query params and open correct view when coming from /lyceum home
+  useEffect(() => {
+    const modeParam = searchParams.get("mode") as PageMode | null;
+    const moduleIdParam = searchParams.get("moduleId");
+    const moduleId = moduleIdParam ? Number(moduleIdParam) : null;
+
+    if (
+      moduleId &&
+      ["detail", "videos", "read"].includes(modeParam || "")
+    ) {
+      setSelectedModuleId(moduleId);
+      setCurrentPage(modeParam as PageMode);
+    }
+  }, [searchParams]);
 
   const navigateToModuleDetail = (moduleId: number) => {
     setSelectedModuleId(moduleId);
     setCurrentPage("detail");
+    router.push(`/lyceum/modules?mode=detail&moduleId=${moduleId}`);
   };
 
   const navigateToVideos = (moduleId: number) => {
     setSelectedModuleId(moduleId);
     setCurrentPage("videos");
+    router.push(`/lyceum/modules?mode=videos&moduleId=${moduleId}`);
   };
 
   const navigateToRead = (moduleId: number) => {
     setSelectedModuleId(moduleId);
     setCurrentPage("read");
+    router.push(`/lyceum/modules?mode=read&moduleId=${moduleId}`);
   };
 
   const navigateToModules = () => {
     setCurrentPage("modules");
     setSelectedModuleId(null);
+    router.push("/lyceum/modules");
   };
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Same horizontal container + padding as Navbar & Footer */}
-      <main className="container mx-auto px-4 sm:px-6 lg:px-12 py-10 sm:py-12">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-12 py-12 text-black">
         {currentPage === "modules" && (
           <>
-            <div className="mb-8 text-black">
+            <div className="mb-8">
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1]">
                 Lyceum Modules
               </h1>

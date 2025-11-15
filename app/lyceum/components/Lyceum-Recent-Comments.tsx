@@ -51,7 +51,7 @@ const comments = [
 
 export default function RecentComments() {
   return (
-    <section className="relative overflow-hidden bg-white pt-10 sm:pt-14 md:pt-16 pb-10 sm:pb-14 md:pb-16">
+    <section className="relative overflow-hidden pt-10 sm:pt-14 md:pt-16 pb-10 sm:pb-14 md:pb-16">
       {/* Background blurry glows (same as HERO / VIDEOS) */}
       <div className="absolute top-10 right-8 h-64 w-64 rounded-full bg-white-300/40 blur-[130px]" />
       <div className="absolute bottom-10 left-8 h-64 w-64 rounded-full bg-white-300/40 blur-[130px]" />

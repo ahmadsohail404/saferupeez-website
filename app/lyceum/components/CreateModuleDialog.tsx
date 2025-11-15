@@ -374,9 +374,9 @@ export function CreateModuleDialog({ onCreateModule }: CreateModuleDialogProps) 
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit} className="bg-gray-900 hover:bg-gray-800">
+          {/* <Button onClick={handleSubmit} className="bg-gray-900 hover:bg-gray-800">
             Create Module
-          </Button>
+          </Button> */}
         </DialogFooter>
       </DialogContent>
     </Dialog>
