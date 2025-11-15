@@ -1,14 +1,21 @@
 // app/lyceum/page.tsx
 "use client";
+
 import LyceumVideos from "./components/Lyceum-Videos";
-import Hero from "../lyceum/components/Lyceum-Hero";
-const page = () => {
+import Hero from "./components/Lyceum-Hero";
+import RecentComments from "./components/Lyceum-Recent-Comments";
+import SafeRupeezAccountCTA from "./components/Lyceum-Account";
+
+const Page = () => {
   return (
     <div>
-      <Hero/>
+      <Hero />
       <LyceumVideos />
+      <RecentComments />
+      <SafeRupeezAccountCTA />
+    
     </div>
   );
 };
 
-export default page;
+export default Page;

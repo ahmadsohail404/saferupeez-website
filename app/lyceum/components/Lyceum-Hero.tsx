@@ -5,11 +5,7 @@ import { BookOpen, ArrowRight, CheckCircle2, PlayCircle } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-amber-50 via-white to-purple-50/40 py-8 sm:py-12 md:py-20 lg:py-28 flex items-center">
-      {/* Background gradients */}
-      <div className="absolute top-10 right-4 sm:right-8 md:right-16 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-purple-300/40 blur-[100px] sm:blur-[120px] md:blur-[140px] rounded-full" />
-      <div className="absolute bottom-10 left-4 sm:left-8 md:left-16 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-amber-300/40 blur-[100px] sm:blur-[120px] md:blur-[140px] rounded-full" />
-
+    <section className="relative overflow-hidden bg-white py-8 sm:py-12 md:py-20 lg:py-28 flex items-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10 grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-10 lg:gap-14 items-center">
         {/* ---------- Left Section ---------- */}
         <div className="space-y-6 sm:space-y-8 md:space-y-10 text-center lg:text-left animate-fade-in-up">
@@ -41,7 +37,7 @@ const Hero = () => {
           {/* Buttons */}
           <div className="flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 mt-6 sm:mt-8">
             {/* Start Learning Button */}
-            <button className="flex items-center gap-2 sm:gap-3  bg-black px-6 sm:px-8 h-10 sm:h-12 rounded-xl sm:rounded-2xl backdrop-blur-md border border-purple-300/60 shadow-lg shadow-purple-300/40 transition-all duration-300 transform hover:scale-[1.03]">
+            <button className="flex items-center gap-2 sm:gap-3 bg-black px-6 sm:px-8 h-10 sm:h-12 rounded-xl sm:rounded-2xl backdrop-blur-md border border-purple-300/60 shadow-lg shadow-purple-300/40 transition-all duration-300 transform hover:scale-[1.03]">
               <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               <span className="text-sm sm:text-base font-semibold text-white">
                 Start learning free
@@ -81,23 +77,15 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* ---------- Right Section (SVG Illustration) ---------- */}
+        {/* ---------- Right Section (Illustration only) ---------- */}
         <div className="relative mt-8 lg:mt-0 flex justify-center lg:justify-end">
-          <div className="relative w-[260px] sm:w-[320px] md:w-[460px] lg:w-[520px]">
-            {/* Soft glow behind card */}
-            <div
-              className="absolute inset-0 bg-gradient-to-tr from-purple-200/60 via-amber-100/60 to-blue-100/60 blur-3xl rounded-[2rem]"
-              aria-hidden="true"
+          <div className="relative w-[300px] sm:w-[360px] md:w-[520px] lg:w-[580px]">
+            <img
+              src="/assets/mymy.png"
+              alt="Illustration of a learner exploring stock market and finance lessons online"
+              className="w-full h-auto"
+              loading="lazy"
             />
-            {/* Illustration card */}
-            <div className="relative rounded-[1.75rem] bg-white/80 border border-slate-200 shadow-2xl shadow-purple-100/60 p-4 sm:p-6">
-              <img
-                src="https://img.freepik.com/premium-vector/boy-sitting-table-reading-book_1278800-4559.jpg"
-                alt="Illustration of a learner exploring stock market and finance lessons online"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
           </div>
         </div>
       </div>

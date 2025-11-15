@@ -1,12 +1,10 @@
+// app/lyceum/components/Lyceum-Footer.tsx
 "use client";
-
-import { Button } from "@/app/components/ui/button";
-import { Apple, PlayCircle } from "lucide-react";
 
 export default function LyceumFooter() {
   return (
-    <footer className="w-full border-t border-slate-200 bg-gradient-to-r from-[#fff7e6] via-white to-[#f5edff]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+    <footer className="w-full border-top border-slate-200 bg-white border-t">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-4 sm:py-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         {/* Left: Text */}
         <div className="max-w-xl text-xs sm:text-sm text-slate-600 leading-relaxed text-center md:text-left">
           <p className="font-semibold text-slate-900 mb-1">
@@ -26,6 +24,9 @@ export default function LyceumFooter() {
             .
           </p>
         </div>
+
+        {/* Right: placeholder (add buttons/links/links later if you want) */}
+        <div className="flex justify-center md:justify-end" />
       </div>
     </footer>
   );

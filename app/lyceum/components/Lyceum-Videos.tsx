@@ -1,4 +1,4 @@
-// app/components/VideoPlaylist.tsx
+// app/lyceum/components/Videos.tsx
 "use client";
 
 import Link from "next/link";
@@ -46,14 +46,15 @@ const videos = [
 
 export default function VideoPlaylist() {
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-br from-amber-50 via-white to-purple-50/40 py-10 sm:py-14 md:py-16">
+    <section className="relative w-full overflow-hidden bg-white py-10 sm:py-14 md:py-16">
       {/* Background gradients (same style as Hero) */}
-      <div className="pointer-events-none absolute top-10 right-4 sm:right-8 md:right-16 h-48 w-48 rounded-full bg-purple-300/40 blur-[100px] sm:h-64 sm:w-64 sm:blur-[120px] md:h-96 md:w-96 md:blur-[140px]" />
-      <div className="pointer-events-none absolute bottom-10 left-4 sm:left-8 md:left-16 h-48 w-48 rounded-full bg-amber-300/40 blur-[100px] sm:h-64 sm:w-64 sm:blur-[120px] md:h-96 md:w-96 md:blur-[140px]" />
+      <div className="pointer-events-none absolute top-10 right-4 sm:right-8 md:right-16 h-48 w-48 rounded-full bg-white blur-[100px] sm:h-64 sm:w-64 sm:blur-[120px] md:h-96 md:w-96 md:blur-[140px]" />
+      <div className="pointer-events-none absolute bottom-10 left-4 sm:left-8 md:left-16 h-48 w-48 rounded-full bg-white-300/40 blur-[100px] sm:h-64 sm:w-64 sm:blur-[120px] md:h-96 md:w-96 md:blur-[140px]" />
 
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 md:px-6 lg:px-8">
+      {/* MATCHING HERO MARGINS */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         {/* Section heading */}
-        <div className="mb-6 flex items-end justify-between gap-4">
+        <div className="mb-8 flex items-end justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-purple-600">
               Learn with videos
@@ -62,21 +63,19 @@ export default function VideoPlaylist() {
               Videos
             </h2>
             <p className="mt-1 max-w-xl text-sm text-slate-600">
-              Bite-sized lessons to help you understand markets, one concept at a time.
+              Bite-sized lessons to help you understand markets, one concept at
+              a time.
             </p>
           </div>
         </div>
 
         {/* Cards */}
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {videos.map((video) => (
             <Card
               key={video.id}
-              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white/90 shadow-sm backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:border-blue-500/70 hover:shadow-xl"
+              className="group flex h-full min-h-[340px] sm:min-h-[360px] md:min-h-[400px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white/90 shadow-md backdrop-blur-sm transition-all duration-200 hover:-translate-y-1.5 hover:border-blue-500/70 hover:shadow-xl"
             >
-              {/* Gradient accent bar
-              <div className="h-1 w-full bg-gradient-to-r from-blue-500 via-emerald-400 to-purple-500" /> */}
-
               {/* Thumbnail */}
               <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100">
                 <img
@@ -95,23 +94,25 @@ export default function VideoPlaylist() {
               </div>
 
               {/* Text + Play link */}
-              <div className="flex flex-1 flex-col px-4 py-3">
-                {/* Level pill */}
-                {/* <span className="mb-1 inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
-                  {video.level} • Video lesson
-                </span> */}
+              <div className="flex flex-1 flex-col px-4 pb-4 pt-3 sm:px-5 sm:pb-5 sm:pt-4">
+                <div>
+                  {/* Level pill */}
+                  <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
+                    {video.level} • Video lesson
+                  </span>
 
-                <p className="line-clamp-2 text-sm font-semibold leading-snug text-slate-900">
-                  {video.title}
-                </p>
-
-                {video.description && (
-                  <p className="mt-1 line-clamp-2 text-xs leading-snug text-slate-500">
-                    {video.description}
+                  <p className="mt-2 text-[14px] sm:text-sm font-semibold leading-snug text-slate-900 line-clamp-3">
+                    {video.title}
                   </p>
-                )}
 
-                <div className="mt-3 flex items-center justify-between">
+                  {video.description && (
+                    <p className="mt-2 text-[12px] sm:text-xs leading-snug text-slate-500 line-clamp-4">
+                      {video.description}
+                    </p>
+                  )}
+                </div>
+
+                <div className="mt-4 flex items-center justify-between">
                   <Link
                     href={video.href}
                     className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700"
