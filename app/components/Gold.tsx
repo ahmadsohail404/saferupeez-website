@@ -1,3 +1,5 @@
+// app/components/Gold.tsx
+
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -164,7 +166,7 @@ export function Gold() {
     purity === "24k" ? gold24 : purity === "22k" ? gold22 : gold18;
 
   return (
-    <div className="w-full flex justify-center bg-gradient-to-b from-[#f5edff] to-[#fff7e6] pb-20">
+    <div className="w-full flex justify-center bg-linear-to-b from-[#f5edff] to-[#fff7e6] pb-20">
       <div className="w-full max-w-[1100px] px-4">
         {/* HEADER */}
         <motion.div
@@ -189,7 +191,7 @@ export function Gold() {
 
         {/* GOLD PRICE CARDS */}
         <Card className="bg-white shadow-lg p-6 rounded-2xl min-h-[280px] mb-10 border border-purple-100">
-          <p className="text-left text-3xl md:text-1xl font-bold text-black font-semibold text-black-600 mb-4">
+          <p className="text-left text-3xl md:text-1xl font-bold text-black text-black-600 mb-4">
             Showing Gold Prices For India
           </p>
 
@@ -214,10 +216,10 @@ export function Gold() {
             ].map((item) => (
               <Card
                 key={item.karat}
-                className="bg-gradient-to-br from-[#fff7e6] to-[#fff1cc] border border-amber-200 p-4 py-6 min-h-[165px] rounded-xl shadow-sm flex flex-col items-center justify-center gap-2"
+                className="bg-linear-to-br from-[#fff7e6] to-[#fff1cc] border border-amber-200 p-4 py-6 min-h-[165px] rounded-xl shadow-sm flex flex-col items-center justify-center gap-2"
               >
                 <div
-                  className={`w-14 h-14 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow`}
+                  className={`w-14 h-14 rounded-xl bg-linear-to-br ${item.gradient} flex items-center justify-center shadow`}
                 >
                   <span className="text-white font-bold">{item.karat}</span>
                 </div>
@@ -241,7 +243,7 @@ export function Gold() {
             {/* Header */}
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-3xl md:text-3xl font-bold text-[#2e1a47]">
-                Today's Gold Price
+                Today&apos;s Gold Price
               </h3>
 
               {/* DROPDOWN */}
@@ -320,7 +322,7 @@ export function Gold() {
 
           {/* SIDEBAR */}
           <div className="space-y-6">
-            <Card className="bg-gradient-to-br from-yellow-150 to-yellow-200 text-black p-6 rounded-2xl min-h-[200px] shadow-lg">
+            <Card className="bg-linear-to-br from-yellow-150 to-yellow-200 text-black p-6 rounded-2xl min-h-[200px] shadow-lg">
               <div className="w-16 h-16 mx-auto rounded-xl bg-black/20 flex items-center justify-center mb-3">
                 <TrendingUp className="w-7 h-7 text-white border-b " />
               </div>
@@ -386,8 +388,8 @@ export function Gold() {
           <h3 className="font-semibold text-3xl text-[#2e1a47] mb-2">
             Gold Price by Weight
           </h3>
-          <p className="text-1xl md:text-1xl font-bold text-black text-slate-600 mb-4">
-            See today's updated gold prices.
+          <p className="text-1xl md:text-1xl font-bold text-black mb-4">
+            See today&apos;s updated gold prices.
           </p>
 
           <div className="overflow-x-auto">
@@ -423,7 +425,7 @@ export function Gold() {
           <h3 className="font-semibold text-3xl text-[#2e1a47] mb-2">
             Gold Price History
           </h3>
-          <p className="text-1xl md:text-1xl font-bold text-black text-slate-600 mb-4">
+          <p className="text-1xl md:text-1xl font-bold text-black mb-4">
             See how gold prices have changed recently.
           </p>
 
@@ -472,13 +474,13 @@ export function Gold() {
           <h3 className="font-semibold text-3xl text-[#2e1a47] mb-1">
             Gold Savings Calculator
           </h3>
-          <p className="text-1xl md:text-1xl font-bold text-black text-slate-600 mb-6">
+          <p className="text-1xl md:text-1xl font-bold text-black mb-6">
             Estimate your gold savings easily.
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* CHART */}
-            <Card className="bg-gradient-to-br from-yellow-200 to-yellow-250 text-white p-6 rounded-2xl shadow-md min-h-[320px]">
+            <Card className="bg-linear-to-br from-yellow-200 to-yellow-250 text-white p-6 rounded-2xl shadow-md min-h-80">
               <div className="h-72">
                 <ResponsiveContainer width="100%" height="140%">
                   <BarChart data={savingsChartData}>
@@ -567,7 +569,7 @@ export function Gold() {
 
               {/* Expected annual return selector */}
               <div className="space-y-1">
-                <label className="text-xs font-medium font-bold text-black">
+                <label className="text-xs font-medium text-black">
                   Expected annual return (%)
                 </label>
 

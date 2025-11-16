@@ -5,7 +5,7 @@ import {
   Target,
   Eye,
   Linkedin,
-  Mail,         // ⬅️ replaced Twitter with Mail
+  Mail, // ⬅️ replaced Twitter with Mail
   TrendingUp,
   Shield,
   Zap,
@@ -14,31 +14,31 @@ import {
 export default function AboutUs() {
   const leaders = [
     {
-      name: "Mourya Manohar",
-      position: "Chief Executive Officer",
+      name: "Mourya N Manohar",
+      position: "Co-Founder & Director",
       image:
         "https://media.licdn.com/dms/image/v2/D5603AQHgx4U0uNB-DQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1723167084482?e=1764806400&v=beta&t=Xswtu8bMJaM0tfE95Va0vcK3aqg8lrwvgLdzPKfFItU",
       bio: "Founder of Jyesta Corporate Entity, on a mission to bridge learning and finance through innovation.We’re redefining EdTech today and shaping FinTech tomorrow — empowering the next generation with tools to learn, grow, and succeed.Move fast. Think bold. Waste no time. That’s the Jyesta mindset.",
       linkedin: "https://www.linkedin.com/in/mourya-n-manohar-803115236/",
-      email: "mailto:info@jyesta.com", // ⬅️ use your real email here
+      email: "mailto:mourya@saferupeez.com",
     },
     {
       name: "Sohail Ahmad",
-      position: "Chief Technology Officer",
+      position: "Co-Founder & Director",
       image:
         "https://media.licdn.com/dms/image/v2/D5603AQFX3i02b-AmAg/profile-displayphoto-scale_200_200/B56Zm1wn5bIsAY-/0/1759691047613?e=1764806400&v=beta&t=9NYC1_Bh-eLToXLTCbO7vjvQk1M91W-5OXnGZQvwxBw",
       bio: "Co-Founder & CTO at Jyesta, where we’re reimagining how people learn, grow, and get ready for what’s next.At Jyesta, we’re building intelligent learning ecosystems that connect educators, and professionals turning knowledge into capability. Our belief is simple: learning should feel alive, adaptive, data-driven and built for the pace of the real world.",
       linkedin: "https://www.linkedin.com/in/ahmadsohail404/",
-      email: "mailto:info@jyesta.com",
+      email: "mailto:sohail@saferupeez.com",
     },
     {
-      name: "Nesar H Kumar",
-      position: "Chief Financial Officer",
+      name: "Nesara H Kumar",
+      position: "Co-Founder & Director",
       image:
         "https://media.licdn.com/dms/image/v2/D5603AQFoVEFIEIevSA/profile-displayphoto-shrink_200_200/B56ZOlBsYjGkAY-/0/1733640508937?e=1764806400&v=beta&t=VJyCEy74h4Os_h3M7CjFgzmX1_JLmI5BS0fW9ds5NvI",
-      bio: "Entrepreneur passionate about building positive financial habits. As a Co-founder at Safe Rupeez, we're creating a platform where young Indians can effortlessly start their savings journey – initially via familiar routes like digital gold & silver – and progressively build towards a secure financial future, including foundational products like FDs.",
+      bio: "Entrepreneur passionate about building positive financial habits. As a Co-founder at Safe Rupeez, we're creating a platform where young Indians can effortlessly start their savings journey – initially via familiar routes like digital gold & silver – and progressively build towards a secure financial future, including foundational products like FD.",
       linkedin: "https://www.linkedin.com/in/nesara-h-kumar/",
-      email: "mailto:info@jyesta.com",
+      email: "mailto:nesara@saferupeez.com",
     },
   ];
 

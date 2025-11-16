@@ -1,7 +1,7 @@
 // app/lyceum/modules/page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ModuleGrid } from "../components/ModuleGrid";
 import { ModuleDetail } from "../components/ModuleDetail";
@@ -11,27 +11,50 @@ import { ReadContent } from "../components/ReadContent";
 type PageMode = "modules" | "detail" | "videos" | "read";
 
 export default function ModulesPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white">
+          <main className="container mx-auto px-4 sm:px-6 lg:px-12 py-12 text-black">
+            <div className="animate-pulse space-y-4">
+              <div className="h-10 w-64 bg-slate-200 rounded" />
+              <div className="h-5 w-full max-w-xl bg-slate-200 rounded" />
+              <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="h-40 bg-slate-200 rounded-xl" />
+                <div className="h-40 bg-slate-200 rounded-xl" />
+                <div className="h-40 bg-slate-200 rounded-xl" />
+              </div>
+            </div>
+          </main>
+        </div>
+      }
+    >
+      <ModulesPageInner />
+    </Suspense>
+  );
+}
+
+function ModulesPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [currentPage, setCurrentPage] = useState<PageMode>("modules");
-  const [selectedModuleId, setSelectedModuleId] = useState<number | null>(null);
+  // ---- derive initial state from URL once ----
+  const modeParam = searchParams.get("mode") as PageMode | null;
+  const moduleIdParam = searchParams.get("moduleId");
+  const parsedModuleId = moduleIdParam ? Number(moduleIdParam) : null;
 
-  // Read query params and open correct view when coming from /lyceum home
-  useEffect(() => {
-    const modeParam = searchParams.get("mode") as PageMode | null;
-    const moduleIdParam = searchParams.get("moduleId");
-    const moduleId = moduleIdParam ? Number(moduleIdParam) : null;
+  const hasValidDeepLink =
+    !!parsedModuleId && ["detail", "videos", "read"].includes(modeParam || "");
 
-    if (
-      moduleId &&
-      ["detail", "videos", "read"].includes(modeParam || "")
-    ) {
-      setSelectedModuleId(moduleId);
-      setCurrentPage(modeParam as PageMode);
-    }
-  }, [searchParams]);
+  const [currentPage, setCurrentPage] = useState<PageMode>(
+    hasValidDeepLink ? (modeParam as PageMode) : "modules"
+  );
 
+  const [selectedModuleId, setSelectedModuleId] = useState<number | null>(
+    hasValidDeepLink ? parsedModuleId : null
+  );
+
+  // ---- navigation helpers ----
   const navigateToModuleDetail = (moduleId: number) => {
     setSelectedModuleId(moduleId);
     setCurrentPage("detail");

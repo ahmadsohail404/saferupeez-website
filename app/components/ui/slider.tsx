@@ -1,12 +1,18 @@
+// app/components/ui/slider.tsx
+
 "use client";
 
 import * as React from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import { cn } from "@/app/lib/utils";
 
-// -----------------------------------------
-// CLEAN, FIXED, PREMIUM SLIDER COMPONENT
-// -----------------------------------------
+// Extend props to include your custom className overrides
+type SliderProps = React.ComponentProps<typeof SliderPrimitive.Root> & {
+  thumbClassName?: string;
+  trackClassName?: string;
+  rangeClassName?: string;
+};
+
 export function Slider({
   className,
   defaultValue,
@@ -14,8 +20,11 @@ export function Slider({
   min = 0,
   max = 100,
   step,
+  thumbClassName,
+  trackClassName,
+  rangeClassName,
   ...props
-}: React.ComponentProps<typeof SliderPrimitive.Root>) {
+}: SliderProps) {
   const _values = React.useMemo(
     () =>
       Array.isArray(value)
@@ -39,25 +48,30 @@ export function Slider({
         className
       )}
     >
-      {/* TRACK (the background line) */}
+      {/* TRACK */}
       <SliderPrimitive.Track
         className={cn(
-          "relative w-full h-2 bg-slate-300 rounded-full overflow-hidden"
+          "relative w-full h-2 bg-slate-300 rounded-full overflow-hidden",
+          trackClassName
         )}
       >
-        {/* RANGE (filled colored section) */}
+        {/* RANGE */}
         <SliderPrimitive.Range
-          className={cn("absolute h-full bg-black rounded-full")}
+          className={cn(
+            "absolute h-full bg-black rounded-full",
+            rangeClassName
+          )}
         />
       </SliderPrimitive.Track>
 
-      {/* ONE SINGLE PREMIUM THUMB */}
+      {/* THUMBS */}
       {_values.map((_, i) => (
         <SliderPrimitive.Thumb
           key={i}
           className={cn(
             "block h-5 w-5 rounded-full bg-black border-2 border-white shadow-lg",
-            "cursor-pointer focus:outline-none focus:ring-4 focus:ring-black"
+            "cursor-pointer focus:outline-none focus:ring-4 focus:ring-black",
+            thumbClassName
           )}
         />
       ))}

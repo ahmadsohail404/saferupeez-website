@@ -7,7 +7,7 @@ import { Input } from "@/app/components/ui/input";
 import { Slider } from "@/app/components/ui/slider";
 import { TrendingUp } from "lucide-react";
 
-export function LumpsumCalculator() {
+export default function LumpsumCalculator() {
   const [investment, setInvestment] = useState<number[]>([100000]);
   const [returnRate, setReturnRate] = useState<number[]>([10]);
   const [timePeriod, setTimePeriod] = useState<number[]>([5]);

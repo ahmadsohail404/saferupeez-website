@@ -2,11 +2,17 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { X, Key, Check, AlertCircle, Phone } from "lucide-react";
+import { X, Key, Check, AlertCircle } from "lucide-react";
 
 /* --------------------- INPUT COMPONENT --------------------- */
-const Input = React.forwardRef(
-  ({ icon: Icon, error, className, ...props }, ref) => (
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>> | React.ElementType;
+  error?: string | boolean;
+  className?: string;
+}
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ icon: Icon, error, className = "", ...props }, ref) => (
     <div className="relative w-full">
       {Icon && (
         <Icon className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 peer-focus:text-black transition" />
@@ -33,7 +39,19 @@ const Input = React.forwardRef(
 Input.displayName = "Input";
 
 /* --------------------- BUTTON --------------------- */
-const Button = ({ children, loading, disabled, className, ...props }) => (
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  loading?: boolean;
+  children?: React.ReactNode;
+  className?: string;
+}
+
+const Button: React.FC<ButtonProps> = ({
+  children,
+  loading,
+  disabled,
+  className = "",
+  ...props
+}) => (
   <button
     disabled={disabled || loading}
     className={`h-12 w-full rounded-lg bg-black text-white text-base font-semibold 
@@ -60,7 +78,7 @@ const Button = ({ children, loading, disabled, className, ...props }) => (
 
 const LoginSignup = ({ onClose = () => {} }) => {
   const router = useRouter();
-  const modalRef = useRef(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   const [step, setStep] = useState(1);
   const [mobile, setMobile] = useState("");
@@ -73,8 +91,9 @@ const LoginSignup = ({ onClose = () => {} }) => {
 
   /* ---------- CLOSE ON OUTSIDE CLICK ---------- */
   useEffect(() => {
-    const handleClick = (e) => {
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
+    const handleClick = (e: MouseEvent) => {
+      // e.target is EventTarget | null, cast to Node for contains()
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
         onClose();
       }
     };
@@ -84,7 +103,7 @@ const LoginSignup = ({ onClose = () => {} }) => {
 
   /* ---------- CLOSE ON ESC ---------- */
   useEffect(() => {
-    const handleEsc = (e) => {
+    const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", handleEsc);
@@ -93,13 +112,13 @@ const LoginSignup = ({ onClose = () => {} }) => {
 
   /* ---------- TIMER ---------- */
   useEffect(() => {
-    let t;
+    let t: string | number | NodeJS.Timeout | undefined;
     if (timer > 0) t = setTimeout(() => setTimer(timer - 1), 1000);
     return () => clearTimeout(t);
   }, [timer]);
 
   /* ---------- SEND OTP ---------- */
-  const sendOTP = (e) => {
+  const sendOTP = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 
@@ -117,7 +136,7 @@ const LoginSignup = ({ onClose = () => {} }) => {
   };
 
   /* ---------- VERIFY OTP ---------- */
-  const verifyOTP = (e) => {
+  const verifyOTP = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 

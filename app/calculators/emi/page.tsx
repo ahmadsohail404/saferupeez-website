@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/app/components/ui/card";
@@ -7,7 +8,7 @@ import { Input } from "@/app/components/ui/input";
 import { Slider } from "@/app/components/ui/slider";
 import { CreditCard } from "lucide-react";
 
-export function EMICalculator() {
+export default function EMICalculator() {
   const [loanAmount, setLoanAmount] = useState<number[]>([1500000]);
   const [interestRate, setInterestRate] = useState<number[]>([9]);
   const [tenure, setTenure] = useState<number[]>([15]);
@@ -195,9 +196,9 @@ export function EMICalculator() {
           {/* Output Cards (Fully Responsive) */}
           <div className="flex flex-wrap gap-6 w-full">
             {/* EMI */}
-            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-lg">
+            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-linear-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-lg">
               <p className="text-red-700 text-md mb-2">Monthly EMI</p>
-              <p className="text-3xl md:text-4xl font-semibold text-slate-900 break-words leading-tight">
+              <p className="text-3xl md:text-4xl font-semibold text-slate-900 wrap-break-word leading-tight">
                 ₹
                 {emi.toLocaleString("en-IN", {
                   maximumFractionDigits: 0,
@@ -206,9 +207,9 @@ export function EMICalculator() {
             </Card>
 
             {/* Total Interest */}
-            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-lg">
+            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-linear-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-lg">
               <p className="text-red-700 text-md mb-2">Total Interest</p>
-              <p className="text-3xl md:text-4xl font-semibold text-slate-900 break-words leading-tight">
+              <p className="text-3xl md:text-4xl font-semibold text-slate-900 wrap-break-word leading-tight">
                 ₹
                 {totalInterest.toLocaleString("en-IN", {
                   maximumFractionDigits: 0,
@@ -217,9 +218,9 @@ export function EMICalculator() {
             </Card>
 
             {/* Total Payment */}
-            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-lg">
+            <Card className="flex-1 min-w-[260px] p-6 rounded-3xl bg-linear-to-br from-amber-50 to-yellow-100 border border-amber-200 shadow-lg">
               <p className="text-red-700 text-md mb-2">Total Payment</p>
-              <p className="text-3xl md:text-4xl font-semibold text-slate-900 break-words leading-tight">
+              <p className="text-3xl md:text-4xl font-semibold text-slate-900 wrap-break-word leading-tight">
                 ₹
                 {totalPayment.toLocaleString("en-IN", {
                   maximumFractionDigits: 0,
@@ -229,7 +230,7 @@ export function EMICalculator() {
           </div>
 
           {/* Large EMI Card */}
-          <Card className="p-10 bg-gradient-to-br from-amber-50 to-yellow-100 border border-amber-200 text-slate-900 rounded-3xl shadow-xl transform hover:scale-[1.02] transition-all">
+          <Card className="p-10 bg-linear-to-br from-amber-50 to-yellow-100 border border-amber-200 text-slate-900 rounded-3xl shadow-xl transform hover:scale-[1.02] transition-all">
             <div className="text-center">
               <p className="text-red-700 text-md mb-2">Your Monthly EMI</p>
               <p className="text-5xl font-bold mb-6">
