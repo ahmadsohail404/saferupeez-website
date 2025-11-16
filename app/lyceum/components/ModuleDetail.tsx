@@ -1,4 +1,6 @@
 // app/lyceum/components/ModuleDetail.tsx
+"use client";
+
 import { useState } from "react";
 import { Button } from "@/app/components/ui/button";
 import {
@@ -15,34 +17,61 @@ import {
   TabsTrigger,
 } from "@/app/components/ui/tabs";
 import { ArrowLeft, PlayCircle, FileText } from "lucide-react";
-import { modules } from "./data/modules";
+import type { LyceumModule } from "@/lib/lyceumSanity";
 
 interface ModuleDetailProps {
-  moduleId: number;
+  module: LyceumModule;
   onBack: () => void;
-  onWatchVideos: () => void;
+  onWatchVideos: () => void; // still in props for compatibility
   onRead: () => void;
 }
 
 export function ModuleDetail({
-  moduleId,
+  module: modulee,
   onBack,
-  onWatchVideos,
+  onWatchVideos: _onWatchVideos, // underscore = silence unused-var lint
   onRead,
 }: ModuleDetailProps) {
-  const modulee = modules.find((m) => m.id === moduleId);
+  // We assume modulee always exists (prop is required).
+  const hasChapters = modulee.chapterList && modulee.chapterList.length > 0;
 
-  if (!modulee) {
-    return <div className="text-slate-900">Module not found</div>;
+  // Sanity chapter IDs are strings (from _key), so use string | null
+  const [activeVideoChapterId, setActiveVideoChapterId] = useState<string | null>(
+    () => (hasChapters ? String(modulee.chapterList[0].id) : null)
+  );
+
+  const activeVideoChapter = hasChapters
+    ? modulee.chapterList.find((c) => String(c.id) === activeVideoChapterId) ?? null
+    : null;
+
+  // If there are no chapters, show a simple state
+  if (!hasChapters) {
+    return (
+      <div className="w-full text-slate-900">
+        <Button
+          variant="ghost"
+          onClick={onBack}
+          className="mt-0 mb-6 p-0 text-primary cursor-pointer hover:bg-slate-200"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to all modules
+        </Button>
+
+        <div className="mb-8">
+          <h1 className="text-2xl md:text-3xl font-semibold mb-3">
+            {modulee.title}
+          </h1>
+          <p className="text-sm md:text-base text-slate-600">
+            {modulee.description}
+          </p>
+        </div>
+
+        <p className="text-sm text-slate-500">
+          This module doesn&apos;t have any chapters yet. Please check back later.
+        </p>
+      </div>
+    );
   }
-
-  const [activeVideoChapterId, setActiveVideoChapterId] = useState<number | null>(
-    modulee.chapterList[0]?.id ?? null
-  );
-
-  const activeVideoChapter = modulee.chapterList.find(
-    (c) => c.id === activeVideoChapterId
-  );
 
   return (
     <div className="w-full text-slate-900">
@@ -67,12 +96,12 @@ export function ModuleDetail({
       </div>
 
       <Tabs defaultValue="videos" className="w-full">
-        {/* -------- BLACK GLASS TABS (big size, no background rail) -------- */}
+        {/* -------- BLACK GLASS TABS -------- */}
         <TabsList
           className="
             mb-16
             flex
-            w-full max-w-8xl
+            w-full max-w-5xl
             mx-auto
             gap-3
             bg-transparent
@@ -166,13 +195,13 @@ export function ModuleDetail({
             {/* LEFT: Chapter list */}
             <div className="space-y-4">
               {modulee.chapterList.map((chapter, index) => {
-                const isActive = chapter.id === activeVideoChapterId;
+                const isActive = String(chapter.id) === activeVideoChapterId;
                 return (
                   <Card
                     key={chapter.id}
                     role="button"
                     tabIndex={0}
-                    onClick={() => setActiveVideoChapterId(chapter.id)}
+                    onClick={() => setActiveVideoChapterId(String(chapter.id))}
                     className={`group flex flex-col overflow-hidden rounded-2xl border bg-white/90 shadow-md backdrop-blur-sm transition-all duration-200 hover:-translate-y-1.5 hover:border-blue-500/70 hover:shadow-xl cursor-pointer ${
                       isActive
                         ? "border-blue-500/80 shadow-blue-200"
@@ -192,7 +221,7 @@ export function ModuleDetail({
                           variant="outline"
                           onClick={(e) => {
                             e.stopPropagation();
-                            setActiveVideoChapterId(chapter.id);
+                            setActiveVideoChapterId(String(chapter.id));
                           }}
                           className="gap-2 cursor-pointer"
                         >
@@ -238,8 +267,7 @@ export function ModuleDetail({
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center px-4 text-center text-sm text-slate-200">
-                      No video available for this chapter. Please select
-                      another.
+                      No video available for this chapter. Please select another.
                     </div>
                   )}
                 </div>
