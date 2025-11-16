@@ -5,7 +5,7 @@ import Stepper from "./components/Stepper";
 import Banks from "./components/Banks";
 import FAQ from "./components/Faq";
 import FlexibleSavingPartner from "./components/FlexibleSavingsPartner";
-import ReviewsSection from "./components/Reviews";
+// import ReviewsSection from "./components/Reviews";
 export default function Home() {
   return (
     <div>
@@ -13,7 +13,7 @@ export default function Home() {
       <Banks />
       <Stepper />
       <FlexibleSavingPartner />
-      <ReviewsSection />
+      {/* <ReviewsSection /> */}
       <FAQ />
     </div>
   );

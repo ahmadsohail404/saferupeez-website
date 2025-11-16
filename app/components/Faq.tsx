@@ -23,26 +23,25 @@ export default function FAQ() {
     setOpenSection((prev) => (prev === sectionTitle ? null : sectionTitle));
   };
 
-
   const faqs: FAQItem[] = [
     /* ------------------ Section 1: Getting Started ------------------ */
     {
       section: "Getting Started",
       question: "What is Saferupeez?",
       answer:
-        "Saferupeez (by Jyesta Fintech Pvt. Ltd.) is a savings and investment platform. We are not a bank; we are a technology company that helps you build a habit of saving in 24K Digital Gold & Silver via SIPs or one-time purchases, and build a foundation by investing those savings into high-yield, secure Fixed Deposits (FDs) from RBI-regulated banks. Our mission is to be your single, trusted partner to help you start simple and build smart.",
+        "Saferupeez (by Jyesta Fintech Pvt. Ltd.) is a savings and investment platform. We are not a bank; we are a technology company that helps you build a habit of saving in 24K Digital Gold & Silver via SIPs or one-time purchases, and build a foundation by investing those savings into high-yield, secure Fixed Deposits (FD) from RBI-regulated banks. Our mission is to be your single, trusted partner to help you start simple and build smart.",
     },
     {
       section: "Getting Started",
       question: "Is my money safe with Saferupeez?",
       answer:
-        "Yes. Your security is our #1 priority, and your money is always held with regulated partners. For Fixed Deposits, your money is sent directly to the RBI-regulated bank you choose, and FDs with banks are insured by the DICGC for up to ₹5,00,000 per user, per bank. For Digital Gold/Silver, your investment is backed by 24K physical gold or silver, held in secure vaults by our partner Augmont and monitored by an independent trustee.",
+        "Yes. Your security is our #1 priority, and your money is always held with regulated partners. For Fixed Deposits, your money is sent directly to the RBI-regulated bank you choose, and FD with banks are insured by the DICGC for up to ₹5,00,000 per user, per bank. For Digital Gold/Silver, your investment is backed by 24K physical gold or silver, held in secure vaults by our partner Augmont and monitored by an independent trustee.",
     },
     {
       section: "Getting Started",
       question: "Do I need to complete KYC?",
       answer:
-        "Yes. As per RBI and PMLA (Anti-Money Laundering) rules, all financial platforms must verify their users. KYC verification is required to start investing and is mandatory for booking FDs, withdrawing money, or selling your gold/silver. This is a one-time process that helps secure your account.",
+        "Yes. As per RBI and PMLA (Anti-Money Laundering) rules, all financial platforms must verify their users. KYC verification is required to start investing and is mandatory for booking FD, withdrawing money, or selling your gold/silver. This is a one-time process that helps secure your account.",
     },
 
     /* ---------------- Section 2: Digital Gold & Silver ---------------- */
@@ -91,32 +90,32 @@ export default function FAQ() {
 
     /* -------------------- Section 3: Fixed Deposits ------------------- */
     {
-      section: "Fixed Deposits (FDs)",
-      question: "Are you a bank? How can you offer FDs from so many banks?",
+      section: "Fixed Deposits (FD)",
+      question: "Are you a bank? How can you offer FD from so many banks?",
       answer:
-        "No, Saferupeez is not a bank. We are a technology partner for RBI-regulated banks (like Suryoday Small Finance Bank, Federal Bank, etc.). Our BaaS (Banking-as-a-Service) partners, like Upswing, give us the technology to provide you a single, secure dashboard to access and book FDs from multiple banks.",
+        "No, Saferupeez is not a bank. We are a technology partner for RBI-regulated banks (like Suryoday Small Finance Bank, Federal Bank, etc.). Our BaaS (Banking-as-a-Service) partners, like Upswing, give us the technology to provide you a single, secure dashboard to access and book FD from multiple banks.",
     },
     {
-      section: "Fixed Deposits (FDs)",
+      section: "Fixed Deposits (FD)",
       question:
         "Do I need to open a new savings account with each bank to book an FD?",
       answer:
         "No. You can use your existing bank account (for example, HDFC or SBI) to pay for an FD in any of our partner banks. The partner bank will create a unique customer ID (CIF) for you in their system to hold the FD, but you do not need to open a new savings account with them.",
     },
     {
-      section: "Fixed Deposits (FDs)",
+      section: "Fixed Deposits (FD)",
       question: "Is my Fixed Deposit insured?",
       answer:
-        "Yes. All Fixed Deposits booked with our partner banks (including Small Finance Banks) are insured by the DICGC (an RBI subsidiary) up to ₹5,00,000 per user, per bank. FDs with NBFCs (which we will clearly label) are not covered by DICGC.",
+        "Yes. All Fixed Deposits booked with our partner banks (including Small Finance Banks) are insured by the DICGC (an RBI subsidiary) up to ₹5,00,000 per user, per bank. FD with NBFCs (which we will clearly label) are not covered by DICGC.",
     },
     {
-      section: "Fixed Deposits (FDs)",
+      section: "Fixed Deposits (FD)",
       question: "How do I get my money back when the FD matures?",
       answer:
         "On the maturity date, the partner bank will automatically transfer the full maturity amount (your principal plus interest) directly to the bank account you used to book the FD.",
     },
     {
-      section: "Fixed Deposits (FDs)",
+      section: "Fixed Deposits (FD)",
       question:
         "What if I need my money before the FD matures? (Premature Withdrawal)",
       answer:
@@ -168,7 +167,7 @@ export default function FAQ() {
         </div>
 
         {/* FAQ Items grouped by section */}
-       <div className="space-y-8">
+        <div className="space-y-8">
           {sections.map((sectionTitle) => {
             const items = groupedBySection[sectionTitle];
             const isOpen = openSection === sectionTitle;

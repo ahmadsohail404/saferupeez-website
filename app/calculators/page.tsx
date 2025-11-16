@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 import { Card } from "../components/ui/card";
 import { Calculator, PiggyBank, TrendingUp, CreditCard } from "lucide-react";
 
-import { FDCalculator } from "./fd/page";
-import { LumpsumCalculator } from "./lumpsum/page";
-import { SIPCalculator } from "./sip/page";
-import { EMICalculator } from "./emi/page";
+import FDCalculator from "./fd/page";
+import LumpsumCalculator from "./lumpsum/page";
+import SIPCalculator from "./sip/page";
+import EMICalculator from "./emi/page";
 
 type CalculatorType = "fd" | "lumpsum" | "sip" | "emi" | null;
 
@@ -158,8 +158,6 @@ export default function Calculators() {
                           {calc.preview}
                         </span>
                       </div>
-
-                      
                     </div>
 
                     {/* bottom highlight */}

@@ -56,13 +56,17 @@ function FileUpload({ file, onChange, onRemove }: FileUploadProps) {
           <div className="text-center">
             <Upload className="h-6 w-6 text-gray-500 mx-auto mb-2" />
             <span className="text-sm text-gray-700">Click to upload</span>
-            <p className="text-xs text-gray-500 mt-1">PNG, JPG or PDF (Max 5MB)</p>
+            <p className="text-xs text-gray-500 mt-1">
+              PNG, JPG or PDF (Max 5MB)
+            </p>
           </div>
         </label>
       ) : (
         <div className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 bg-gray-50">
           <Paperclip className="h-5 w-5 text-gray-700" />
-          <span className="text-sm text-gray-800 flex-1 truncate">{file.name}</span>
+          <span className="text-sm text-gray-800 flex-1 truncate">
+            {file.name}
+          </span>
           <button
             type="button"
             onClick={onRemove}
@@ -105,7 +109,9 @@ function SupportPage() {
     setSubmitting(true);
     setTimeout(() => {
       setSubmitting(false);
-      alert("✅ Request submitted successfully! Our team will get back to you shortly.");
+      alert(
+        "✅ Request submitted successfully! Our team will get back to you shortly."
+      );
       setMobile("");
       setEmail("");
       setIssueType("");
@@ -120,20 +126,21 @@ function SupportPage() {
       <div className="absolute top-10 right-4 sm:right-8 md:right-16 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-black/10 blur-[110px] rounded-full" />
       <div className="absolute bottom-10 left-4 sm:left-8 md:left-16 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-neutral-400/20 blur-[110px] rounded-full" />
 
-      <section className="relative z-10 bg-gradient-to-br from-gray-50 via-white to-gray-50">
+      <section className="relative z-10 bg-linear-to-br from-gray-50 via-white to-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-10 sm:py-12 md:py-16">
           {/* Header */}
           <div className="max-w-3xl mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black text-white text-sm font-medium mb-4">
               <AlertCircle className="h-4 w-4" />
-              We're here to help
+              We&apos;re here to help
             </div>
             <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-4">
               Customer Support
             </h1>
             <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-              Need help with your SafeRupeez app? Reach out to us for support with transactions,
-              gold savings, account issues, or any other questions.
+              Need help with your SafeRupeez app? Reach out to us for support
+              with transactions, gold savings, account issues, or any other
+              questions.
             </p>
           </div>
 
@@ -148,7 +155,8 @@ function SupportPage() {
                     Submit Your Request
                   </h2>
                   <p className="text-white/80 mt-1 text-sm">
-                    Fill out the form below and we'll respond within 24 hours
+                    Fill out the form below and we&apos;ll respond within 24
+                    hours
                   </p>
                 </div>
 
@@ -164,13 +172,16 @@ function SupportPage() {
                         value={mobile}
                         onChange={(e) => setMobile(e.target.value)}
                         placeholder="Enter 10-digit mobile number"
-                        className={`pl-10 ${errors.mobile ? "border-red-500" : ""}`}
+                        className={`pl-10 ${
+                          errors.mobile ? "border-red-500" : ""
+                        }`}
                         aria-invalid={!!errors.mobile}
                       />
                       <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                     </div>
                     <p className="text-xs text-gray-500 mt-2 ml-1">
-                      Use your SafeRupeez registered mobile number (starting with 6–9)
+                      Use your SafeRupeez registered mobile number (starting
+                      with 6–9)
                     </p>
                   </div>
 
@@ -184,7 +195,9 @@ function SupportPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="your.email@example.com"
-                        className={`pl-10 ${errors.email ? "border-red-500" : ""}`}
+                        className={`pl-10 ${
+                          errors.email ? "border-red-500" : ""
+                        }`}
                         aria-invalid={!!errors.email}
                       />
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
@@ -195,12 +208,19 @@ function SupportPage() {
                   <div>
                     <Label htmlFor="issueType">Type of Issue</Label>
                     {/* keep required semantics for server parsing if needed */}
-                    <input type="hidden" name="issueType" value={issueType} required />
+                    <input
+                      type="hidden"
+                      name="issueType"
+                      value={issueType}
+                      required
+                    />
                     <Select value={issueType} onValueChange={setIssueType}>
                       <SelectTrigger
                         id="issueType"
                         className={`h-12 rounded-xl border ${
-                          errors.issueType ? "border-red-500" : "border-black/20"
+                          errors.issueType
+                            ? "border-red-500"
+                            : "border-black/20"
                         } bg-white text-slate-900 focus:ring-2 focus:ring-black/20 focus:border-black`}
                       >
                         <div className="flex items-center gap-2">
@@ -216,7 +236,9 @@ function SupportPage() {
                       </SelectContent>
                     </Select>
                     {errors.issueType && (
-                      <p className="text-xs text-red-500 mt-2 ml-1">Please select an issue type</p>
+                      <p className="text-xs text-red-500 mt-2 ml-1">
+                        Please select an issue type
+                      </p>
                     )}
                   </div>
 
@@ -228,7 +250,9 @@ function SupportPage() {
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       placeholder="Please describe your issue in detail. Include any relevant transaction IDs, dates, or error messages..."
-                      className={`${errors.description ? "border-red-500" : ""}`}
+                      className={`${
+                        errors.description ? "border-red-500" : ""
+                      }`}
                       aria-invalid={!!errors.description}
                     />
                   </div>
@@ -236,7 +260,11 @@ function SupportPage() {
                   {/* File Upload */}
                   <div>
                     <Label htmlFor="attachment">Attachment (Optional)</Label>
-                    <FileUpload file={file} onChange={setFile} onRemove={() => setFile(null)} />
+                    <FileUpload
+                      file={file}
+                      onChange={setFile}
+                      onRemove={() => setFile(null)}
+                    />
                   </div>
 
                   {/* Submit */}
@@ -289,14 +317,18 @@ function SupportPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="font-bold text-gray-900 mb-2">Secure & Private</h3>
+                <h3 className="font-bold text-gray-900 mb-2">
+                  Secure & Private
+                </h3>
                 <p className="text-sm text-gray-600">
                   Your information is encrypted and handled with care.
                 </p>
               </div>
 
-              <div className="bg-gradient-to-br from-gray-50 to-white border border-black/10 rounded-2xl p-6 shadow-lg">
-                <h3 className="font-bold text-gray-900 mb-4">Other Ways to Reach Us</h3>
+              <div className="bg-linear-to-br from-gray-50 to-white border border-black/10 rounded-2xl p-6 shadow-lg">
+                <h3 className="font-bold text-gray-900 mb-4">
+                  Other Ways to Reach Us
+                </h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 text-sm text-gray-700">
                     <Phone className="h-4 w-4 text-black" />

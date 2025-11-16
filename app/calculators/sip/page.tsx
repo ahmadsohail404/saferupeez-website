@@ -17,7 +17,7 @@ import {
 } from "recharts";
 import { Calculator } from "lucide-react";
 
-export function SIPCalculator() {
+export default function SIPCalculator() {
   const [monthlyInvestment, setMonthlyInvestment] = useState<number[]>([17500]);
   const [returnRate, setReturnRate] = useState<number[]>([12]);
   const [timePeriod, setTimePeriod] = useState<number[]>([10]);

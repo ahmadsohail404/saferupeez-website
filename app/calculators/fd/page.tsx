@@ -15,7 +15,7 @@ import {
 } from "@/app/components/ui/select";
 import { PiggyBank } from "lucide-react";
 
-export function FDCalculator() {
+export default function FDCalculator() {
   const [deposit, setDeposit] = useState<number[]>([100000]);
   const [interestRate, setInterestRate] = useState<number[]>([7.5]);
   const [tenure, setTenure] = useState<number[]>([3]);

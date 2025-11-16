@@ -10,7 +10,7 @@ interface VideoPlayerProps {
 }
 
 export function VideoPlayer({ moduleId, onBack }: VideoPlayerProps) {
-  const modulee = modules.find(m => m.id === moduleId);
+  const modulee = modules.find((m) => m.id === moduleId);
   const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
 
   if (!modulee) {
@@ -21,8 +21,11 @@ export function VideoPlayer({ moduleId, onBack }: VideoPlayerProps) {
 
   return (
     <div className="text-black">
-        <Button variant="outine" onClick={onBack} className="mb-6 p-0 text-primary cursor-pointer hover:bg-slate-200" >
-
+      <Button
+        variant="outline"
+        onClick={onBack}
+        className="mb-6 p-0 text-primary cursor-pointer hover:bg-slate-200"
+      >
         ← Back to all video modules
       </Button>
 
@@ -39,7 +42,9 @@ export function VideoPlayer({ moduleId, onBack }: VideoPlayerProps) {
             <iframe
               width="100%"
               height="100%"
-              src={`https://www.youtube.com/embed/${selectedChapter.videoId || 'dQw4w9WgXcQ'}`}
+              src={`https://www.youtube.com/embed/${
+                selectedChapter.videoId || "dQw4w9WgXcQ"
+              }`}
               title={selectedChapter.title}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -72,16 +77,20 @@ export function VideoPlayer({ moduleId, onBack }: VideoPlayerProps) {
                     key={chapter.id}
                     onClick={() => setSelectedChapterIndex(index)}
                     className={`w-full text-left p-4 hover:bg-muted/50 transition-colors ${
-                      selectedChapterIndex === index ? 'bg-primary/5 border-l-4 border-primary' : ''
+                      selectedChapterIndex === index
+                        ? "bg-primary/5 border-l-4 border-primary"
+                        : ""
                     }`}
                   >
                     <div className="flex gap-3">
                       <div className="flex-shrink-0 mt-1">
-                        <div className={`w-8 h-8 rounded flex items-center justify-center ${
-                          selectedChapterIndex === index 
-                            ? 'bg-primary text-primary-foreground' 
-                            : 'bg-muted'
-                        }`}>
+                        <div
+                          className={`w-8 h-8 rounded flex items-center justify-center ${
+                            selectedChapterIndex === index
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-muted"
+                          }`}
+                        >
                           <Play className="h-3 w-3" />
                         </div>
                       </div>
