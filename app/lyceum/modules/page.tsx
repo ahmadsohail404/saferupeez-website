@@ -1,5 +1,6 @@
 // app/lyceum/modules/page.tsx
-"use client";
+import { fetchLyceumModules, LyceumModule } from "@/lib/lyceumSanity";
+import ModulesClientPage from "./ModulesClientPage";
 
 import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -82,45 +83,7 @@ function ModulesPageInner() {
   return (
     <div className="min-h-screen bg-white">
       <main className="container mx-auto px-4 sm:px-6 lg:px-12 py-12 text-black">
-        {currentPage === "modules" && (
-          <>
-            <div className="mb-8">
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1]">
-                Lyceum Modules
-              </h1>
-              <p className="mt-3 max-w-3xl text-lg md:text-xl text-slate-700/90 font-sans leading-relaxed">
-                Learn stock market trading and investments from scratch. Topics
-                include trading strategies, technical analysis, fundamental
-                analysis, risk management, and more. Choose a module to get
-                started.
-              </p>
-            </div>
-
-            <ModuleGrid
-              onViewModule={navigateToModuleDetail}
-              onWatchVideos={navigateToVideos}
-              onRead={navigateToRead}
-              onCreateModule={navigateToRead}
-            />
-          </>
-        )}
-
-        {currentPage === "detail" && selectedModuleId && (
-          <ModuleDetail
-            moduleId={selectedModuleId}
-            onBack={navigateToModules}
-            onWatchVideos={() => navigateToVideos(selectedModuleId)}
-            onRead={() => navigateToRead(selectedModuleId)}
-          />
-        )}
-
-        {currentPage === "videos" && selectedModuleId && (
-          <VideoPlayer moduleId={selectedModuleId} onBack={navigateToModules} />
-        )}
-
-        {currentPage === "read" && selectedModuleId && (
-          <ReadContent moduleId={selectedModuleId} onBack={navigateToModules} />
-        )}
+        <ModulesClientPage modules={modules} />
       </main>
     </div>
   );

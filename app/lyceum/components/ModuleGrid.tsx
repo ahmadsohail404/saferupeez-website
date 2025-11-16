@@ -1,34 +1,39 @@
 // app/lyceum/components/ModuleGrid.tsx
 import { ModuleCard } from "./ModuleCard";
-import { modules } from "./data/modules";
-// import { CreateModuleDialog } from "./CreateModuleDialog";
-
+import type { LyceumModule } from "@/lib/lyceumSanity";
 
 interface ModuleGridProps {
-  onViewModule: (moduleId: number) => void;
-  onWatchVideos: (moduleId: number) => void;
-  onRead: (moduleId: number) => void;
-  onCreateModule: (moduleData: any) => void;
+  modules: LyceumModule[];
+  onViewModule: (moduleId: string) => void;
+  onWatchVideos: (moduleId: string) => void;
+  onRead: (moduleId: string) => void;
+  onCreateModule: () => void;
 }
 
-export function ModuleGrid({ onViewModule, onWatchVideos, onRead,onCreateModule }: ModuleGridProps) {
+export function ModuleGrid({
+  modules,
+  onViewModule,
+  onWatchVideos,
+  onRead,
+  onCreateModule,
+}: ModuleGridProps) {
   return (
-    <div>
-      <div className="flex justify-end mb-5">
-        {/* <CreateModuleDialog onCreateModule={onCreateModule} /> */}
-      </div>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {modules.map((module) => (
-        <ModuleCard 
-          key={module.id} 
-          module={module}
+        <ModuleCard
+          key={module.id}
+          module={{
+            id: module.id,
+            title: module.title,
+            description: module.description ?? "",
+            chapters: module.chapters,
+            imageUrl: module.imageUrl || "/assets/le.jpg",
+          }}
           onViewModule={() => onViewModule(module.id)}
           onWatchVideos={() => onWatchVideos(module.id)}
           onRead={() => onRead(module.id)}
         />
       ))}
     </div>
-    </div>
-    
   );
 }
