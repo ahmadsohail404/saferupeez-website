@@ -48,15 +48,6 @@ const Hero = () => {
                             </span>
                             <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                         </Link>
-
-
-                        {/* Watch Demo Button */}
-                        <button className="flex items-center gap-2 sm:gap-3 bg-white hover:bg-slate-50 px-4 sm:px-6 h-10 sm:h-12 rounded-xl sm:rounded-2xl backdrop-blur-md border border-slate-200 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-[1.03]">
-                            <PlayCircle className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
-                            <span className="text-sm sm:text-base font-semibold text-gray-900">
-                                Watch demo
-                            </span>
-                        </button>
                     </div>
 
                     {/* Trust indicators */}

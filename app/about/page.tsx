@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import Image from "next/image"; // Add Image import for best practice
+import Image from "next/image";
 import {
   Target,
   Eye,
   Linkedin,
-  Twitter,
+  Mail,         // ⬅️ replaced Twitter with Mail
   TrendingUp,
   Shield,
   Zap,
@@ -14,42 +14,42 @@ import {
 export default function AboutUs() {
   const leaders = [
     {
-      name: "Rajesh Kumar",
+      name: "Mourya Manohar",
       position: "Chief Executive Officer",
       image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
-      bio: "15+ years of experience in fintech innovation and regulatory compliance, ensuring SafeRupee remains a leader in the digital wealth space.",
-      linkedin: "#",
-      twitter: "#",
+        "https://media.licdn.com/dms/image/v2/D5603AQHgx4U0uNB-DQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1723167084482?e=1764806400&v=beta&t=Xswtu8bMJaM0tfE95Va0vcK3aqg8lrwvgLdzPKfFItU",
+      bio: "Founder of Jyesta Corporate Entity, on a mission to bridge learning and finance through innovation.We’re redefining EdTech today and shaping FinTech tomorrow — empowering the next generation with tools to learn, grow, and succeed.Move fast. Think bold. Waste no time. That’s the Jyesta mindset.",
+      linkedin: "https://www.linkedin.com/in/mourya-n-manohar-803115236/",
+      email: "mailto:info@jyesta.com", // ⬅️ use your real email here
     },
     {
-      name: "Priya Sharma",
+      name: "Sohail Ahmad",
       position: "Chief Technology Officer",
       image:
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
-      bio: "Expert in developing secure, scalable digital payment and asset management platforms, driving our cutting-edge technology infrastructure.",
-      linkedin: "#",
-      twitter: "#",
+        "https://media.licdn.com/dms/image/v2/D5603AQFX3i02b-AmAg/profile-displayphoto-scale_200_200/B56Zm1wn5bIsAY-/0/1759691047613?e=1764806400&v=beta&t=9NYC1_Bh-eLToXLTCbO7vjvQk1M91W-5OXnGZQvwxBw",
+      bio: "Co-Founder & CTO at Jyesta, where we’re reimagining how people learn, grow, and get ready for what’s next.At Jyesta, we’re building intelligent learning ecosystems that connect educators, and professionals turning knowledge into capability. Our belief is simple: learning should feel alive, adaptive, data-driven and built for the pace of the real world.",
+      linkedin: "https://www.linkedin.com/in/ahmadsohail404/",
+      email: "mailto:info@jyesta.com",
     },
     {
-      name: "Amit Patel",
+      name: "Nesar H Kumar",
       position: "Chief Financial Officer",
       image:
-        "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop",
-      bio: "Former investment banking leader with a deep understanding of market trends and financial strategy, securing our long-term growth and stability.",
-      linkedin: "#",
-      twitter: "#",
+        "https://media.licdn.com/dms/image/v2/D5603AQFoVEFIEIevSA/profile-displayphoto-shrink_200_200/B56ZOlBsYjGkAY-/0/1733640508937?e=1764806400&v=beta&t=VJyCEy74h4Os_h3M7CjFgzmX1_JLmI5BS0fW9ds5NvI",
+      bio: "Entrepreneur passionate about building positive financial habits. As a Co-founder at Safe Rupeez, we're creating a platform where young Indians can effortlessly start their savings journey – initially via familiar routes like digital gold & silver – and progressively build towards a secure financial future, including foundational products like FDs.",
+      linkedin: "https://www.linkedin.com/in/nesara-h-kumar/",
+      email: "mailto:info@jyesta.com",
     },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-yellow-50/40 overflow-hidden">
-      {/* Background decorative blurs (Responsive placement) */}
+      {/* Background decorative blurs */}
       <div className="absolute top-20 right-16 w-64 h-64 md:w-96 md:h-96 bg-amber-300/30 blur-[100px] md:blur-[140px] rounded-full" />
       <div className="absolute bottom-40 left-16 w-64 h-64 md:w-96 md:h-96 bg-yellow-300/25 blur-[100px] md:blur-[140px] rounded-full" />
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-amber-200/20 blur-[180px] rounded-full" />
 
-      {/* Hero Section (Responsive Typography) */}
+      {/* Hero Section */}
       <div className="relative pt-16 pb-12 md:pt-20 md:pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center justify-center mb-6">
@@ -69,7 +69,7 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* Stats Bar (Responsive Stacking) */}
+      {/* Stats Bar */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-12 md:my-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="text-center p-4">
@@ -96,7 +96,7 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* Mission Section (Responsive Typography) */}
+      {/* Mission Section */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-center mb-8">
@@ -118,7 +118,7 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* Vision Section (Responsive Typography) */}
+      {/* Vision Section */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-center mb-8">
@@ -139,7 +139,7 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* Leaders Section (Responsive Card Layout and Sizing) */}
+      {/* Leaders Section */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 pb-32">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
@@ -150,7 +150,6 @@ export default function AboutUs() {
           </p>
         </div>
 
-        {/* Responsive Grid: 1 col on mobile, 2 on tablet, 3 on desktop */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           {leaders.map((leader, index) => (
             <div
@@ -158,7 +157,6 @@ export default function AboutUs() {
               className="group relative bg-white rounded-3xl overflow-hidden 
                 shadow-2xl hover:shadow-3xl transition-all duration-500 transform 
                 hover:-translate-y-2 lg:hover:-translate-y-5 border border-gray-100 p-6 md:p-8"
-              // REMOVED fixed minHeight for responsiveness
             >
               {/* Glow */}
               <div
@@ -176,7 +174,7 @@ export default function AboutUs() {
               ></div>
 
               <div className="relative p-2 md:p-6">
-                {/* Responsive Profile Image Size */}
+                {/* Profile Image */}
                 <div className="relative mb-6 md:mb-8 mx-auto w-40 h-40 lg:w-52 lg:h-52">
                   <div
                     className="absolute inset-0 bg-gradient-to-br 
@@ -189,7 +187,6 @@ export default function AboutUs() {
                     shadow-2xl ring-4 ring-white transform group-hover:scale-110 
                     transition-transform duration-500"
                   >
-                    {/* Using <img> tag as in original code, though Image is preferred */}
                     <img
                       src={leader.image}
                       alt={leader.name}
@@ -198,7 +195,6 @@ export default function AboutUs() {
                   </div>
                 </div>
 
-                {/* Responsive Typography */}
                 <h3
                   className="text-2xl md:text-3xl font-bold text-center mb-2 text-gray-900 
                   group-hover:text-amber-700 transition-colors duration-300"
@@ -206,18 +202,16 @@ export default function AboutUs() {
                   {leader.name}
                 </h3>
 
-                {/* Responsive Position */}
                 <p className="text-amber-600 text-center font-semibold mb-4 md:mb-5 text-base md:text-lg">
                   {leader.position}
                 </p>
 
-                {/* Responsive Bio */}
                 <p className="text-gray-600 text-center text-sm md:text-base mb-6 md:mb-8 leading-relaxed px-0 md:px-4">
                   {leader.bio}
                 </p>
 
-                {/* Social Icons (Responsive Padding/Sizing) */}
                 <div className="flex justify-center gap-4 md:gap-5 pt-4 md:pt-6 border-t border-gray-100">
+                  {/* LinkedIn */}
                   <a
                     href={leader.linkedin}
                     target="_blank"
@@ -237,17 +231,16 @@ export default function AboutUs() {
                     ></div>
                   </a>
 
+                  {/* Mail instead of Twitter */}
                   <a
-                    href={leader.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={leader.email}
                     className="group/social relative p-3 md:p-4 
                     bg-gradient-to-br from-amber-50 to-yellow-50 
                     hover:from-amber-100 hover:to-yellow-100 rounded-xl 
                     transition-all duration-300 transform hover:scale-125"
-                    aria-label={`${leader.name} on Twitter`}
+                    aria-label={`Email ${leader.name}`}
                   >
-                    <Twitter className="w-6 h-6 md:w-7 md:h-7 text-amber-700" />
+                    <Mail className="w-6 h-6 md:w-7 md:h-7 text-amber-700" />
                     <div
                       className="absolute inset-0 rounded-xl 
                       bg-gradient-to-br from-amber-400 to-yellow-400 
