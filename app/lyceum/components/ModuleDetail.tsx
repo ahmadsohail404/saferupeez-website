@@ -20,7 +20,7 @@ import { modules } from "./data/modules";
 interface ModuleDetailProps {
   moduleId: number;
   onBack: () => void;
-  onWatchVideos: () => void; // still available for external flow if needed
+  onWatchVideos: () => void;
   onRead: () => void;
 }
 
@@ -36,7 +36,6 @@ export function ModuleDetail({
     return <div className="text-slate-900">Module not found</div>;
   }
 
-  // Active chapter for the video player (default: first chapter)
   const [activeVideoChapterId, setActiveVideoChapterId] = useState<number | null>(
     modulee.chapterList[0]?.id ?? null
   );
@@ -46,19 +45,18 @@ export function ModuleDetail({
   );
 
   return (
-    // FULL-WIDTH inside the parent container (max-w-7xl in page.tsx)
     <div className="w-full text-slate-900">
       {/* Back button */}
       <Button
-        variant="outline"
+        variant="ghost"
         onClick={onBack}
-        className="mb-6 p-0 text-primary cursor-pointer hover:bg-slate-200"
+        className="mt-0 mb-6 p-0 text-primary cursor-pointer hover:bg-slate-200"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back to all modules
       </Button>
 
-      {/* Module heading */}
+      {/* Heading */}
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-semibold mb-3">
           {modulee.title}
@@ -68,61 +66,104 @@ export function ModuleDetail({
         </p>
       </div>
 
-      {/* Tabs: Watch videos / Read module */}
       <Tabs defaultValue="videos" className="w-full">
-        {/* BIG TAB HEADERS ACROSS FULL WIDTH */}
+        {/* -------- BLACK GLASS TABS (big size, no background rail) -------- */}
         <TabsList
           className="
-            mb-8
-            w-full
-            h-16 sm:h-20
-            grid w-full grid-cols-2
-            items-stretch
-            rounded-4xl bg-white-300/90
-            p-1
-            gap-1
-            shadow-lg
+            mb-16
+            flex
+            w-full max-w-8xl
+            mx-auto
+            gap-3
+            bg-transparent
+            p-0
+            border-0
+            shadow-none 
+            mt-3
           "
         >
           <TabsTrigger
             value="videos"
             className="
-              w-full 
+              flex-1
+              inline-flex
+              items-center
+              justify-center
+              gap-2
               h-16 sm:h-20
-              flex items-center justify-center
-              px-4 sm:px-6
-              text-sm sm:text-lg font-semibold
+              px-6 sm:px-8
+              rounded-[999px]
+              text-sm sm:text-lg
+              font-semibold
+              tracking-tight
+
+              bg-black/40
+              text-white/80
+              border border-white/15
+              backdrop-blur-xl
+              shadow-[0_14px_32px_rgba(15,23,42,0.55)]
+
+              transition-all
+              duration-200
+              cursor-pointer
+
+              hover:bg-black/70
+              hover:text-white
+
               data-[state=active]:bg-black
               data-[state=active]:text-white
-              data-[state=active]:shadow-md
-              rounded-4xl
+              data-[state=active]:border-white/35
+              data-[state=active]:shadow-[0_20px_50px_rgba(15,23,42,0.8)]
             "
           >
-            Watch videos
+            <PlayCircle className="h-5 w-5" />
+            <span>Watch videos</span>
           </TabsTrigger>
 
           <TabsTrigger
             value="read"
             className="
-              w-full 
+              flex-1
+              inline-flex
+              items-center
+              justify-center
+              gap-2
               h-16 sm:h-20
-              flex items-center justify-center
-              px-4 sm:px-6
-              text-sm sm:text-lg font-semibold
+              px-6 sm:px-8
+              rounded-[999px]
+              text-sm sm:text-lg
+              font-semibold
+              tracking-tight
+
+              bg-black/40
+              text-white/80
+              border border-white/15
+              backdrop-blur-xl
+              shadow-[0_14px_32px_rgba(15,23,42,0.55)]
+
+              transition-all
+              duration-200
+              cursor-pointer
+
+              hover:bg-black/70
+              hover:text-white
+
               data-[state=active]:bg-black
               data-[state=active]:text-white
-              data-[state=active]:shadow-md
-              rounded-4xl
+              data-[state=active]:border-white/35
+              data-[state=active]:shadow-[0_20px_50px_rgba(15,23,42,0.8)]
             "
           >
-            Read module
+            <FileText className="h-5 w-5" />
+            <span>Read module</span>
           </TabsTrigger>
         </TabsList>
+        {/* -------- /BLACK GLASS TABS -------- */}
 
         {/* WATCH VIDEOS TAB */}
         <TabsContent value="videos" className="space-y-4">
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] items-start">
-            {/* LEFT: Chapter list – Watch actions */}
+            {/* LEFT: Chapter list */}
             <div className="space-y-4">
               {modulee.chapterList.map((chapter, index) => {
                 const isActive = chapter.id === activeVideoChapterId;
@@ -150,7 +191,7 @@ export function ModuleDetail({
                           size="sm"
                           variant="outline"
                           onClick={(e) => {
-                            e.stopPropagation(); // avoid double-calling on card click
+                            e.stopPropagation();
                             setActiveVideoChapterId(chapter.id);
                           }}
                           className="gap-2 cursor-pointer"
@@ -170,7 +211,7 @@ export function ModuleDetail({
               })}
             </div>
 
-            {/* RIGHT: Video player for selected chapter */}
+            {/* RIGHT: Video player */}
             <Card className="border border-slate-200 bg-white/90 shadow-md sticky top-24">
               <CardHeader>
                 <CardTitle className="text-base md:text-lg">
@@ -209,7 +250,6 @@ export function ModuleDetail({
 
         {/* READ MODULE TAB */}
         <TabsContent value="read" className="space-y-4">
-          {/* Chapter list – Read actions */}
           <div className="space-y-4">
             {modulee.chapterList.map((chapter, index) => (
               <Card

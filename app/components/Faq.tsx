@@ -12,9 +12,17 @@ type FAQItem = {
 export default function FAQ() {
   const [openItem, setOpenItem] = useState<number | null>(null);
 
+  // 1️⃣ START CLOSED (no section open by default)
+  const [openSection, setOpenSection] = useState<string | null>(null);
+
   const toggleItem = (index: number) => {
     setOpenItem((prev) => (prev === index ? null : index));
   };
+
+  const toggleSection = (sectionTitle: string) => {
+    setOpenSection((prev) => (prev === sectionTitle ? null : sectionTitle));
+  };
+
 
   const faqs: FAQItem[] = [
     /* ------------------ Section 1: Getting Started ------------------ */
@@ -160,53 +168,70 @@ export default function FAQ() {
         </div>
 
         {/* FAQ Items grouped by section */}
-        <div className="space-y-8">
+       <div className="space-y-8">
           {sections.map((sectionTitle) => {
             const items = groupedBySection[sectionTitle];
+            const isOpen = openSection === sectionTitle;
+
             return (
               <div key={sectionTitle}>
-                {/* Section heading */}
-                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
-                  {sectionTitle}
-                </h3>
-                <div className="space-y-4">
-                  {items.map((item) => (
-                    <div
-                      key={item.index}
-                      className="group bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-all duration-200 shadow-sm hover:shadow-md"
-                    >
-                      <button
-                        onClick={() => toggleItem(item.index)}
-                        className="flex items-center justify-between w-full p-6 text-left"
-                      >
-                        <span className="text-lg font-semibold text-gray-900 pr-8">
-                          {item.question}
-                        </span>
-                        <div className="flex-shrink-0 ml-4">
-                          {openItem === item.index ? (
-                            <div className="p-1 bg-[hsl(var(--gold))]/10 rounded-full">
-                              <ChevronUp className="h-5 w-5 text-[hsl(var(--gold))]" />
-                            </div>
-                          ) : (
-                            <div className="p-1 bg-gray-100 rounded-full group-hover:bg-[hsl(var(--gold))]/10 transition-colors">
-                              <ChevronDown className="h-5 w-5 text-gray-500 group-hover:text-[hsl(var(--gold))]" />
-                            </div>
-                          )}
-                        </div>
-                      </button>
+                {/* 2️⃣ BIGGER SECTION TITLE FONT SIZE */}
+                <button
+                  type="button"
+                  onClick={() => toggleSection(sectionTitle)}
+                  className="flex w-full items-center justify-between mb-3 text-left"
+                >
+                  <span className="text-base sm:text-lg font-semibold text-gray-500 uppercase tracking-wide">
+                    {sectionTitle}
+                  </span>
+                  <ChevronDown
+                    className={`h-4 w-4 text-gray-500 transition-transform ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
 
-                      {openItem === item.index && (
-                        <div className="px-6 pb-6">
-                          <div className="border-t border-gray-100 pt-4">
-                            <p className="text-gray-700 leading-relaxed">
-                              {item.answer}
-                            </p>
+                {isOpen && (
+                  <div className="space-y-4">
+                    {/* 🔥 your existing question cards + styles remain exactly the same here */}
+                    {items.map((item) => (
+                      <div
+                        key={item.index}
+                        className="group bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-all duration-200 shadow-sm hover:shadow-md"
+                      >
+                        <button
+                          onClick={() => toggleItem(item.index)}
+                          className="flex items-center justify-between w-full p-6 text-left"
+                        >
+                          <span className="text-lg font-semibold text-gray-900 pr-8">
+                            {item.question}
+                          </span>
+                          <div className="flex-shrink-0 ml-4">
+                            {openItem === item.index ? (
+                              <div className="p-1 bg-[hsl(var(--gold))]/10 rounded-full">
+                                <ChevronUp className="h-5 w-5 text-[hsl(var(--gold))]" />
+                              </div>
+                            ) : (
+                              <div className="p-1 bg-gray-100 rounded-full group-hover:bg-[hsl(var(--gold))]/10 transition-colors">
+                                <ChevronDown className="h-5 w-5 text-gray-500 group-hover:text-[hsl(var(--gold))]" />
+                              </div>
+                            )}
                           </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
+                        </button>
+
+                        {openItem === item.index && (
+                          <div className="px-6 pb-6">
+                            <div className="border-t border-gray-100 pt-4">
+                              <p className="text-gray-700 leading-relaxed">
+                                {item.answer}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             );
           })}
