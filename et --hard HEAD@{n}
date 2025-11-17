@@ -1,0 +1,20 @@
+[33m67d673e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/lycuemui[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{0}: rebase (finish): returning to refs/heads/feature/lycuemui
+[33m67d673e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/lycuemui[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{1}: rebase (start): checkout main
+[33m2cd480d[m[33m ([m[1;31morigin/feature/lycuemui[m[33m)[m HEAD@{2}: checkout: moving from main to feature/lycuemui
+[33m67d673e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/lycuemui[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{3}: pull origin main: Fast-forward
+[33m6fafc83[m HEAD@{4}: checkout: moving from feature/lycuemui to main
+[33m2cd480d[m[33m ([m[1;31morigin/feature/lycuemui[m[33m)[m HEAD@{5}: commit: SANITY INTEGRATED
+[33me1c533a[m HEAD@{6}: commit: Ui Fixes!
+[33ma29c33f[m HEAD@{7}: pull origin main: Fast-forward
+[33m5eb31de[m HEAD@{8}: commit: FAQS Updated!
+[33m30de349[m HEAD@{9}: pull origin main: Fast-forward
+[33m691f92b[m HEAD@{10}: pull origin main: Fast-forward
+[33mfdae0b3[m HEAD@{11}: commit: Varsity Modules Added!
+[33m21ce078[m HEAD@{12}: pull origin main: Fast-forward
+[33mff33e7b[m HEAD@{13}: pull origin main: Fast-forward
+[33m77c930d[m HEAD@{14}: commit: Navbar & Footer Added!
+[33mcd7f9e4[m HEAD@{15}: checkout: moving from feature/lycuemui to feature/lycuemui
+[33mcd7f9e4[m HEAD@{16}: pull origin main: Fast-forward
+[33m9ef0cbd[m HEAD@{17}: pull origin main: Fast-forward
+[33m6fafc83[m HEAD@{18}: checkout: moving from main to feature/lycuemui
+[33m6fafc83[m HEAD@{19}: clone: from github.com:jyesta-corporate/saferupeez-website.git

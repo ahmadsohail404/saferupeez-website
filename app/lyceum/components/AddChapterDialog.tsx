@@ -13,7 +13,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/text-area";
 import { Plus, Video } from "lucide-react";
-
+//Chapters
 interface AddChapterDialogProps {
   onAddChapter: (chapter: {
     title: string;
