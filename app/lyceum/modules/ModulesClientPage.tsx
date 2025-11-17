@@ -30,6 +30,7 @@ export default function ModulesClientPage({ modules }: ModulesClientPageProps) {
     const moduleId = moduleIdParam ?? null;
 
     if (moduleId && ["detail", "videos", "read"].includes(modeParam || "")) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedModuleId(moduleId);
       setCurrentPage(modeParam as PageMode);
     }

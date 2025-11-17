@@ -5,12 +5,12 @@ import { modules } from "./data/modules";
 import { ScrollArea } from "./ui/scroll-area";
 
 interface VideoPlayerProps {
-  moduleId: number;
+  moduleId: string;
   onBack: () => void;
 }
 
 export function VideoPlayer({ moduleId, onBack }: VideoPlayerProps) {
-  const modulee = modules.find((m) => m.id === moduleId);
+  const modulee = modules.find((m) => m.id === Number(moduleId));
   const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
 
   if (!modulee) {
