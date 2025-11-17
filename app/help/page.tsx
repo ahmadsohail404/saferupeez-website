@@ -21,7 +21,8 @@ export default function HelpLanding() {
               Contact Us
             </h1>
             <p className="mt-4 text-xs md:text-sm font-semibold tracking-wider text-slate-600 uppercase">
-              Get in touch to learn more about our services or to address any queries
+              Get in touch to learn more about our services or to address any
+              queries
             </p>
           </div>
 
@@ -45,12 +46,15 @@ export default function HelpLanding() {
                   <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 ring-1 ring-amber-200">
                     <Headset className="h-6 w-6 text-amber-700" />
                   </span>
-                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Customer Support</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
+                    Customer Support
+                  </h2>
                 </div>
 
                 <p className="mt-5 text-slate-700 text-base md:text-lg leading-relaxed">
-                  For SafeRupeez users needing help with transactions, gold savings, or account issues.
-                  Our team responds quickly and keeps you updated at every step.
+                  For SafeRupeez users needing help with transactions, gold
+                  savings, or account issues. Our team responds quickly and
+                  keeps you updated at every step.
                 </p>
 
                 <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm">
@@ -59,17 +63,20 @@ export default function HelpLanding() {
                 </div>
 
                 <div className="mt-8 flex flex-wrap items-center gap-3">
-                  <Button asChild className="h-11 px-5 bg-black hover:bg-black/90 text-white rounded-xl">
+                  <Button
+                    asChild
+                    className="h-11 px-5 bg-black hover:bg-black/90 text-white rounded-xl"
+                  >
                     <Link href="/help/support">
                       Contact Customer Support
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
                   <Link
-                    href="mailto:help@saferupeez.in"
+                    href="mailto:help@saferupeez.com"
                     className="text-sm font-medium text-slate-800 hover:text-slate-950 underline underline-offset-4"
                   >
-                    help@saferupeez.in
+                    help@saferupeez.com
                   </Link>
                 </div>
 
@@ -96,12 +103,15 @@ export default function HelpLanding() {
                   <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 ring-1 ring-amber-200">
                     <Handshake className="h-6 w-6 text-amber-700" />
                   </span>
-                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Partnerships</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
+                    Partnerships
+                  </h2>
                 </div>
 
                 <p className="mt-5 text-slate-700 text-base md:text-lg leading-relaxed">
-                  For partnership opportunities, product integrations, guest contributions, or media queries.
-                  Let’s build value together for the Indian market that we will take together to heights.
+                  For partnership opportunities, product integrations, guest
+                  contributions, or media queries. Let’s build value together
+                  for the Indian market that we will take together to heights.
                 </p>
 
                 <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm">
@@ -115,16 +125,16 @@ export default function HelpLanding() {
                     asChild
                     className="h-11 px-5 rounded-xl bg-black text-white hover:bg-black/90"
                   >
-                    <Link href="mailto:partnerships@saferupeez.in">
-                      Mail us at partnerships@saferupeez.in
+                    <Link href="mailto:partnerships@saferupeez.com">
+                      Mail us at partnerships@saferupeez.com
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
                   <Link
-                    href="mailto:partnerships@saferupeez.in"
+                    href="mailto:partnerships@saferupeez.com"
                     className="text-sm font-medium text-slate-800 hover:text-slate-950 underline underline-offset-4"
                   >
-                    partnerships@saferupeez.in
+                    partnerships@saferupeez.com
                   </Link>
                 </div>
 

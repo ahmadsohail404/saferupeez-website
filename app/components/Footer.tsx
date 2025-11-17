@@ -44,7 +44,7 @@ export default function Footer() {
                   <FooterLink href="/legal/terms">
                     Terms & conditions
                   </FooterLink>
-                  <span className="text-white/60">ISO 27001:2022</span>
+                  {/* <span className="text-white/60">ISO 27001:2022</span> */}
                 </div>
 
                 {/* Partner / address / contact */}
@@ -71,9 +71,9 @@ export default function Footer() {
                     Contact us:{" "}
                     <a
                       className="underline decoration-[hsl(var(--gold))]/60 underline-offset-2 hover:text-[hsl(var(--gold))]"
-                      href="mailto:help@saferupeez.in"
+                      href="mailto:help@saferupeez.com"
                     >
-                      help@saferupeez.in
+                      help@saferupeez.com
                     </a>
                   </p>
                 </div>
